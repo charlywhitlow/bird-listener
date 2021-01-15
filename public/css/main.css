@@ -1,0 +1,56 @@
+
+/* Header */
+header {
+    color: rgb(224, 223, 223);
+}
+.nav .nav-link {
+    padding: .25rem 0;
+    color: rgb(224, 223, 223);
+    border-bottom: .25rem solid transparent;
+}
+.nav-link:hover, .nav-link:focus {
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+/* Quiz page: Play Button */
+.btn-circle {
+    width: 120px;
+    height: 120px;
+    padding: 0px 0px;
+    border-radius: 360px;
+    border-width: 0px;
+}
+.btn-circle img {
+    width: 116px;
+    padding: 0px;
+}
+
+/* Menu page: menu buttons */
+#menu ul li {
+    list-style: none;
+}
+#menu ul, #menu ul li {
+    margin: 0px;
+    padding: 0px;
+}
+#menu button {
+    width: 200px;
+    margin: 5px;
+}
+
+/* Menu page: app intro */
+#app-intro p {
+    margin: 0px;
+}
+#app-intro, #app-intro h1 {
+    margin: 20px;
+}
+
+/* Settings page */
+#settings ul li {
+    list-style: none;
+}
+#settings ul, #settings ul li {
+    margin: 0px;
+    padding: 0px;
+}

@@ -24,3 +24,7 @@ function nextBird(){
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     document.getElementById("page").innerHTML = page+1;
 }
+function quizGallery(){
+    // load quiz gallery page
+    window.location.replace("quiz-gallery.html");
+}

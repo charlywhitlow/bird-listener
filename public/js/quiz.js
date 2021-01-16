@@ -1,6 +1,9 @@
 
 function playSound(){
-    document.getElementById("reveal-bird-button").style.display = "block";
+    // if quiz answer not visible 
+    if(document.getElementById("quiz-answer").style.display == "none"){
+        document.getElementById("reveal-bird-button").style.display = "block";        
+    }
 }
 function revealBird(){
     document.getElementById("listen").style.display = "none";

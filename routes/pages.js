@@ -13,15 +13,15 @@ router.get(['/menu','/menu.html'], (req, res, next) => {
 	res.sendFile(path.join(__dirname + '/../public/html/menu.html'));
 });
 
-// // login
-// router.get(['/login', '/login.html'], (req, res, next) => {
-// 	res.sendFile(path.join(__dirname + '/../public/html/login.html'));
-// });
+// login
+router.get(['/login', '/login.html'], (req, res, next) => {
+	res.sendFile(path.join(__dirname + '/../public/html/login.html'));
+});
 
-// // signup
-// router.get(['/signup', '/signup.html'], (req, res, next) => {
-// 	res.sendFile(path.join(__dirname + '/../public/html/signup.html'));
-// });
+// signup
+router.get(['/signup', '/signup.html'], (req, res, next) => {
+	res.sendFile(path.join(__dirname + '/../public/html/signup.html'));
+});
 
 // browse
 router.get(['/browse','/browse.html'], (req, res, next) => {

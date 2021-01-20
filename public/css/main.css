@@ -12,17 +12,14 @@ header {
     border-bottom-color: rgba(255, 255, 255, .25);
 }
 
-/* Quiz page: Play Button */
-.btn-circle {
-    width: 120px;
-    height: 120px;
-    padding: 0px 0px;
-    border-radius: 360px;
-    border-width: 0px;
+/* Login / Sign up form */
+#login-form div, #login-form button, 
+#signup-form div, #signup-form button {
+    margin: 6px;
 }
-.btn-circle img {
-    width: 116px;
-    padding: 0px;
+#login-form input, 
+#signup-form input {
+    max-width: 96%;
 }
 
 /* Menu page: menu buttons */
@@ -44,6 +41,19 @@ header {
 }
 #app-intro, #app-intro h1 {
     margin: 20px;
+}
+
+/* Quiz page: Play Button */
+.btn-circle {
+    width: 120px;
+    height: 120px;
+    padding: 0px 0px;
+    border-radius: 360px;
+    border-width: 0px;
+}
+.btn-circle img {
+    width: 116px;
+    padding: 0px;
 }
 
 /* Settings page */

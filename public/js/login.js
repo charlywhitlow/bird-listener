@@ -33,7 +33,7 @@ function login(){
         }
         if (response.status === 200){
             alert('Logged in')
-            location.href='menu.html';
+            location.href='menu';
         }
     }
 }

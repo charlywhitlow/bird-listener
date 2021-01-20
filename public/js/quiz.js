@@ -29,5 +29,5 @@ function nextBird(){
 }
 function quizGallery(){
     // load quiz gallery page
-    window.location.replace("quiz-gallery.html");
+    window.location.replace("quiz-gallery");
 }

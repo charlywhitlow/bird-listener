@@ -32,7 +32,7 @@ function signup(){
         let json = await response.json();
         if (response.status === 200){
             alert('Logged in')
-            location.href='menu.html';
+            location.href='menu';
         }else{
             alert('Error, please try again');
             console.log(json);

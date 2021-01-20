@@ -24,8 +24,8 @@ app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
 
 // app routes
-app.use('/', require('./routes/pages'));
-app.use('/', require('./routes/api'));
+app.use('/', require(path.join(__dirname + '/routes/pages')));
+app.use('/', require(path.join(__dirname + '/routes/api')));
 
 // catch all other routes
 app.use((req, res, next) => {
@@ -42,8 +42,9 @@ app.use((err, req, res, next) => {
 // start server listening on port
 app.listen(PORT || 8000, () => {
   console.log(`Server started on port ${PORT || 8000}`);
-}).on('error', (error) => {
-  // print details of process running on PORT if already in use
+})
+// print details of process running on PORT if already in use
+.on('error', (error) => {
   if (error.code == "EADDRINUSE"){
     let cmd = "lsof -p $(lsof -ti :8000) | grep -E 'COMMAND|cwd'";
     exec(cmd, (err, stdout) => {

@@ -31,11 +31,16 @@ function signup(){
         // handle response
         let json = await response.json();
         if (response.status === 200){
-            alert('Logged in')
+            alert('Account created');
             location.href='menu';
-        }else{
-            alert('Error, please try again');
-            console.log(json);
+        }else {
+            if (response.status === 401){
+                alert(json.message);
+            }else{
+                if (json.error == 'user validation failed: email: Please enter a valid email'){
+                    alert('Please enter a valid email');
+                }
+            }
         }
     }
 }

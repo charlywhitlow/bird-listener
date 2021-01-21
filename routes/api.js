@@ -14,7 +14,7 @@ router.get('/api/status', (req, res, next) => {
 
 // check-username-available
 router.post('/api/check-username-available', asyncMiddleware( async (req, res, next) => {
-	const { username } = req.body;
+	const username = req.body.username.toLowerCase();
 	const user = await checkUsernameAvailable(username);
 	if (!user) {
 		res.status(200).json({ 
@@ -28,13 +28,13 @@ router.post('/api/check-username-available', asyncMiddleware( async (req, res, n
 	}
 }));
 async function checkUsernameAvailable(username) {
-	const user = await UserModel.findOne({ username });
+	const user = await UserModel.findOne({ username : username.toLowerCase() });
 	return user;
 }
 
 // check-email-available
 router.post('/api/check-email-available', asyncMiddleware( async (req, res, next) => {
-	const { email } = req.body;
+	const email = req.body.email.toLowerCase();
 	const user = await checkEmailAvailable(email);
 	if (!user) {
 		res.status(200).json({ 
@@ -48,13 +48,15 @@ router.post('/api/check-email-available', asyncMiddleware( async (req, res, next
 	}
 }));
 async function checkEmailAvailable(email) {
-	const user = await UserModel.findOne({ email });
+	const user = await UserModel.findOne({ email : email.toLowerCase() });
 	return user;
 }
 
 // signup
 router.post('/api/signup', asyncMiddleware( async (req, res, next) => {
-	const { username, email, password } = req.body;
+	const username = req.body.username.toLowerCase();
+	const email = req.body.email.toLowerCase();
+	const { password } = req.body;
 
 	// check username and email available
 	let email_check = await checkEmailAvailable(email);
@@ -71,8 +73,6 @@ router.post('/api/signup', asyncMiddleware( async (req, res, next) => {
 	}else {
 		// attempt create user
 		await UserModel.create({ 
-	await UserModel.create({ 
-		await UserModel.create({ 
 			username: username, 
 			email: email, 
 			password 
@@ -86,25 +86,36 @@ router.post('/api/signup', asyncMiddleware( async (req, res, next) => {
 
 // login
 router.post('/api/login', asyncMiddleware(async (req, res, next) => {
-	const { username, password } = req.body;
+	const username = req.body.username.toLowerCase();
+	const { password } = req.body;
 
-	// check username and email
+	// check given value against username and email fields
 	let user = await UserModel.findOne({ username : username });
 	if (!user) {
 		user = await UserModel.findOne({ email : username });
 	}
 	if (!user) {
-		res.status(401).json({ 'message': 'User not found' });
+		res.status(401).json({
+			'message': 'User not found' 
+		});
 		return;
 	}
 	const validate = await user.isValidPassword(password);
 	if (!validate) {
-		res.status(401).json({ 'message': 'Incorrect password' });
+		res.status(401).json({ 
+			'message': 'Incorrect password'
+		});
 		return;
 	}
 	res.status(200).json({ 
 		'status': 'ok',
-		'user' : user
+		'message': 'User logged in',
+		'user': {
+			_id: user._id, 
+			username: user.username, 
+			// email: user.email, 
+			// password: user.password
+		}
 	});
 }));
 

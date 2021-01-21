@@ -28,11 +28,11 @@ function login(){
         // handle response
         let json = await response.json();
         if (response.status === 401){
-            console.log(json.message)
             alert(json.message+', please try again');
         }
         if (response.status === 200){
             alert('Logged in')
+            // console.log(json.user)
             location.href='menu';
         }
     }

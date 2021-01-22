@@ -26,6 +26,7 @@ app.use(express.static(__dirname + '/public')); // serve static html/css/js in /
 // app routes
 app.use('/', require(path.join(__dirname + '/routes/pages')));
 app.use('/', require(path.join(__dirname + '/routes/api')));
+app.use('/', require(path.join(__dirname + '/routes/birds')));
 
 // catch all other routes
 app.use((req, res, next) => {

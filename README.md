@@ -62,3 +62,80 @@ __________________
 
         >> {"status":"ok","message":"User logged in","user":{"_id":"XXX","username":"john"}}
         >> {"message":"User not found"}
+
+
+## Birds
+
+### add a bird
+    curl -X POST \
+    http://localhost:8000/api/birds/add \
+    -H 'Content-Type: application/json' \
+    -d '{ "common_name": "Robin", "scientific_name": "Erithacus rubecula" }'
+
+```json
+{
+    "status":"ok",
+    "message":"Bird added"
+}
+```
+### get a specific bird (by common name)
+    curl -X POST \
+    http://localhost:8000/api/birds/get \
+    -H 'Content-Type: application/json' \
+    -d '{ "common_name": "Robin" }'
+
+```json
+{
+    "status":"ok",
+    "bird":{
+        "_id":"600afd62e8d87d5f17efdf7c",
+        "common_name":"Robin",
+        "scientific_name":"Erithacus rubecula",
+        "__v":0
+    }
+}
+```
+
+### get a specific bird (by scientific name)
+    curl -X POST \
+    http://localhost:8000/api/birds/get \
+    -H 'Content-Type: application/json' \
+    -d '{ "scientific_name": "Erithacus rubecula" }'
+
+```json
+{
+    "status":"ok",
+    "bird":{
+        "_id":"600afd62e8d87d5f17efdf7c",
+        "common_name":"Robin",
+        "scientific_name":"Erithacus rubecula",
+        "__v":0
+    }
+}
+```
+
+
+### get all birds
+    curl -X GET \
+    http://localhost:8000/api/birds/all \
+    -H 'Content-Type: application/json'
+
+```json
+{   
+    "status":"ok",
+    "birds":[
+        {
+            "_id":"600afd62e8d87d5f17efdf7c",
+            "common_name":"Robin",
+            "scientific_name":"Erithacus rubecula",
+            "__v":0
+        },
+        {
+            "_id":"600b03496cab9f66ff80ef47",
+            "common_name":"Blue tit",
+            "scientific_name":"Cyanistes caeruleus",
+            "__v":0
+        }
+    ]
+}
+```

@@ -2,6 +2,8 @@ const mongoose = require('mongoose')  // to connect to mongodb
 const bcrypt = require('bcrypt');  // helper library for hashing passwords
 const Schema = mongoose.Schema; // schema object provides built-in typecasting and validation
 const validator = require('validator');
+const BirdModel = require('../models/birdModel');
+const shuffleInPlace = require('fisher-yates/inplace');
 
 const UserSchema = new Schema({
   username : {
@@ -18,16 +20,20 @@ const UserSchema = new Schema({
   password : {
     type : String,
     required : true
-  }
+  },
+  birdQueue : []
 });
 
 // called before a document is saved
 UserSchema.pre('save', async function (next) {
-  const user = this;
 
   // hash password
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
+
+  // initialise bird queue
+  this.birdQueue = await this.buildQueue();
+
   next();
 });
 
@@ -36,6 +42,13 @@ UserSchema.methods.isValidPassword = async function (password) {
   const user = this;
   const compare = await bcrypt.compare(password, user.password);
   return compare;
+};
+
+// populate bird queue from db, and shuffle using fisher-yates algorithm
+UserSchema.methods.buildQueue = async function () {
+  let bird_ids = await BirdModel.find({}, {common_name:1});
+  shuffleInPlace(bird_ids);
+  return bird_ids;
 };
 
 // create and export user model

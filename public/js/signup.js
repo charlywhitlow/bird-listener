@@ -17,7 +17,7 @@ function signup(){
 
     // attempt signup
     async function signup(data){
-        const response = await fetch('/api/signup', {
+        const response = await fetch('/api/users/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

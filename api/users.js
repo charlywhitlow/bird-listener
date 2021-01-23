@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // status
-router.get('/api/status', (req, res, next) => {
+router.get('/api/users/status', (req, res, next) => {
 	res.status(200);
 	res.json({ 
 		'status' : 'ok'
@@ -13,7 +13,7 @@ router.get('/api/status', (req, res, next) => {
 });
 
 // check-username-available
-router.post('/api/check-username-available', asyncMiddleware( async (req, res, next) => {
+router.post('/api/users/check-username-available', asyncMiddleware( async (req, res, next) => {
 	const username = req.body.username.toLowerCase();
 	const user = await checkUsernameAvailable(username);
 	if (!user) {
@@ -33,7 +33,7 @@ async function checkUsernameAvailable(username) {
 }
 
 // check-email-available
-router.post('/api/check-email-available', asyncMiddleware( async (req, res, next) => {
+router.post('/api/users/check-email-available', asyncMiddleware( async (req, res, next) => {
 	const email = req.body.email.toLowerCase();
 	const user = await checkEmailAvailable(email);
 	if (!user) {
@@ -53,7 +53,7 @@ async function checkEmailAvailable(email) {
 }
 
 // signup
-router.post('/api/signup', asyncMiddleware( async (req, res, next) => {
+router.post('/api/users/signup', asyncMiddleware( async (req, res, next) => {
 	const username = req.body.username.toLowerCase();
 	const email = req.body.email.toLowerCase();
 	const { password } = req.body;
@@ -85,7 +85,7 @@ router.post('/api/signup', asyncMiddleware( async (req, res, next) => {
 }));
 
 // login
-router.post('/api/login', asyncMiddleware(async (req, res, next) => {
+router.post('/api/users/login', asyncMiddleware(async (req, res, next) => {
 	const username = req.body.username.toLowerCase();
 	const { password } = req.body;
 

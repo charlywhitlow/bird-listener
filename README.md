@@ -16,9 +16,11 @@ __________________
 ```json
 {"status":"ok"}
 ```
+
+## Users
 ### check-username-available
     curl -X POST \
-    http://localhost:8000/api/check-username-available \
+    http://localhost:8000/api/users/check-username-available \
     -H 'Content-Type: application/json' \
     -d '{ "username": "john" }'
 
@@ -30,7 +32,7 @@ __________________
 ```
 ### check-email-available
     curl -X POST \
-    http://localhost:8000/api/check-email-available \
+    http://localhost:8000/api/users/check-email-available \
     -H 'Content-Type: application/json' \
     -d '{ "email": "john@test.com" }'
 
@@ -43,7 +45,7 @@ __________________
 
 ### signup
     curl -X POST \
-    http://localhost:8000/api/signup \
+    http://localhost:8000/api/users/signup \
     -H 'Content-Type: application/json' \
     -d '{ "username": "john", "email": "john@test.com", "password": "1234" }'
 
@@ -62,7 +64,7 @@ __________________
 
 ### login (with username)
     curl -X POST \
-    http://localhost:8000/api/login \
+    http://localhost:8000/api/users/login \
     -H 'Content-Type: application/json' \
     -d '{ "username": "john", "password": "1234" }'
 
@@ -82,7 +84,7 @@ __________________
 
 ### login (with email)
     curl -X POST \
-    http://localhost:8000/api/login \
+    http://localhost:8000/api/users/login \
     -H 'Content-Type: application/json' \
     -d '{ "username": "john@test.com", "password": "1234" }'
 

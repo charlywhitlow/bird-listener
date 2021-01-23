@@ -24,9 +24,10 @@ app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
 
 // app routes
-app.use('/', require(path.join(__dirname + '/routes/pages')));
-app.use('/', require(path.join(__dirname + '/routes/api')));
-app.use('/', require(path.join(__dirname + '/routes/birds')));
+app.use('/', require(path.join(__dirname + '/api/status')));
+app.use('/', require(path.join(__dirname + '/api/pages')));
+app.use('/', require(path.join(__dirname + '/api/users')));
+app.use('/', require(path.join(__dirname + '/api/birds')));
 
 // catch all other routes
 app.use((req, res, next) => {

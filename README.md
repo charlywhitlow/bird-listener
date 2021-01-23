@@ -179,11 +179,11 @@ __________________
 }
 ```
 
-### init db from birds.json file
+### init db from birds.json file (and update user queues)
     curl -X GET \
     http://localhost:8000/api/birds/init-db \
     -H 'Content-Type: application/json'
 
 ```json
-{"status":"ok","message":"database updated"}
+{"status":"ok","message":"database and user queues updated"}
 ```

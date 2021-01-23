@@ -1,6 +1,7 @@
 const express = require('express');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
 const BirdModel = require('../models/birdModel');
+const UserModel = require('../models/userModel');
 const router = express.Router();
 const fs = require('fs');
 
@@ -54,10 +55,17 @@ router.get('/api/birds/init-db', asyncMiddleware( async (req, res, next) => {
         });
     }
 
+    // update user queues to reflect new db
+    for await (const user of UserModel.find()) {
+        let birdQueue = await user.buildQueue();
+        user.birdQueue = birdQueue;
+        await user.save();
+    }
+
     res.status(200);
 	res.json({ 
         'status' : 'ok',
-        'message' : 'database updated'
+        'message' : 'database and user queues updated'
 	});
 }));
 

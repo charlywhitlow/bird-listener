@@ -11,7 +11,9 @@ const BirdSchema = new Schema({
     type : String,
     required : true,
     unique : true
-  }
+  },
+  images : [],
+  sounds : []
 });
 
 // create and export user model

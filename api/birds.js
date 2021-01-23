@@ -2,6 +2,7 @@ const express = require('express');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
 const BirdModel = require('../models/birdModel');
 const router = express.Router();
+const fs = require('fs');
 
 
 // add a bird to database
@@ -34,5 +35,30 @@ router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
 	});
 }));
 
+// init db from json
+router.get('/api/birds/init-db', asyncMiddleware( async (req, res, next) => {
+  
+    // empty db
+    await BirdModel.deleteMany({})
+    .catch(function(err){ 
+        console.log('Problem clearing database', err);
+    });
+
+    // populate db
+    var content = await fs.readFileSync("config/data/birds.json");
+    var json = await JSON.parse(content);
+    for(let i in json) {
+        await BirdModel.create(json[i])
+        .catch(function(err){ 
+            console.log('Problem updating database', err);
+        });
+    }
+
+    res.status(200);
+	res.json({ 
+        'status' : 'ok',
+        'message' : 'database updated'
+	});
+}));
 
 module.exports = router;

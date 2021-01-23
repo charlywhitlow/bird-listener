@@ -178,3 +178,12 @@ __________________
     ]
 }
 ```
+
+### init db from birds.json file
+    curl -X GET \
+    http://localhost:8000/api/birds/init-db \
+    -H 'Content-Type: application/json'
+
+```json
+{"status":"ok","message":"database updated"}
+```

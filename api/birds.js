@@ -45,7 +45,7 @@ router.get('/api/birds/init-db', asyncMiddleware( async (req, res, next) => {
         console.log('Problem clearing database', err);
     });
 
-    // populate db
+    // populate db from json
     var content = await fs.readFileSync("config/data/birds.json");
     var json = await JSON.parse(content);
     for(let i in json) {
@@ -55,7 +55,7 @@ router.get('/api/birds/init-db', asyncMiddleware( async (req, res, next) => {
         });
     }
 
-    // update user queues to reflect new db
+    // update user queues of all users to reflect new db
     for await (const user of UserModel.find()) {
         let birdQueue = await user.buildQueue();
         user.birdQueue = birdQueue;
@@ -68,5 +68,26 @@ router.get('/api/birds/init-db', asyncMiddleware( async (req, res, next) => {
         'message' : 'database and user queues updated'
 	});
 }));
+
+// get next bird from user queue
+router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) => {
+
+    // get next bird
+    let username = req.body;
+    let user = await UserModel.findOne(username);
+    let nextBird = user.birdQueue.shift();
+
+    // return bird to back of queue
+    user.birdQueue.push(nextBird);
+    await UserModel.updateOne(username, { birdQueue: user.birdQueue });
+
+    res.status(200);
+	res.json({ 
+        'status' : 'ok',
+        'message' : 'bird retrieved and moved to back of queue',
+        'nextBird' : nextBird
+	});
+}));
+
 
 module.exports = router;

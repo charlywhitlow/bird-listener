@@ -187,3 +187,21 @@ __________________
 ```json
 {"status":"ok","message":"database and user queues updated"}
 ```
+
+### get next bird from user queue (and send to back of queue)
+    curl -X POST \
+    http://localhost:8000/api/birds/get-next-bird \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "cdog" }'
+
+
+```json
+{
+    "status":"ok",
+    "message":"bird retrieved and moved to back of queue",
+    "nextBird":{
+        "_id":"600c59a99bee2f42c54d47b8",
+        "common_name":"Robin"
+    }
+}
+```

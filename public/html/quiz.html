@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../css/main.css"/>
     <script src="../js/quiz.js"></script>
 </head>
-<body class="d-flex h-100 text-center text-white bg-dark">
-    <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">            
+<body class="d-flex h-100 text-center text-white bg-dark" onload="loadFirstBird()">
+    <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
                 <nav class="nav float-md-start">
@@ -18,30 +18,40 @@
             </div>
         </header>
         <main class="px-3">
-            <div class="quiz-question">
-                <h1 id="listen">Listen</h1>
-                <p id="play-sound-button">
-                    <button class="btn-circle" onclick="playSound()">
-                        <img src="../images/icons/play-arrow.svg" alt="Play Button">
-                    </button>
-                </p>
-                <p id="reveal-bird-button" style="display: none;">
-                    <button class="btn btn-lg border-white bg-white" onclick="revealBird()">Reveal Bird</button>
-                </p>
+            <div class="loader" id="loader">
+                <div class="d-flex justify-content-center" id="loader-animation">
+                    <div class="loader-animation"></div>
+                </div>
+                <div>
+                    <p id="loadingP">Loading...</p>
+                </div>
             </div>
-            <div id="quiz-answer" style="display: none;">
-                <h3>[Bird name]</h3>
-                <p>[info about bird]</p>
-                <p id="next-button">
-                    <button class="btn btn-md border-white bg-white" onclick="nextBird()">Next</button>
-                </p>
-            </div>
-            <div id="finish-block" style="display: none; margin-top: 40px;">
-                <h5>Quiz complete!</h5>
-                <p><button class="btn btn-md border-white bg-white" onclick="quizGallery()">Continue</button></p>
-            </div>
-            <div>
-                <h6 class="mb-0"><span id="page">1</span> of 10</h6>
+            <div id="errorMessage"></div>
+            <div class="content" id="content" style="display: none;">
+                <div class="quiz-question">
+                    <h1 id="listen">Listen</h1>
+                    <p id="play-sound-button">
+                        <button class="btn-circle" onclick="playSoundButton()">
+                            <img src="../images/icons/play-arrow.svg" alt="Play Button">
+                        </button>
+                    </p>
+                    <p id="reveal-bird-button" style="display: none;">
+                        <button class="btn btn-lg border-white bg-white" onclick="revealBirdButton()">Reveal Bird</button>
+                    </p>
+                </div>
+                <div id="quiz-answer" style="display: none;">
+                    <h3 id="bird-name">[Bird name]</h3>
+                    <p id="next-button">
+                        <button class="btn btn-md border-white bg-white" onclick="nextBirdButton()">Next</button>
+                    </p>
+                </div>
+                <div id="finish-block" style="display: none; margin-top: 40px;">
+                    <h5>Quiz complete!</h5>
+                    <p><button class="btn btn-md border-white bg-white" onclick="quizGalleryButton()">Continue</button></p>
+                </div>
+                <div>
+                    <h6 class="mb-0"><span id="page">1</span> of 10</h6>
+                </div>
             </div>
         </main>
         <footer class="mt-auto text-white-50">

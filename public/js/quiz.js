@@ -1,11 +1,41 @@
+// load first bird and show page
+async function loadFirstBird(){
+    await getNextBird().then((nextBird) => {
+        document.getElementById("bird-name").innerHTML = nextBird.common_name;
+        showPage();
+    }).catch(err => {
+        console.log('Request Failed', err);
+        showError();
+    });
+}
+function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").style.display = "block";
+}
+function showError(error) {
+    var errorP = document.createElement("P");
+    if (typeof(error)!=="undefined"){
+        errorP.innerHTML = error;
+    }else{
+        errorP.innerHTML = "Problem loading page, please try again later";
+    }
+    document.getElementById("errorMessage").appendChild(errorP);
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("content").style.display = "none";
+}
 
-function playSound(){
-    // if quiz answer not visible 
+// navigate through views
+function playSoundButton(){
+
+    // play sound
+    // 
+
+    // add 'reveal bird' button if quiz answer not visible
     if(document.getElementById("quiz-answer").style.display == "none"){
         document.getElementById("reveal-bird-button").style.display = "block";        
     }
 }
-function revealBird(){
+async function revealBirdButton(){
     document.getElementById("listen").style.display = "none";
     document.getElementById("quiz-answer").style.display = "block";
     document.getElementById("reveal-bird-button").style.display = "none";
@@ -18,7 +48,7 @@ function revealBird(){
         document.getElementById("finish-block").style.display = "block";
     }
 };
-function nextBird(){
+async function nextBirdButton(){
     document.getElementById("listen").style.display = "block";
     document.getElementById("quiz-answer").style.display = "none";
     document.getElementById("reveal-bird-button").style.display = "none";
@@ -31,8 +61,7 @@ function nextBird(){
     let nextBird = await getNextBird();
     document.getElementById("bird-name").innerHTML = nextBird.common_name;
 }
-function quizGallery(){
-    // load quiz gallery page
+async function quizGalleryButton(){
     window.location.replace("quiz-gallery");
 }
 

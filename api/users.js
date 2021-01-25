@@ -4,14 +4,6 @@ const UserModel = require('../models/userModel');
 const router = express.Router();
 
 
-// status
-router.get('/api/users/status', (req, res, next) => {
-	res.status(200);
-	res.json({ 
-		'status' : 'ok'
-	});
-});
-
 // check-username-available
 router.post('/api/users/check-username-available', asyncMiddleware( async (req, res, next) => {
 	const username = req.body.username.toLowerCase();

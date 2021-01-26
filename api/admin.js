@@ -49,6 +49,25 @@ router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, nex
     )
 }));
 
+// view current birds.json
+router.get('/api/admin/view-birds-json', asyncMiddleware( async (req, res, next) => {
+    fs.readFile('config/data/birds.json', (err, data) => {
+        if (err) {
+            res.status(404);
+            res.json({ 
+                'status' : 'error',
+                'message' : 'error reading json'
+            });
+        };
+        let birds_json = JSON.parse(data);
+        res.status(200);
+        res.json({ 
+            'status' : 'ok',
+            'birds' : birds_json
+        });
+    });
+}));
+
 // init db from json
 router.get('/api/admin/init-db', asyncMiddleware( async (req, res, next) => {
   

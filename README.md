@@ -189,6 +189,18 @@ __________________
 {"status":"ok","message":"json created"}
 ```
 
+### view birds.json file
+    curl -X GET \
+    http://localhost:8000/api/admin/view-birds-json \
+    -H 'Content-Type: application/json'
+
+```json
+{
+    "status":"ok",
+    "birds":[ <array of birds> ]
+}
+```
+
 ### init db from birds.json file (and update user queues)
     curl -X GET \
     http://localhost:8000/api/admin/init-db \

@@ -179,6 +179,16 @@ __________________
 }
 ```
 
+
+### create birds.json file from species csv
+    curl -X GET \
+    http://localhost:8000/api/admin/create-birds-json \
+    -H 'Content-Type: application/json'
+
+```json
+{"status":"ok","message":"json created"}
+```
+
 ### init db from birds.json file (and update user queues)
     curl -X GET \
     http://localhost:8000/api/admin/init-db \

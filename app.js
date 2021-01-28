@@ -29,6 +29,7 @@ app.use('/', require(path.join(__dirname + '/api/admin')));
 app.use('/', require(path.join(__dirname + '/api/pages')));
 app.use('/', require(path.join(__dirname + '/api/users')));
 app.use('/', require(path.join(__dirname + '/api/birds')));
+app.use('/', require(path.join(__dirname + '/api/xeno')));
 
 // catch all other routes
 app.use((req, res, next) => {

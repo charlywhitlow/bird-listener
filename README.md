@@ -227,3 +227,50 @@ __________________
     }
 }
 ```
+
+
+### Xeno
+### species search url (returns all uk birds for given scientific name)
+    curl -X POST \
+    http://localhost:8000/api/xeno/species-search-url \
+    -H 'Content-Type: application/json' \
+    -d '{ "scientific_name": "Erithacus rubecula" }'
+
+```json
+{
+    "status":"ok",
+    "result":{}
+}
+```
+
+    curl -X POST \
+    http://localhost:8000/api/xeno/species-search-url \
+    -H 'Content-Type: application/json' \
+    -d '{ "scientific_name": "Erithacus rubecula", "page" : 2 }'
+
+```json
+{
+    "status":"ok",
+    "result":{<array of recordings>}
+}
+```
+
+### get individual bird
+    curl -X POST \
+    http://localhost:8000/api/xeno/get-bird \
+    -H 'Content-Type: application/json' \
+    -d '{ "xeno_id": "616438" }'
+
+```json
+{
+    "status":"ok",
+    "recording-obj":{
+        "sound-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/XC616438-09Jan2021BirminghamUK.wav",
+        "sonogram-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-med.png",
+        "license-url":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "recordist":"James Ramsay",
+        "location":"Great Britain (near  Birmingham), West Midlands, England",
+        "download-link":"https://www.xeno-canto.org/616438/download",
+        "filename":"XC616438-09Jan2021BirminghamUK.wav"}
+}
+```

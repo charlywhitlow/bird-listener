@@ -161,5 +161,7 @@ __________________
 ### Bounding box covering UK and Ireland:
 * https://www.xeno-canto.org/api/2/recordings?query=box:49.718997,-11.425781,61.166617,2.065430
 * query=box:49.718997,-11.425781,61.166617,2.065430
-* Bounding fox obtained from: http://bboxfinder.com/#49.718997,-11.425781,61.166617,2.065430
-<img src="images/bounding_box_GB.png" width=500>
+* Bounding box obtained from: 
+    * http://bboxfinder.com/#49.718997,-11.425781,61.166617,2.065430
+
+        <img src="bounding_box_GB.png" width=500>

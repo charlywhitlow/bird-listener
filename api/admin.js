@@ -12,7 +12,7 @@ const unirest = require('unirest');
 router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, next) => {
 
     // get json of scientific names from NBN bird list csv
-    let csv_path = 'config/data/NBN_bird_list.csv';
+    let csv_path = 'data/NBN_bird_list.csv';
     let birds_json = csvToJson.fieldDelimiter(',').getJsonFromCsv(csv_path);        
 
     // loop through species list and populate json from NBN species lookup
@@ -24,9 +24,9 @@ router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, nex
     }
 
     // if birds.json already exists, move to archive
-    let birds_path = 'config/data/birds.json';
+    let birds_path = 'data/birds.json';
     let timestamp = await timeStamp();
-    let archive_path = 'config/data/archive/birds_'+timestamp+'.json';
+    let archive_path = 'data/archive/birds_'+timestamp+'.json';
     await archive_birds_json(birds_path, archive_path);
 
     // write json to file
@@ -51,7 +51,7 @@ router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, nex
 
 // view current birds.json
 router.get('/api/admin/view-birds-json', asyncMiddleware( async (req, res, next) => {
-    fs.readFile('config/data/birds.json', (err, data) => {
+    fs.readFile('data/birds.json', (err, data) => {
         if (err) {
             res.status(404);
             res.json({ 
@@ -78,7 +78,7 @@ router.get('/api/admin/init-db', asyncMiddleware( async (req, res, next) => {
     });
 
     // populate db from json
-    var content = await fs.readFileSync("config/data/birds.json");
+    var content = await fs.readFileSync("data/birds.json");
     var json = await JSON.parse(content);
     for(let i in json) {
         await BirdModel.create(json[i])

@@ -3,7 +3,6 @@ const asyncMiddleware = require('../middleware/asyncMiddleware');
 const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
 const router = express.Router();
-const fs = require('fs');
 
 
 // add a bird to database
@@ -35,8 +34,6 @@ router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
         'bird' : bird
 	});
 }));
-
-
 
 // get next bird from user queue
 router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) => {

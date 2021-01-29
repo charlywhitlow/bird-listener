@@ -72,6 +72,7 @@ async function buildDBFromJSON(){
         console.log('Problem clearing database');
         console.log(err);
     });
+    await BirdModel.cleanIndexes();
 
     // populate db from json
     let content = await fs.readFileSync(birdsJSON);

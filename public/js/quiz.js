@@ -1,18 +1,21 @@
 // load first bird and show page
 async function loadFirstBird(){
-    await getNextBird().then((nextBird) => {
-        document.getElementById("bird-name").innerHTML = nextBird.common_name;
-        showPage();
-    }).catch(err => {
-        console.log('Request Failed', err);
-        showError();
-    });
+    await getNextBird()
+        .then((nextBird) => {
+            updateBirdFields(nextBird);
+            showPage();
+        })
+        .catch(err => {
+            console.log('Request Failed', err);
+            showErrorPage();
+        }
+    );
 }
 function showPage() {
     document.getElementById("loader").style.display = "none";
     document.getElementById("content").style.display = "block";
 }
-function showError(error) {
+function showErrorPage(error) {
     var errorP = document.createElement("P");
     if (typeof(error)!=="undefined"){
         errorP.innerHTML = error;
@@ -24,13 +27,12 @@ function showError(error) {
     document.getElementById("content").style.display = "none";
 }
 
-// navigate through views
 function playSoundButton(){
+    // play audio, or pause if already playing
+    if (document.getElementById("player").paused) { document.getElementById("player").play();}
+    else document.getElementById("player").pause();
 
-    // play sound
-    // 
-
-    // add 'reveal bird' button if quiz answer not visible
+    // add 'reveal bird' button if quiz answer not already visible
     if(document.getElementById("quiz-answer").style.display == "none"){
         document.getElementById("reveal-bird-button").style.display = "block";        
     }
@@ -43,12 +45,12 @@ async function revealBirdButton(){
     // show 'next' button- unless moving to bird 10 (last bird)
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     if (page == 10) {
-        console.log("last bird done- show finish");
         document.getElementById("next-button").style.display = "none";
         document.getElementById("finish-block").style.display = "block";
     }
 };
 async function nextBirdButton(){
+    document.getElementById("player").pause(); // stop audio if playing
     document.getElementById("listen").style.display = "block";
     document.getElementById("quiz-answer").style.display = "none";
     document.getElementById("reveal-bird-button").style.display = "none";
@@ -57,21 +59,18 @@ async function nextBirdButton(){
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     document.getElementById("page").innerHTML = page+1;
 
-    // load next bird
+    // preload next bird
     let nextBird = await getNextBird();
-    document.getElementById("bird-name").innerHTML = nextBird.common_name;
+    updateBirdFields(nextBird);
 }
 async function quizGalleryButton(){
-    window.location.replace("quiz-gallery");
+    window.location.replace("quiz-gallery"); // navigate to gallery view
 }
 
-// api functions
 async function getNextBird(){
+    user = { username: 'cdog' }; // TEMP set manually- get user from auth
 
-    // TEMP set manually- get user from auth
-    user = { username: 'cdog' };
-
-    // get bird from queue
+    // get next bird from queue
     const response = await fetch('/api/birds/get-next-bird', {
         method: 'POST',
         headers: {
@@ -86,4 +85,14 @@ async function getNextBird(){
     // handle response
     let json = await response.json();
     return json.nextBird;
+}
+function updateBirdFields(nextBird){
+    document.getElementById("common-name").innerHTML = nextBird.common_name;
+    document.getElementById("scientific-name").innerHTML = nextBird.scientific_name;
+    document.getElementById("recordist").innerHTML = nextBird.recordist;
+    document.getElementById("cc_license_code").innerHTML = nextBird.cc_license_code;
+    document.getElementById("cc_license_code").href = nextBird.cc_license_url;
+    document.getElementById("player").setAttribute('src', nextBird.sound_url);
+    document.getElementById("xeno-url").href = 'https://www.xeno-canto.org/'+nextBird.xeno_id;
+    document.getElementById("xeno-url").innerHTML = 'XC'+nextBird.xeno_id;
 }

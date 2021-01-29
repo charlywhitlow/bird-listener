@@ -34,20 +34,29 @@
                         <button class="btn-circle" onclick="playSoundButton()">
                             <img src="../images/icons/play-arrow.svg" alt="Play Button">
                         </button>
+                        <figure>
+                            <audio id="player">
+                                <source src="" preload="auto">
+                                Your browser does not support the <code>audio</code> element.
+                            </audio>
+                        </figure>
                     </p>
                     <p id="reveal-bird-button" style="display: none;">
                         <button class="btn btn-lg border-white bg-white" onclick="revealBirdButton()">Reveal Bird</button>
                     </p>
                 </div>
                 <div id="quiz-answer" style="display: none;">
-                    <h3 id="bird-name">[Bird name]</h3>
+                    <h3 id="common-name"></h3>
+                    <h5 style="font-style: italic;">Scientific Name: <span id="scientific-name"></span></h5>                    
+                    <h6>Recordist: <span id="recordist"></span></h6>
+                    <h6>Xeno-Canto <a id="xeno-url" href="" target="_blank" rel="noopener noreferrer"></a></h6>
+                    <h6><img style="width: 20px;" src="../images/icons/cc.svg" alt="Creative Commons Icon"> <a id="cc_license_code" href="" target="_blank" rel="noopener noreferrer"></a></h6>
                     <p id="next-button">
                         <button class="btn btn-md border-white bg-white" onclick="nextBirdButton()">Next</button>
                     </p>
                 </div>
                 <div id="finish-block" style="display: none; margin-top: 40px;">
-                    <h5>Quiz complete!</h5>
-                    <p><button class="btn btn-md border-white bg-white" onclick="quizGalleryButton()">Continue</button></p>
+                    <p><button class="btn btn-md border-white bg-white" onclick="quizGalleryButton()">Review</button></p>
                 </div>
                 <div>
                     <h6 class="mb-0"><span id="page">1</span> of 10</h6>

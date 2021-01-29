@@ -68,36 +68,33 @@ async function buildDBFromJSON(){
 
     // empty db
     await BirdModel.deleteMany({})
-    .catch(function(err){ 
-        return {
-            "message": "Problem clearing database",
-            "error": err
-        }
+    .catch(function(err){
+        console.log('Problem clearing database');
+        console.log(err);
     });
 
     // populate db from json
-    var content = await fs.readFileSync("data/birds.json");
-    var json = await JSON.parse(content);
+    let content = await fs.readFileSync(birdsJSON);
+    let json = await JSON.parse(content);
     for(let i in json) {
         await BirdModel.create(json[i])
         .catch(function(err){ 
-            return {
-                "message": "Problem updating birds database",
-                "error": err
-            }
+            console.log('Problem updating birds database')
+            console.log(err)
         });
     }
 
-    // update user queues of all users to reflect new db
+    // update user queues to reflect new db
     for await (const user of UserModel.find()) {
-        let birdQueue = await user.buildQueue();
-        user.birdQueue = birdQueue;
-        await user.save()
+        let birdQueue = await user.buildQueue()
+        await UserModel.findOneAndUpdate(
+            { _id : user._id}, 
+            { birdQueue: birdQueue }, 
+            { useFindAndModify: false}
+        )
         .catch(function(err){ 
-            return {
-                "message": "Problem updating user queues",
-                "error": err
-            }
+            console.log('Problem updating user queues');
+            console.log(err);
         });
     }
     return {

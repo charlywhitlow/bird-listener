@@ -13,12 +13,21 @@ function birdURL(id){
     return 'https://www.xeno-canto.org/api/2/recordings?query=nr:'+id
 }
 
-// return bird object for given xeno_id
-async function getBird(xeno_id){
+// return bird object (all fields) for given xeno_id
+async function getSound_AllFields(xeno_id){
     let bird_url = birdURL(xeno_id);
     let bird_req = await xenoRequest(bird_url);
     bird_obj = bird_req.recordings[0];
     return bird_obj;
+}
+
+// return sound object (database fields) for given xeno_id
+async function getSound_DatabaseFields(xeno_id){
+    let bird_url = birdURL(xeno_id);
+    let bird_req = await xenoRequest(bird_url);
+    bird_obj = bird_req.recordings[0];
+    let recordings = await extractBirdObj(bird_obj)
+    return recordings;
 }
 
 // extract database fields from bird object 
@@ -62,6 +71,6 @@ async function xenoRequest(url){
 
 module.exports = {
     speciesSearchURL,
-    getBird,
-    extractBirdObj
+    getSound_AllFields,
+    getSound_DatabaseFields
 }

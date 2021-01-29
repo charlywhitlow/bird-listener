@@ -18,16 +18,17 @@ router.post('/api/xeno/species-search-url', asyncMiddleware( async (req, res, ne
     });
 }));
 
-// get individual bird
+// get individual bird by xeno id (all fields / database fields only)
 router.post('/api/xeno/get-bird', asyncMiddleware( async (req, res, next) => {
 
     let xeno_id = req.body.xeno_id;
-    let bird_obj = await xeno.getBird(xeno_id);
-    let recording_obj = xeno.extractBirdObj(bird_obj)
+    let recording_obj = (req.body.database_fields) ? 
+        await xeno.getSound_DatabaseFields(xeno_id) : 
+        await xeno.getSound_AllFields(xeno_id);
 
     res.status(200).json({ 
         'status': 'ok',
-        'recording-obj' : recording_obj
+        'recording' : recording_obj
     });
 }));
 

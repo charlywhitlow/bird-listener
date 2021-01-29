@@ -255,11 +255,56 @@ __________________
 }
 ```
 
-### get individual bird
+### get individual bird (all fields)
     curl -X POST \
     http://localhost:8000/api/xeno/get-bird \
     -H 'Content-Type: application/json' \
     -d '{ "xeno_id": "616438" }'
+
+```json
+{
+    "status":"ok",
+    "recording":{
+        "id":"616438",
+        "gen":"Erithacus",
+        "sp":"rubecula",
+        "ssp":"",
+        "en":"European Robin",
+        "rec":"James Ramsay",
+        "cnt":"United Kingdom",
+        "loc":"Great Britain (near  Birmingham), West Midlands, England",
+        "lat":null,
+        "lng":null,
+        "alt":"130",
+        "type":"uncertain",
+        "url":"//www.xeno-canto.org/616438",
+        "file":"//www.xeno-canto.org/616438/download",
+        "file-name":"XC616438-09Jan2021BirminghamUK.wav",
+        "sono":{
+            "small":"//www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-small.png",
+            "med":"//www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-med.png",
+            "large":"//www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-large.png",
+            "full":"//www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-full.png"
+        },
+        "lic":"//creativecommons.org/licenses/by-nc-sa/4.0/",
+        "q":"A",
+        "length":"0:30",
+        "time":"06:30","date":"2021-01-09",
+        "uploaded":"2021-01-21",
+        "also":[""],
+        "rmk":"The recording is as was heard except for a HPF at about 1k and a boost at 4k. \r\nThis bird sings every morning from about 5.30am at least until 7.30am.\r\nI haven't seen it - it is in trees I think around a car park.\r\nTHe weather has been wet or dry, usually frosty.",
+        "bird-seen":"no",
+        "playback-used":"no"
+        }
+    }
+
+```
+
+### get individual bird (database fields)
+    curl -X POST \
+    http://localhost:8000/api/xeno/get-bird \
+    -H 'Content-Type: application/json' \
+    -d '{ "xeno_id": "616438", "database_fields" : "true" }'
 
 ```json
 {

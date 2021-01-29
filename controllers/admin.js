@@ -1,15 +1,15 @@
 const fs = require('fs');
 const csvToJson = require('convert-csv-to-json');
-const unirest = require('unirest');
 const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
-
+const xeno = require('../controllers/xeno.js');
 const birdsJSON = 'data/birds.json';
+const birdsCSV = 'data/level1_birds.csv';
 
 
 async function getBirdsJSON(){
     return new Promise((resolve, reject) => {
-        fs.readFile('data/birds.json', (err, data) => {
+        fs.readFile(birdsJSON, (err, data) => {
             if (err) {
                 return reject({
                     "status":"error",
@@ -39,6 +39,15 @@ async function createBirdsJSON(){
 
     // create new birds.json from csv
     let birds_json = csvToJson.fieldDelimiter(',').getJsonFromCsv(birdsCSV);
+
+    // add xeno-canto sound fields
+    birds_json = await addXenoFields(birds_json);
+    if (birds_json.error) {
+        return {
+            "message": "error adding xeno fields",
+            "error": error
+        }
+    }
 
     // write updated json to file
     let written = await writeJSON(birds_json);
@@ -116,6 +125,17 @@ async function archiveBirdsJSON(){
     })
 }
 
+async function addXenoFields(birds_json){
+
+    // loop through species list and populate json with xeno-canto sound fields
+    for(let i=0; i<birds_json.length; i++){
+        let bird = await xeno.getSound_DatabaseFields(birds_json[i].xeno_id);
+        for (let [key, value] of Object.entries(bird)) {
+            birds_json[i][key] = value;
+        }
+    }
+    return birds_json;
+}
 
 async function writeJSON(bird_json){
     return new Promise((resolve, reject) => {

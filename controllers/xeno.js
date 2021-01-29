@@ -36,20 +36,28 @@ function extractBirdObj(bird_obj){
     let filename = bird_obj['file-name'];
     let download_link = "https:"+bird_obj.file;
     let license_url = "https:"+bird_obj.lic;
+    let license_code = getLicenseCode(license_url);
     let sonogram_url = "https:"+bird_obj.sono.med;
     var sound_url = sonogram_url.split("ffts")[0]+filename;
     let recordist = bird_obj.rec;
     let location = bird_obj.loc;
-
+    
     return {
-        'sound-url' : sound_url,
-        'sonogram-url' : sonogram_url,
-        'license-url' : license_url,
+        'sound_url' : sound_url,
+        'sonogram_url' : sonogram_url,
+        'cc_license_url' : license_url,
+        'cc_license_code' : license_code,
         'recordist' : recordist,
         'location' : location,
-        'download-link' : download_link,
+        'download_link' : download_link,
         'filename' : filename
     }
+}
+
+function getLicenseCode(license_url){
+    let split = license_url.split('licenses/');
+    let elements = split[1].split('/');
+    return elements[0].toUpperCase()+" "+elements[1]
 }
 
 // get request for given url

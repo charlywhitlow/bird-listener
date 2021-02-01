@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { exec } = require('child_process');
 const path = require('path');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 // setup mongo connection
 const uri = MONGO_CONNECTION_URL;
@@ -22,15 +24,27 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
+app.use(cookieParser()); // cookies will be included in request object
 
-// app routes
-app.use('/', require(path.join(__dirname + '/api/status')));
-app.use('/', require(path.join(__dirname + '/api/main')));
-app.use('/', require(path.join(__dirname + '/api/admin')));
-app.use('/', require(path.join(__dirname + '/api/users')));
-app.use('/', require(path.join(__dirname + '/api/birds')));
-app.use('/', require(path.join(__dirname + '/api/xeno')));
+// require passport auth
+require('./auth/auth');
+ 
+// public routes
+app.use('/', [
+  require(path.join(__dirname + '/api/public')),
+  require(path.join(__dirname + '/api/users'))
+]);
 
+// secure routes
+app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/login' }),
+  [
+    require(path.join(__dirname + '/api/main')),
+    require(path.join(__dirname + '/api/admin')),
+    require(path.join(__dirname + '/api/birds')),
+    require(path.join(__dirname + '/api/xeno'))
+  ]
+);
+  
 // catch all other routes
 app.use((req, res, next) => {
   res.status(404);

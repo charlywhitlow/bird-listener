@@ -1,9 +1,114 @@
 const express = require('express');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
-const UserModel = require('../models/userModel');
 const router = express.Router();
 const userController = require('../controllers/users');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
+const tokenList = {}; // temp stored locally, TODO: add to db
+const tokenExpiry = 300; // 5 mins (user token valid for 5 mins, updated by refreshToken route)
+const refreshTokenExpiry = 86400; // 1 day
+
+// signup route
+router.post('/api/users/signup', async (req, res, next) => {
+	passport.authenticate('signup', 
+	async (err, user, info) => {
+		try {
+			if (err || !user) {
+				return res.status(401).json({ 
+					"message" : info.message
+				});
+			}
+			// log user in
+			let {token, refreshToken} = await login(user, res);
+
+			return res.status(200).json({ 
+				"message" : 'signup successful',
+				token, 
+				refreshToken
+			});
+		} catch (error) {
+			return next(error);
+	  	}
+	})(req, res, next);
+});
+
+// login route
+router.post('/api/users/login', async (req, res, next) => {
+	passport.authenticate('login', 
+	async (err, user, info) => {
+		try {
+			if (err || !user) {
+				return res.status(401).json({ 
+					"message" : info.message
+				});
+			}
+			req.login(user, { session: false }, async (error) => {
+				if (error) {
+					return next(error);
+				}
+				let {token, refreshToken} = await login(user, res);
+	
+				// Send token back to the user
+				return res.status(200).json({ 
+					"message" : "ok",
+					token, 
+					refreshToken
+				});
+			});
+		} catch (error) {
+			return next(error);
+	  	}
+	})(req, res, next);
+});
+function login(user, res){
+	const body = {
+		_id: user._id,
+		email: user.email
+	};
+	const token = jwt.sign({ user: body }, 'top_secret', { expiresIn: tokenExpiry });
+	const refreshToken = jwt.sign({ user: body }, 'top_secret_refresh', { expiresIn: refreshTokenExpiry });
+
+	// store tokens in cookie
+	res.cookie('jwt', token);
+	res.cookie('refreshJwt', refreshToken);
+	res.cookie('username', user.username);
+	
+	// store tokens in memory
+	// Note: for this tutorial, we are storing these tokens in memory, but in practice 
+	// you would want to store this data in some type of persistent storage (mongodb sessions table?)
+	tokenList[refreshToken] = {
+		token,
+		refreshToken,
+		username: user.username,
+		_id: user._id
+	};
+
+	return {
+		'token' : token,
+		'refreshToken': refreshToken
+	}
+}
+
+
+
+// logout route
+router.post('/logout', (req, res) => {
+	if (req.cookies) {
+		deleteTokens(req);
+		clearAppCookies(res);
+	}
+	res.status(200).json({ message: 'logged out' });
+});
+function clearAppCookies(res){
+	res.clearCookie('refreshJwt');
+	res.clearCookie('jwt');
+	res.clearCookie('username');
+}
+function deleteTokens(req){
+	const refreshToken = req.cookies['refreshJwt'];
+	if (refreshToken in tokenList) delete tokenList[refreshToken] // TODO: db
+}
 
 // check-username-available
 router.post('/api/users/check-username-available', asyncMiddleware( async (req, res, next) => {
@@ -37,70 +142,5 @@ router.post('/api/users/check-email-available', asyncMiddleware( async (req, res
 	}
 }));
 
-// signup
-router.post('/api/users/signup', asyncMiddleware( async (req, res, next) => {
-	const username = req.body.username.toLowerCase();
-	const email = req.body.email.toLowerCase();
-	const { password } = req.body;
-
-	// check username and email available
-	let email_check = await userController.checkEmailAvailable(email);
-	let username_check = await userController.checkUsernameAvailable(username);
-	if (email_check) {
-		res.status(401).json({ 
-			'message': 'Email already registered, please login or try again'
-		});
-	}else if (username_check) {
-		res.status(401).json({ 
-			'message': 'Username taken, please try again' 
-		});
-	}else {
-		// attempt create user
-		await UserModel.create({ 
-			username: username, 
-			email: email, 
-			password 
-		});
-		res.status(200).json({ 
-			'status': 'ok', 
-			'message': 'User created' 
-		});
-	}
-}));
-
-// login
-router.post('/api/users/login', asyncMiddleware(async (req, res, next) => {
-	const username = req.body.username.toLowerCase();
-	const { password } = req.body;
-
-	// check given value against username and email fields
-	let user = await UserModel.findOne({ username : username });
-	if (!user) {
-		user = await UserModel.findOne({ email : username });
-	}
-	if (!user) {
-		res.status(401).json({
-			'message': 'User not found' 
-		});
-		return;
-	}
-	const validate = await user.isValidPassword(password);
-	if (!validate) {
-		res.status(401).json({ 
-			'message': 'Incorrect password'
-		});
-		return;
-	}
-	res.status(200).json({ 
-		'status': 'ok',
-		'message': 'User logged in',
-		'user': {
-			_id: user._id, 
-			username: user.username, 
-			// email: user.email, 
-			// password: user.password
-		}
-	});
-}));
 
 module.exports = router;

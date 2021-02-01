@@ -5,7 +5,7 @@ function login(){
     let inputPassword = document.getElementById('password').value.trim();
     if (inputUsername !== '' && inputPassword !== '') {
         login({ 
-            username: inputUsername, 
+            username: inputUsername.toLowerCase(), 
             password: inputPassword
         });
     }else{

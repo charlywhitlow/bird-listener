@@ -90,7 +90,25 @@ function login(user, res){
 	}
 }
 
+// refresh token route
+router.post('/api/users/token', (req, res) => {
+	const { username, refreshToken } = req.body;
 
+	// if token is valid, update jwt in db and cookie
+	if ((refreshToken in tokenList) && (tokenList[refreshToken].username === username)) {
+		const body = { username, _id: tokenList[refreshToken]._id };
+		const token = jwt.sign({ user: body }, 'top_secret', { expiresIn: tokenExpiry });
+		res.cookie('jwt', token);
+	  	tokenList[refreshToken].token = token;
+		res.status(200).json({ token });		
+	} else {
+		// clear cookies and return error
+		clearAppCookies(res);
+		res.status(401).json({ 
+			message: 'Unauthorized'
+		});
+	}
+});
 
 // logout route
 router.post('/logout', (req, res) => {

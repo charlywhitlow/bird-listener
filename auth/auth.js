@@ -1,3 +1,4 @@
+const { TOKEN_SECRET, REFRESH_SECRET } = require('../config/config');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const jwtStrategy = require('passport-jwt').Strategy;
@@ -77,28 +78,23 @@ passport.use('login',
 // verify token is valid
 passport.use(
     new jwtStrategy({
-        secretOrKey: 'top_secret', // used for signing the jwt that is created (TODO: move to env)
+        secretOrKey: TOKEN_SECRET, // used for signing the jwt that is created
         
         // get jwt from the request object cookie
         jwtFromRequest: function (req) {
-            // console.log('jwtFromRequest')
 
             let token = null;
             if (req && req.cookies) {
-                // console.log('req and cookies')
                 token = req.cookies['jwt'];
             }
-            // console.log('token: '+token)
             return token;
         }
     },
     // success callback
     async (token, done) => {
-        // console.log('token success callback')
         try {
             return done(null, token.user);
         } catch (error) {
-            // console.log('token callback error')
             done(error);
         }
     }

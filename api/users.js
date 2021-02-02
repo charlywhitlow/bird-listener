@@ -4,6 +4,7 @@ const router = express.Router();
 const userController = require('../controllers/users');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const { TOKEN_SECRET, REFRESH_SECRET } = require('../config/config');
 
 const tokenList = {}; // temp stored locally, TODO: add to db
 const tokenExpiry = 300; // 5 mins (user token valid for 5 mins, updated by refreshToken route)
@@ -66,8 +67,8 @@ function login(user, res){
 		_id: user._id,
 		email: user.email
 	};
-	const token = jwt.sign({ user: body }, 'top_secret', { expiresIn: tokenExpiry });
-	const refreshToken = jwt.sign({ user: body }, 'top_secret_refresh', { expiresIn: refreshTokenExpiry });
+	const token = jwt.sign({ user: body }, TOKEN_SECRET, { expiresIn: tokenExpiry });
+	const refreshToken = jwt.sign({ user: body }, REFRESH_SECRET, { expiresIn: refreshTokenExpiry });
 
 	// store tokens in cookie
 	res.cookie('jwt', token);
@@ -97,7 +98,7 @@ router.post('/api/users/token', (req, res) => {
 	// if token is valid, update jwt in db and cookie
 	if ((refreshToken in tokenList) && (tokenList[refreshToken].username === username)) {
 		const body = { username, _id: tokenList[refreshToken]._id };
-		const token = jwt.sign({ user: body }, 'top_secret', { expiresIn: tokenExpiry });
+		const token = jwt.sign({ user: body }, TOKEN_SECRET, { expiresIn: tokenExpiry });
 		res.cookie('jwt', token);
 	  	tokenList[refreshToken].token = token;
 		res.status(200).json({ token });		

@@ -43,19 +43,6 @@ header {
     margin: 20px;
 }
 
-/* Quiz page: Play Button */
-.btn-circle {
-    width: 120px;
-    height: 120px;
-    padding: 0px 0px;
-    border-radius: 360px;
-    border-width: 0px;
-}
-.btn-circle img {
-    width: 116px;
-    padding: 0px;
-}
-
 /* Settings page */
 #settings ul li {
     list-style: none;

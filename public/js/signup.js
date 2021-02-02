@@ -7,9 +7,9 @@ function signup(){
 
     if (inputEmail !== '' && inputPassword !== '' && inputUsername !== ''){
         signup({
-            username: inputUsername, 
+            username: inputUsername.toLowerCase(), 
             password: inputPassword,
-            email: inputEmail
+            email: inputEmail.toLowerCase()
         });
     }else{
         window.alert('Please complete all fields');

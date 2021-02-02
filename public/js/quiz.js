@@ -67,10 +67,26 @@ async function quizGalleryButton(){
     window.location.replace("quiz-gallery"); // navigate to gallery view
 }
 
-async function getNextBird(){
-    user = { username: 'cdog' }; // TEMP set manually- get user from auth
+// returns value of given cookie name if it exists
+function getCookie(cookie_name) {
+    var name = cookie_name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
 
-    // get next bird from queue
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+// get next bird from user queue
+async function getNextBird(){
+    user = await { username: getCookie('username') };
     const response = await fetch('/api/birds/get-next-bird', {
         method: 'POST',
         headers: {

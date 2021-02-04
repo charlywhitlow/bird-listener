@@ -32,14 +32,14 @@ require('./auth/auth');
 // public routes
 app.use('/', [
   require(path.join(__dirname + '/api/public')),
-  require(path.join(__dirname + '/api/users'))
+  require(path.join(__dirname + '/api/users')),
+  require(path.join(__dirname + '/api/admin')) // TODO: add admin-user auth
 ]);
 
 // secure routes
 app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/login' }),
   [
     require(path.join(__dirname + '/api/main')),
-    require(path.join(__dirname + '/api/admin')),
     require(path.join(__dirname + '/api/birds')),
     require(path.join(__dirname + '/api/xeno'))
   ]

@@ -2,11 +2,12 @@ const fs = require('fs');
 const csvToJson = require('convert-csv-to-json');
 const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
-const xeno = require('../controllers/xeno.js');
+const xeno = require('./xeno-canto.js');
 const birdsJSON = 'data/birds.json';
 const birdsCSV = 'data/level1_birds.csv';
 
 
+// return existing birds.json
 async function getBirdsJSON(){
     return new Promise((resolve, reject) => {
         fs.readFile(birdsJSON, (err, data) => {
@@ -26,6 +27,7 @@ async function getBirdsJSON(){
     })
 }
 
+// create backup of existing birds.json, and create new bird.json from csv
 async function createBirdsJSON(){
 
     // archive existing birds.json

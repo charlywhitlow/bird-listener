@@ -15,7 +15,7 @@ router.post('/api/birds/add', asyncMiddleware( async (req, res, next) => {
     });
 }));
 
-// get all birds
+// get all birds from db
 router.get('/api/birds/all', asyncMiddleware( async (req, res, next) => {
 	const birds = await BirdModel.find({});
     res.status(200);
@@ -25,7 +25,7 @@ router.get('/api/birds/all', asyncMiddleware( async (req, res, next) => {
 	});
 }));
 
-// get specific bird
+// get specific bird from db
 router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
     const bird = await BirdModel.findOne(req.body);
 	res.status(200);

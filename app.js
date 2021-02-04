@@ -41,7 +41,7 @@ app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/
   [
     require(path.join(__dirname + '/api/main')),
     require(path.join(__dirname + '/api/birds')),
-    require(path.join(__dirname + '/api/xeno'))
+    require(path.join(__dirname + '/api/xeno-canto'))
   ]
 );
   

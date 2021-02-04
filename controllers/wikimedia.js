@@ -1,4 +1,6 @@
 const unirest = require('unirest');
+const apiRequest = require('./apiRequest.js');
+
 
 // get required fields for given wikimedia info page url
 async function getImageInfo(image_url){
@@ -8,7 +10,7 @@ async function getImageInfo(image_url){
         getFilenameFromURL(image_url) + 
         "&format=json"
 
-    let response = await wikimediaRequest(query_url);
+    let response = await apiRequest.getRequest(query_url);
     
     let page_key = Object.keys(response.query.pages)[0];
     let selectedFields = getSelectedFields(response.query.pages[page_key].imageinfo[0].extmetadata);
@@ -31,22 +33,7 @@ function getFilenameFromURL(url){
     let filename = split2[1];
     return filename;
 }
-// handle api request
-async function wikimediaRequest(url){
-    return new Promise((resolve, reject) => {
-        unirest.get(url)
-        .headers({
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json'
-        })
-        .end(function (response) {
-            if (response.error) {
-                return reject(response.error)
-            }
-            return resolve(response.body);
-        });
-    })
-}
+
 
 module.exports = getImageInfo;
 

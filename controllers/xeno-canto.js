@@ -1,4 +1,6 @@
 const unirest = require('unirest');
+const apiRequest = require('./apiRequest.js');
+
 
 // returns search url for all uk recordings of given bird
 function speciesSearchURL(scientific_name, page=null){
@@ -16,7 +18,7 @@ function birdURL(id){
 // return bird object (all fields) for given xeno_id
 async function getSound_AllFields(xeno_id){
     let bird_url = birdURL(xeno_id);
-    let bird_req = await xenoRequest(bird_url);
+    let bird_req = await apiRequest.getRequest(bird_url);
     bird_obj = bird_req.recordings[0];
     return bird_obj;
 }
@@ -24,7 +26,7 @@ async function getSound_AllFields(xeno_id){
 // return sound object (database fields) for given xeno_id
 async function getSound_DatabaseFields(xeno_id){
     let bird_url = birdURL(xeno_id);
-    let bird_req = await xenoRequest(bird_url);
+    let bird_req = await apiRequest.getRequest(bird_url);
     bird_obj = bird_req.recordings[0];
     let recordings = await extractBirdObj(bird_obj)
     return recordings;
@@ -60,22 +62,6 @@ function getLicenseCode(license_url){
     return elements[0].toUpperCase()+" "+elements[1]
 }
 
-// get request for given url
-async function xenoRequest(url){
-    return new Promise((resolve, reject) => {
-        unirest.get(url)
-        .headers({
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json'
-        })
-        .end(function (response) {
-            if (response.error) {
-                return reject(response.error)
-            }
-            return resolve(response.body);
-        });
-    })
-}
 
 module.exports = {
     speciesSearchURL,

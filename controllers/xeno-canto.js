@@ -1,6 +1,44 @@
-const unirest = require('unirest');
-const apiRequest = require('./apiRequest.js');
+const getRequest = require('./apiRequest.js');
 
+
+// return recording object (all fields) for given xeno_id
+async function getRecordingInfoAllFields(xeno_id){
+    let bird_url = birdURL(xeno_id);
+    let bird_req = await getRequest(bird_url);
+    bird_obj = bird_req.recordings[0];
+    return bird_obj;
+}
+
+// return sound object (database fields) for given xeno_id
+async function getRecordingInfo(xeno_id){
+    let bird_url = birdURL(xeno_id);
+    let bird_req = await getRequest(bird_url);
+    bird_obj = bird_req.recordings[0];
+    let recordings = await extractBirdObj(bird_obj)
+    return recordings;
+}
+
+// extract database fields from bird object 
+function extractBirdObj(bird_obj){
+
+    let filename = bird_obj['file-name'];
+    let license_url = "https:"+bird_obj.lic;
+    let license_code = getLicenseCode(license_url);
+    let sonogram_url = "https:"+bird_obj.sono.med;
+    var sound_url = sonogram_url.split("ffts")[0]+filename;
+    let recordist = bird_obj.rec;
+    // let download_link = "https:"+bird_obj.file;
+    
+    return {
+        'sound_url' : sound_url,
+        'sound_sonogram_url' : sonogram_url,
+        'sound_license_url' : license_url,
+        'sound_license_code' : license_code,
+        'sound_recordist' : recordist
+        // 'sound_filename' : filename
+        // 'sound_download_link' : download_link
+    }
+}
 
 // returns search url for all uk recordings of given bird
 function speciesSearchURL(scientific_name, page=null){
@@ -15,47 +53,7 @@ function birdURL(id){
     return 'https://www.xeno-canto.org/api/2/recordings?query=nr:'+id
 }
 
-// return bird object (all fields) for given xeno_id
-async function getSound_AllFields(xeno_id){
-    let bird_url = birdURL(xeno_id);
-    let bird_req = await apiRequest.getRequest(bird_url);
-    bird_obj = bird_req.recordings[0];
-    return bird_obj;
-}
-
-// return sound object (database fields) for given xeno_id
-async function getSound_DatabaseFields(xeno_id){
-    let bird_url = birdURL(xeno_id);
-    let bird_req = await apiRequest.getRequest(bird_url);
-    bird_obj = bird_req.recordings[0];
-    let recordings = await extractBirdObj(bird_obj)
-    return recordings;
-}
-
-// extract database fields from bird object 
-function extractBirdObj(bird_obj){
-
-    let filename = bird_obj['file-name'];
-    let download_link = "https:"+bird_obj.file;
-    let license_url = "https:"+bird_obj.lic;
-    let license_code = getLicenseCode(license_url);
-    let sonogram_url = "https:"+bird_obj.sono.med;
-    var sound_url = sonogram_url.split("ffts")[0]+filename;
-    let recordist = bird_obj.rec;
-    let location = bird_obj.loc;
-    
-    return {
-        'sound_url' : sound_url,
-        'sonogram_url' : sonogram_url,
-        'cc_license_url' : license_url,
-        'cc_license_code' : license_code,
-        'recordist' : recordist,
-        'location' : location,
-        'download_link' : download_link,
-        'filename' : filename
-    }
-}
-
+// extracts CC license code from url
 function getLicenseCode(license_url){
     let split = license_url.split('licenses/');
     let elements = split[1].split('/');
@@ -64,7 +62,6 @@ function getLicenseCode(license_url){
 
 
 module.exports = {
-    speciesSearchURL,
-    getSound_AllFields,
-    getSound_DatabaseFields
+    getRecordingInfo,
+    getRecordingInfoAllFields
 }

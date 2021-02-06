@@ -1,34 +1,17 @@
 const fs = require('fs');
-const csvToJson = require('convert-csv-to-json');
+const csvtoJson = require('csvtojson');
 const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
 const xeno = require('./xeno-canto.js');
 const birdsJSON = 'data/birds.json';
-const birdsCSV = 'data/level1_birds.csv';
+const birdsCSV = 'data/birds.csv';
 
 
-// return existing birds.json
-async function getBirdsJSON(){
-    return new Promise((resolve, reject) => {
-        fs.readFile(birdsJSON, (err, data) => {
-            if (err) {
-                return reject({
-                    "status":"error",
-                    "error": err
-                });
-            };
-            let birds_json = JSON.parse(data);
-
-            return resolve({
-                "status": "ok",
-                "birds": birds_json
-            });
-        });
-    })
-}
-
-// create backup of existing birds.json, and create new bird.json from csv
+// 1. create bird.json from birds.csv (creates backup of existing birds.json first)
 async function createBirdsJSON(){
+
+    // load birds.csv into json
+    let birds_json = await csvtoJson().fromFile(birdsCSV);
 
     // archive existing birds.json
     let archived = await archiveBirdsJSON();
@@ -39,18 +22,21 @@ async function createBirdsJSON(){
         }
     }
 
-    // create new birds.json from csv
-    let birds_json = csvToJson.fieldDelimiter(',').getJsonFromCsv(birdsCSV);
-
-    // add xeno-canto sound fields
-    birds_json = await addXenoFields(birds_json);
-    if (birds_json.error) {
+    // write json to file
+    let written = await writeJSON(birds_json);
+    if (written.error){
         return {
-            "message": "error adding xeno fields",
+            "message": "error writing file",
             "error": error
         }
     }
+    return {
+        "status":"ok",
+        "message":"birds.json file updated"
+    }
+}
 
+// 2. populate birds.json with image/sound info from xeno-canto / wikimedia
     // write updated json to file
     let written = await writeJSON(birds_json);
     if (written.error){
@@ -65,6 +51,7 @@ async function createBirdsJSON(){
     }
 }
 
+// 3. build db from birds.json
 async function buildDBFromJSON(){
 
     // empty db
@@ -105,10 +92,31 @@ async function buildDBFromJSON(){
     }
 }
 
+// 4. return existing birds.json
+async function getBirdsJSON(){
+    return new Promise((resolve, reject) => {
+        fs.readFile(birdsJSON, (err, data) => {
+            if (err) {
+                console.log('error:')
+                console.log(err)
+                return reject({
+                    "status":"error",
+                    "error": err
+                });
+            };
+            let birds_json = JSON.parse(data);
+
+            return resolve({
+                "status": "ok",
+                "birds": birds_json
+            });
+        });
+    })
+}
 async function archiveBirdsJSON(){
 
     let timestamp = await timeStamp();
-    let archive_path = 'data/archive/birds_'+timestamp+'.json';
+    let archive_path = 'data/archive/birds_json_'+timestamp+'.json';
 
     return new Promise((resolve, reject) => {
         if (fs.existsSync(birdsJSON)) {
@@ -126,6 +134,18 @@ async function archiveBirdsJSON(){
         });
     })
 }
+async function timeStamp(){
+    let date = new Date();
+    let dateString = 
+        date.getFullYear()+"-"+ 
+        date.getMonth()+1+"-"+
+        date.getDate()+"_"+
+        date.getHours()+":"+
+        date.getMinutes()+":"+
+        date.getSeconds()
+
+    return dateString;
+}
 
 async function addXenoFields(birds_json){
 
@@ -136,12 +156,9 @@ async function addXenoFields(birds_json){
             birds_json[i][key] = value;
         }
     }
-    return birds_json;
-}
-
-async function writeJSON(bird_json){
+async function writeJSON(json, writePath=birdsJSON){
     return new Promise((resolve, reject) => {
-        fs.writeFile(birdsJSON, JSON.stringify(bird_json), 
+        fs.writeFile(writePath, JSON.stringify(json), 
             err => {
                 if (err) {
                     return reject({
@@ -158,18 +175,6 @@ async function writeJSON(bird_json){
     })
 }
 
-async function timeStamp(){
-    let date = new Date();
-    let dateString = 
-        date.getFullYear()+"-"+ 
-        date.getMonth()+1+"-"+
-        date.getDate()+"_"+
-        date.getHours()+":"+
-        date.getMinutes()+":"+
-        date.getSeconds()
-
-    return dateString;
-}
 
 module.exports = {
     getBirdsJSON,

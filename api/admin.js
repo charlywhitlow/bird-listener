@@ -24,26 +24,30 @@ router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, nex
     });
 }));
 
-// create json from csv
-router.get('/api/admin/create-birds-json', asyncMiddleware( async (req, res, next) => {
-
-    // create birds.json from csv (and backup existing file to archive dir)
-    let result = await admin.createBirdsJSON();
-    if(result.error){
-        res.status(404);
-        res.json({ 
-            'status' : 'error',
-            'message' : result.error
+// 2. Update birds.json and birds.csv with image/sound info from wikimedia/xeno-canto
+// This loads the current data/birds.json file
+// It moves the current data/birds.json file to data/archive dir
+// It uses the value in xeno_id column to extract recording info from Xeno-Canto
+// It uses the value in image_info_url column to extract image info from Wikimedia Commons
+// It writes the updated json to data/birds.json
+// It writes the updated json to data/birds.csv
+router.get('/api/admin/update-birds-json-and-csv', asyncMiddleware( async (req, res, next) => {
+        let result = await admin.updateBirdsJsonAndCsv();
+        if(result.error){
+            res.status(404);
+            res.json({
+                'status' : 'error',
+                'message' : result.error
+            });
+        }
+        res.status(200);
+        res.json({
+            'status' : 'ok',
+            'message' : result.message
         });
-    }
-    res.status(200);
-    res.json({ 
-        'status' : 'ok',
-        'message' : result.message
-    });
-}));
+    }));
 
-// init db from json
+// 3. init db from json
 router.get('/api/admin/init-db', asyncMiddleware( async (req, res, next) => {
     let result = await admin.buildDBFromJSON();
     if(result.error){

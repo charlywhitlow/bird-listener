@@ -20,7 +20,7 @@ async function getImageInfo(image_info_url){
         return getSelectedFields(imageInfo);
     }else{
         return {
-            'updateManually' : true
+            'image_update_manually' : true
         }
     }
 }

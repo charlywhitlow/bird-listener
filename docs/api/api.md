@@ -218,11 +218,30 @@ __________________
 ```
 
 ### Xeno-Canto
-### get recording info (all fields)
+### get recording info (database fields only)
     curl -X POST \
     http://localhost:8000/api/xeno-canto/get-recording-info \
     -H 'Content-Type: application/json' \
     -d '{ "xeno_id": "616438" }'
+
+```json
+{
+    "status":"ok",
+    "recording-obj":{
+        "sound-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/XC616438-09Jan2021BirminghamUK.wav",
+        "sonogram-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-med.png",
+        "license-url":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "recordist":"James Ramsay",
+        "location":"Great Britain (near  Birmingham), West Midlands, England",
+        "download-link":"https://www.xeno-canto.org/616438/download",
+        "filename":"XC616438-09Jan2021BirminghamUK.wav"}
+}
+```
+### get recording info (all fields)
+    curl -X POST \
+    http://localhost:8000/api/xeno-canto/get-recording-info \
+    -H 'Content-Type: application/json' \
+    -d '{ "xeno_id": "616438", "all_fields" : "true" }'
 
 ```json
 {
@@ -261,25 +280,6 @@ __________________
         }
     }
 
-```
-### get recording info (database fields only)
-    curl -X POST \
-    http://localhost:8000/api/xeno-canto/get-recording-info \
-    -H 'Content-Type: application/json' \
-    -d '{ "xeno_id": "616438", "database_fields" : "true" }'
-
-```json
-{
-    "status":"ok",
-    "recording-obj":{
-        "sound-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/XC616438-09Jan2021BirminghamUK.wav",
-        "sonogram-url":"https://www.xeno-canto.org/sounds/uploaded/YYFMYIKWKB/ffts/XC616438-med.png",
-        "license-url":"https://creativecommons.org/licenses/by-nc-sa/4.0/",
-        "recordist":"James Ramsay",
-        "location":"Great Britain (near  Birmingham), West Midlands, England",
-        "download-link":"https://www.xeno-canto.org/616438/download",
-        "filename":"XC616438-09Jan2021BirminghamUK.wav"}
-}
 ```
 
 ### Wikimedia (TODO)

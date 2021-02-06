@@ -5,44 +5,63 @@ A web app to learn about UK bird sounds.
 
 https://bird-listener.herokuapp.com/
 ______________________________________
-## Admin tasks
-### Initialise database
+## To initialise / update database:
 
-1. Load birds.csv to birds.json
-``` 
-    curl -X GET \
-    http://localhost:8000/api/admin/create-birds-json \
-    -H 'Content-Type: application/json'
-```
+1. ### Create birds.json from birds.csv
 
-2. Update birds.json by extracting additional fields from wikimedia / xeno-canto
-``` 
-    curl -X GET \
-    http://localhost:8000/api/admin/update-csv \
-    -H 'Content-Type: application/json'
-```
+    * This first archives existing `birds.json` to `data/archive` directory
+    * It then loads file `birds.csv` and writes contents to new `birds.json`
 
-3. Write updated birds.json file to csv
-``` 
-    TODO
-```
+    ``` 
+        curl -X GET \
+        http://localhost:8000/api/admin/create-birds-json \
+        -H 'Content-Type: application/json'
+    ```
 
-4. Update css object-position x and y coordinates
-``` 
-    TODO
-```
+2. ### Update birds.json and birds.csv with additional fields from wikimedia / xeno-canto
 
-5. Load updated birds.csv to birds.json
-``` 
-    // can we use this as is?
-    curl -X GET \
-    http://localhost:8000/api/admin/create-birds-json \
-    -H 'Content-Type: application/json'
-```
-6. Write updated birds.json file to database
+    * This loads the current `birds.json` file
+    * It uses the value in `xeno_id` column to extract information about the recording from Xeno-Canto
+    * It uses the value in `image_info_url` column to extract information about the image from Wikimedia Commons
+    * It then archives the current `birds.json` file to `data/archive`, and writes the updated json back to `birds.json`
+    * Finally it archives the current `birds.csv` file to `data/archive`, then writes the updated json to `birds.csv` for manual checking
+
+    ``` 
+        curl -X GET \
+        http://localhost:8000/api/admin/update-birds-json-and-csv \
+        -H 'Content-Type: application/json'
+    ```
+
+3. ### Manual checking
+
+    * The programmatically pulled additional fields in `birds.csv` may have some problems which require manual checking, in particular:
+
+        * Look in `image_update_manually` column for any rows with a 'true' need to be updated manually
+
+        * Check `image_author` against `image_author_raw` to check an appropriate value has been extracted
+
+        * Check values in other image and sounds columns look sensible
+
+4. ### Write updated birds.json file to database
+
+    * When the manual checks are complete, we can run the `init-db` function
+    * This first loads the updated `birds.csv` and uses it to update `birds.json` 
+    * It then uses the updated `birds.json` file to build the database
+
 ``` 
     curl -X GET \
     http://localhost:8000/api/admin/init-db \
     -H 'Content-Type: application/json'
 ```
+______________________________________
+
+## To view current birds.json:
+
+* This loads and returns the current `birds.json`
+
+    ``` 
+        curl -X GET \
+        http://localhost:8000/api/admin/view-birds-json \
+        -H 'Content-Type: application/json'
+    ```
 ______________________________________

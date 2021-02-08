@@ -35,13 +35,16 @@ function getArchivePath(filePath){
 function timeStamp(){
     let date = new Date();
     let dateString = 
-        date.getFullYear()+"-"+ 
-        date.getMonth()+1+"-"+
-        date.getDate()+"_"+
-        date.getHours()+":"+
-        date.getMinutes()+":"+
-        date.getSeconds()
+        date.getFullYear() +"-"+ 
+        zeroPad(date.getMonth()+1, 2) +"-"+
+        zeroPad(date.getDate(), 2) +"_"+
+        zeroPad(date.getHours(), 2) +":"+
+        zeroPad(date.getMinutes(), 2) +":"+
+        zeroPad(date.getSeconds(), 2)
     return dateString;
+}
+function zeroPad(num, targetLength){
+    return num.toString().padStart(targetLength, 0);
 }
 
 // write files

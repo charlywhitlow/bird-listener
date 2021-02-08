@@ -71,7 +71,8 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
         }
 
         // add image info
-        let image_info_url = json[i].image_info_url;
+        let image_info_url = wiki.extractMainImageInfoURL(json[i].image_info_url);
+        json[i].image_info_url = image_info_url;
         let image_info = await wiki.getImageInfo(image_info_url)
         .catch(err => {
             console.log('err getting image info '+image_info_url);

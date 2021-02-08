@@ -49,14 +49,16 @@ function getSelectedFields(imageInfo){
 }
 // get image filename from wikimedia image URL
 function getFilenameFromURL(url){
-    let split1 = url.split('#')
-    let split2 = split1[0].split('/wiki/')
-    let filename = split2[1];
-    return filename;
+    return url.split('/wiki/')[1];
+}
+// remove any #section links from imageInfoURL
+function extractMainImageInfoURL(url){
+    return url.split('#')[0];
 }
 
 
 module.exports = {
+    extractMainImageInfoURL,
     getImageInfo,
     getImageInfoAllFields
 }

@@ -124,7 +124,7 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
 }
 
 // 3. build db from birds.json
-async function buildDBFromJSON(){
+async function buildDBFromJSON(jsonFilePath=birdsJSON){
 
     // empty db
     await BirdModel.deleteMany({})
@@ -135,7 +135,7 @@ async function buildDBFromJSON(){
     await BirdModel.cleanIndexes();
 
     // populate db from json
-    let content = await fs.readFileSync(birdsJSON);
+    let content = await fs.readFileSync(jsonFilePath);
     let json = await JSON.parse(content);
     for(let i in json) {
         await BirdModel.create(json[i])
@@ -165,9 +165,9 @@ async function buildDBFromJSON(){
 }
 
 // 4. return existing birds.json
-async function getBirdsJSON(){
+async function getBirdsJSON(jsonFilePath=birdsJSON){
     return new Promise((resolve, reject) => {
-        fs.readFile(birdsJSON, (err, data) => {
+        fs.readFile(jsonFilePath, (err, data) => {
             if (err) {
                 console.log('error:')
                 console.log(err)
@@ -176,11 +176,11 @@ async function getBirdsJSON(){
                     "error": err
                 });
             };
-            let birds_json = JSON.parse(data);
+            let json = JSON.parse(data);
 
             return resolve({
                 "status": "ok",
-                "birds": birds_json
+                "birds": json
             });
         });
     })

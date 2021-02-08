@@ -1,7 +1,5 @@
 const fs = require('fs');
 const { Parser } = require('json2csv');
-const birdsJSON = 'data/birds.json';
-const birdsCSV = 'data/birds.csv';
 
 
 // archive file
@@ -47,7 +45,7 @@ function timeStamp(){
 }
 
 // write files
-async function writeCSV(json, writePath=birdsCSV){
+async function writeCSV(json, writePath){
     return new Promise((resolve, reject) => {
         
         const json2csvParser = new Parser();
@@ -69,7 +67,7 @@ async function writeCSV(json, writePath=birdsCSV){
         )
     })
 }
-async function writeJSON(json, writePath=birdsJSON){
+async function writeJSON(json, writePath){
     return new Promise((resolve, reject) => {
         fs.writeFile(writePath, JSON.stringify(json), 
             err => {

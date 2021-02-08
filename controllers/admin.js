@@ -67,7 +67,10 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
             console.log(err)
         });
         for (let [key, value] of Object.entries(recording_info)) {
-            json[i][key] = value;
+            // only write if value doesn't already exist, so doesn't overwrite manual updates
+            if(!json[i][key]){
+                json[i][key] = value;
+            }
         }
 
         // add image info
@@ -79,7 +82,10 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
             console.log(err)
         });
         for (let [key, value] of Object.entries(image_info)) {
-            json[i][key] = value;
+            // only write if value doesn't already exist, so doesn't overwrite manual updates
+            if(!json[i][key]){
+                json[i][key] = value;
+            }
         }
     }
 

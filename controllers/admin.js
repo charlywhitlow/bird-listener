@@ -11,26 +11,26 @@ const birdsCSV = 'data/birds.csv';
 
 
 // 1. create bird.json from birds.csv (creates backup of existing birds.json first)
-async function createBirdsJSON(){
+async function createBirdsJSON(csvFilePath=birdsCSV, jsonFilePath=birdsJSON){
 
     // load birds.csv into json
-    let birds_json = await csvtoJson().fromFile(birdsCSV);
+    let json = await csvtoJson().fromFile(csvFilePath);
 
-    // archive existing birds.json
-    let archived = await fileFunctions.archiveBirdsJSON;
+    // archive existing birds.json file
+    let archived = await fileFunctions.archiveFile(jsonFilePath);
     if (archived.error){
         return {
             "message": "error archiving file",
-            "error": error
+            "error": archived.error
         }
     }
 
     // write json to file
-    let written = await fileFunctions.writeJSON(birds_json);
+    let written = await fileFunctions.writeJSON(json, jsonFilePath);
     if (written.error){
         return {
-            "message": "error writing file",
-            "error": error
+            "message": "error writing json",
+            "error": written.error
         }
     }
     return {
@@ -40,10 +40,10 @@ async function createBirdsJSON(){
 }
 
 // 2. populate birds.json with image/sound info from xeno-canto / wikimedia
-async function updateBirdsJsonAndCsv(){
+async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSON){
 
     // load existing birds.json file
-    let birds_json = await getBirdsJSON()
+    let json = await getBirdsJSON()
     .then((result)=>{
         return result.birds
     })
@@ -57,53 +57,49 @@ async function updateBirdsJsonAndCsv(){
     });
 
     // add additional fields
-    for (let i=0; i<birds_json.length; i++){
+    for (let i=0; i<json.length; i++){
 
         // add recording info
-        let xeno_id = birds_json[i].xeno_id;
+        let xeno_id = json[i].xeno_id;
         let recording_info = await xeno.getRecordingInfo(xeno_id)
         .catch(err => {
             console.log('err getting recording id '+xeno_id);
             console.log(err)
         });
         for (let [key, value] of Object.entries(recording_info)) {
-            birds_json[i][key] = value;
+            json[i][key] = value;
         }
 
         // add image info
-        let image_info_url = birds_json[i].image_info_url;
+        let image_info_url = json[i].image_info_url;
         let image_info = await wiki.getImageInfo(image_info_url)
         .catch(err => {
             console.log('err getting image info '+image_info_url);
             console.log(err)
         });
         for (let [key, value] of Object.entries(image_info)) {
-            birds_json[i][key] = value;
+            json[i][key] = value;
         }
     }
 
-    // archive existing birds.json
-    let json_archived = await fileFunctions.archiveBirdsJSON(birdsJSON);
+    // archive existing birds.json, and replace with updated json
+    let json_archived = await fileFunctions.archiveFile(jsonFilePath);
     if (json_archived.error){
-        console.log('problem archiving birds.json:')
-        console.log(json_archived.error)
         return {
-            "message": "error archiving json",
+            "message": "error archiving file",
             "error": json_archived.error
         }
     }
-    // write updated json to file
-    let json_written = await fileFunctions.writeJSON(birds_json);
+    let json_written = await fileFunctions.writeJSON(json, jsonFilePath);
     if (json_written.error){
-        console.log('problem writing json:')
-        console.log(json_written.error)
         return {
             "message": "error writing json",
             "error": json_written.error
         }
     }
-    // archive existing birds.csv
-    let csv_archived = await fileFunctions.archiveBirdsCSV();
+
+    // archive existing birds.csv, and replace with updated csv
+    let csv_archived = await fileFunctions.archiveFile(csvFilePath);
     if (csv_archived.error){
         console.log('error archiving csv:')
         console.log(csv_archived.error)
@@ -112,8 +108,7 @@ async function updateBirdsJsonAndCsv(){
             "error": csv_archived.error
         }
     }
-    // write updated csv to file
-    let csv_written = await fileFunctions.writeCSV(birds_json, birdsCSV);
+    let csv_written = await fileFunctions.writeCSV(json, csvFilePath);
     if (csv_written.error){
         console.log('error writing csv:')
         console.log(csv_written.error)

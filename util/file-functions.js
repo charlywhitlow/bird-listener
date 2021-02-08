@@ -4,15 +4,12 @@ const birdsJSON = 'data/birds.json';
 const birdsCSV = 'data/birds.csv';
 
 
-// archive
-async function archiveBirdsCSV(){
-    
-    let timestamp = timeStamp();
-    let archivePath = 'data/archive/'+'birds_csv_'+timestamp+'.csv';
-
+// archive file
+async function archiveFile(filePath){
+    let archivePath = getArchivePath(filePath);
     return new Promise((resolve, reject) => {
-        if (fs.existsSync(birdsCSV)) {
-            fs.rename(birdsCSV, archivePath, function (err) {
+        if (fs.existsSync(filePath)) {
+            fs.rename(filePath, archivePath, function (err) {
                 if (err) {
                     return reject({
                         "status":"error",
@@ -20,32 +17,22 @@ async function archiveBirdsCSV(){
                     });
                 }
             })
+        }else{
+            return resolve({
+                "status": "ok",
+                "message": "file doesn't exist"
+            });    
         }
         return resolve({
             "status": "ok"
         });
     })
 }
-async function archiveBirdsJSON(){
-
-    let timestamp = await timeStamp();
-    let archive_path = 'data/archive/birds_json_'+timestamp+'.json';
-
-    return new Promise((resolve, reject) => {
-        if (fs.existsSync(birdsJSON)) {
-            fs.rename(birdsJSON, archive_path, function (err) {
-                if (err) {
-                    return reject({
-                        "status":"error",
-                        "error": err
-                    });
-                }
-            })
-        }
-        return resolve({
-            "status": "ok"
-        });
-    })
+function getArchivePath(filePath){
+    let timestamp = timeStamp();
+    let ext = filePath.split('.')[1];
+    let root = filePath.substring(0, filePath.search('data')+4)
+    return root+'/archive/birds_'+ext+'_'+timestamp+'.'+ext;
 }
 function timeStamp(){
     let date = new Date();
@@ -103,8 +90,7 @@ async function writeJSON(json, writePath=birdsJSON){
 
 
 module.exports = {
-    archiveBirdsJSON,
-    archiveBirdsCSV,
+    archiveFile,
     writeCSV,
     writeJSON
 }

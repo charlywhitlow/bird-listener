@@ -3,7 +3,7 @@ const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const jwtStrategy = require('passport-jwt').Strategy;
 const UserModel = require('../models/userModel');
-const userController = require('../controllers/users');
+const userCheck = require('../util/userCheck');
 
  
 // handle signup
@@ -20,11 +20,11 @@ passport.use('signup',
             const { password } = req.body;
 
             // email / username checks
-            let email_check = await userController.checkEmailAvailable(email);
+            let email_check = await userCheck.checkEmailAvailable(email);
             if (email_check !== null) {
                 return done(null, false, { message: 'Email already registered' });
             }
-            let username_check = await userController.checkUsernameAvailable(username);
+            let username_check = await userCheck.checkUsernameAvailable(username);
             if (username_check !== null) {
                 return done(null, false, { message: 'Username taken' });
             }

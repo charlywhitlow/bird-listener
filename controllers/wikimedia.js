@@ -8,7 +8,7 @@ async function getImageInfo(image_info_url){
 
     let query_url = "https://en.wikipedia.org/w/api.php?" + 
         "action=query&prop=imageinfo&iiprop=extmetadata&titles=" +
-        getFilenameFromURL(image_info_url) + 
+        extractFilenameFromURL(image_info_url) + 
         "&format=json"
 
     let response = await getRequest(query_url);
@@ -30,7 +30,7 @@ async function getImageInfoAllFields(image_info_url){
 
     let query_url = "https://en.wikipedia.org/w/api.php?" + 
         "action=query&prop=imageinfo&iiprop=extmetadata&titles=" +
-        getFilenameFromURL(image_info_url) + 
+        extractFilenameFromURL(image_info_url) + 
         "&format=json"
     
     let response = await getRequest(query_url);
@@ -49,7 +49,8 @@ function getSelectedFields(imageInfo){
     }
 }
 // get image filename from wikimedia image URL
-function getFilenameFromURL(url){
+function extractFilenameFromURL(url){
+    url = extractMainImageInfoURL(url);
     return url.split('/wiki/')[1];
 }
 // remove any #section links from imageInfoURL

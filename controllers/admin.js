@@ -1,10 +1,10 @@
 const fs = require('fs');
 const csvtoJson = require('csvtojson');
-const { Parser } = require('json2csv');
 const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
 const xeno = require('../controllers/xeno-canto.js');
 const wiki = require('../controllers/wikimedia.js');
+const fileFunctions = require('../util/file-functions.js');
 
 const birdsJSON = 'data/birds.json';
 const birdsCSV = 'data/birds.csv';
@@ -17,7 +17,7 @@ async function createBirdsJSON(){
     let birds_json = await csvtoJson().fromFile(birdsCSV);
 
     // archive existing birds.json
-    let archived = await archiveBirdsJSON();
+    let archived = await fileFunctions.archiveBirdsJSON;
     if (archived.error){
         return {
             "message": "error archiving file",
@@ -26,7 +26,7 @@ async function createBirdsJSON(){
     }
 
     // write json to file
-    let written = await writeJSON(birds_json);
+    let written = await fileFunctions.writeJSON(birds_json);
     if (written.error){
         return {
             "message": "error writing file",
@@ -83,7 +83,7 @@ async function updateBirdsJsonAndCsv(){
     }
 
     // archive existing birds.json
-    let json_archived = await archiveBirdsJSON();
+    let json_archived = await fileFunctions.archiveBirdsJSON(birdsJSON);
     if (json_archived.error){
         console.log('problem archiving birds.json:')
         console.log(json_archived.error)
@@ -93,7 +93,7 @@ async function updateBirdsJsonAndCsv(){
         }
     }
     // write updated json to file
-    let json_written = await writeJSON(birds_json);
+    let json_written = await fileFunctions.writeJSON(birds_json);
     if (json_written.error){
         console.log('problem writing json:')
         console.log(json_written.error)
@@ -103,7 +103,7 @@ async function updateBirdsJsonAndCsv(){
         }
     }
     // archive existing birds.csv
-    let csv_archived = await archiveBirdsCSV();
+    let csv_archived = await fileFunctions.archiveBirdsCSV();
     if (csv_archived.error){
         console.log('error archiving csv:')
         console.log(csv_archived.error)
@@ -113,7 +113,7 @@ async function updateBirdsJsonAndCsv(){
         }
     }
     // write updated csv to file
-    let csv_written = await writeCSV(birds_json);
+    let csv_written = await fileFunctions.writeCSV(birds_json, birdsCSV);
     if (csv_written.error){
         console.log('error writing csv:')
         console.log(csv_written.error)
@@ -188,104 +188,6 @@ async function getBirdsJSON(){
                 "birds": birds_json
             });
         });
-    })
-}
-
-// archive
-async function archiveBirdsCSV(){
-    
-    let timestamp = await timeStamp();
-    let archivePath = 'data/archive/'+'birds_csv_'+timestamp+'.csv';
-
-    return new Promise((resolve, reject) => {
-        if (fs.existsSync(birdsCSV)) {
-            fs.rename(birdsCSV, archivePath, function (err) {
-                if (err) {
-                    return reject({
-                        "status":"error",
-                        "error": err
-                    });
-                }
-            })
-        }
-        return resolve({
-            "status": "ok"
-        });
-    })
-}
-async function archiveBirdsJSON(){
-
-    let timestamp = await timeStamp();
-    let archive_path = 'data/archive/birds_json_'+timestamp+'.json';
-
-    return new Promise((resolve, reject) => {
-        if (fs.existsSync(birdsJSON)) {
-            fs.rename(birdsJSON, archive_path, function (err) {
-                if (err) {
-                    return reject({
-                        "status":"error",
-                        "error": err
-                    });
-                }
-            })
-        }
-        return resolve({
-            "status": "ok"
-        });
-    })
-}
-async function timeStamp(){
-    let date = new Date();
-    let dateString = 
-        date.getFullYear()+"-"+ 
-        date.getMonth()+1+"-"+
-        date.getDate()+"_"+
-        date.getHours()+":"+
-        date.getMinutes()+":"+
-        date.getSeconds()
-
-    return dateString;
-}
-
-// write files
-async function writeCSV(json, writePath=birdsCSV){
-    return new Promise((resolve, reject) => {
-        
-        const json2csvParser = new Parser();
-        const csv = json2csvParser.parse(json);    
-
-        fs.writeFile(writePath, csv,
-            err => {
-                if (err) {
-                    return reject({
-                        'status':'error',
-                        'error': err
-                    });
-                };
-                return resolve({
-                    'status': 'ok',
-                    'message': 'csv created'
-                });
-            }
-        )
-    })
-}
-async function writeJSON(json, writePath=birdsJSON){
-    return new Promise((resolve, reject) => {
-        fs.writeFile(writePath, JSON.stringify(json), 
-            err => {
-                if (err) {
-                    return reject({
-                        'status':'error',
-                        'error': err
-                    });
-                };
-                return resolve({
-                    'status': 'ok',
-                    'message': 'json created'
-                });
-            }
-        )
     })
 }
 

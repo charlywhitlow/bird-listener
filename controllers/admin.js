@@ -4,7 +4,7 @@ const BirdModel = require('../models/birdModel');
 const UserModel = require('../models/userModel');
 const xeno = require('../controllers/xeno-canto.js');
 const wiki = require('../controllers/wikimedia.js');
-const fileFunctions = require('../util/file-functions.js');
+const fileFunctions = require('../util/fileFunctions.js');
 
 const birdsJSON = 'data/birds.json';
 const birdsCSV = 'data/birds.csv';

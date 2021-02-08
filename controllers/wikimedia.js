@@ -1,5 +1,6 @@
 const HTMLParser = require('node-html-parser');
 const getRequest = require('../util/apiRequest.js');
+const puppeteer = require('puppeteer');
 
 
 // get required fields for given wikimedia info page url
@@ -55,10 +56,20 @@ function getFilenameFromURL(url){
 function extractMainImageInfoURL(url){
     return url.split('#')[0];
 }
+// get image_url from image_info_page using Puppeteer
+async function getImageURL(image_info_url) {
+    const browser = await puppeteer.launch();
+    page = await browser.newPage();
+    await page.goto(image_info_url, {waitUntil: 'load'});
+    const image_url = await page.evaluate(() => document.querySelector("#file > a").href)
+    await browser.close();
+    return image_url;
+};
 
 
 module.exports = {
     extractMainImageInfoURL,
+    getImageURL,
     getImageInfo,
     getImageInfoAllFields
 }

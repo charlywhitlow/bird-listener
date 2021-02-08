@@ -1,5 +1,5 @@
 const HTMLParser = require('node-html-parser');
-const getRequest = require('./apiRequest.js');
+const getRequest = require('../util/apiRequest.js');
 
 
 // get required fields for given wikimedia info page url

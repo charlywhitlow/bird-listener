@@ -1,4 +1,4 @@
-const getRequest = require('./apiRequest.js');
+const getRequest = require('../util/apiRequest.js');
 
 
 // return recording object (all fields) for given xeno_id

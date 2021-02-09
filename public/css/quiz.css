@@ -6,9 +6,9 @@
     margin: 0;
     border-radius: 3px;
     object-fit: cover;
-    object-position: 90% 0%; /* x,y */
+    object-position: 50% 50%; /* default middle center- updated in js */
 }
-/*  object-position:
+/*  object-position (x y):
     x = [ left | center | right  ]
         [   0  |   50%  |  100%  ]
     y = [ top  | center | bottom ] 
@@ -35,7 +35,7 @@ figure {
 }
 
 .licenseInfo, .licenseInfo a {
-    color: lightgray;
+    color: rgba(255,255,255,.5);
     font-size: small;
     margin-bottom: 20px;
     text-decoration: none;

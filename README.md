@@ -14,11 +14,11 @@ ______________________________________
 
     ``` 
         curl -X GET \
-        http://localhost:8000/api/admin/create-birds-json \
+        http://localhost:8000/api/admin/create-birds-json-from-csv \
         -H 'Content-Type: application/json'
     ```
 
-2. ### Update birds.json and birds.csv with additional fields from wikimedia / xeno-canto
+2. ### Populate birds.json and birds.csv with additional fields from wikimedia / xeno-canto
 
     * This loads the current `birds.json` file
     * It uses the value in `xeno_id` column to extract information about the recording from Xeno-Canto
@@ -28,7 +28,7 @@ ______________________________________
 
     ``` 
         curl -X GET \
-        http://localhost:8000/api/admin/update-birds-json-and-csv \
+        http://localhost:8000/api/admin/populate-birds-json-and-csv \
         -H 'Content-Type: application/json'
     ```
 
@@ -42,15 +42,16 @@ ______________________________________
 
         * Check values in other image and sounds columns look sensible
 
-4. ### Write updated birds.json file to database
+4. ### Update database from updated birds.csv file
 
-    * When the manual checks are complete, we can run the `init-db` function
-    * This first loads the updated `birds.csv` and uses it to update `birds.json` 
+    * When the manual checks are complete, we can run the `init-db-from-csv` function
+    * This first loads the updated `birds.csv` and uses it to update `birds.json`
     * It then uses the updated `birds.json` file to build the database
+    * NB- if running locally, can't run this using nodemon / devStart script as updating the json file restarts the server. Use `node app.jss` instead
 
 ``` 
     curl -X GET \
-    http://localhost:8000/api/admin/init-db \
+    http://localhost:8000/api/admin/init-db-from-csv \
     -H 'Content-Type: application/json'
 ```
 ______________________________________

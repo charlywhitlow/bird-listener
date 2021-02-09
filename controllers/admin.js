@@ -10,8 +10,8 @@ const birdsJSON = 'data/birds.json';
 const birdsCSV = 'data/birds.csv';
 
 
-// 1. create bird.json from birds.csv (creates backup of existing birds.json first)
-async function createBirdsJSON(csvFilePath=birdsCSV, jsonFilePath=birdsJSON){
+// 1. create/update bird.json from birds.csv (creates backup of existing birds.json first)
+async function createBirdsJSONFromCSV(csvFilePath=birdsCSV, jsonFilePath=birdsJSON){
 
     // load birds.csv into json
     let json = await csvtoJson().fromFile(csvFilePath);
@@ -136,7 +136,17 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
     }
 }
 
-// 3. build db from birds.json
+// 3. build db from birds.csv
+async function buildDBFromCSV(csvFilePath=birdsCSV, jsonFilePath=birdsJSON){
+    await createBirdsJSONFromCSV(csvFilePath);
+    await buildDBFromJSON(jsonFilePath);
+
+    return {
+        "status": "ok",
+        "message": "Database and user queues updated from CSV"
+    }
+}
+// build db from birds.json
 async function buildDBFromJSON(jsonFilePath=birdsJSON){
 
     // empty db
@@ -173,7 +183,7 @@ async function buildDBFromJSON(jsonFilePath=birdsJSON){
     }
     return {
         "status": "ok",
-        "message": "Database and user queues updated"
+        "message": "Database and user queues updated from JSON"
     }
 }
 
@@ -202,7 +212,7 @@ async function getBirdsJSON(jsonFilePath=birdsJSON){
 
 module.exports = {
     getBirdsJSON,
-    createBirdsJSON,
+    createBirdsJSONFromCSV,
     updateBirdsJsonAndCsv,
-    buildDBFromJSON
+    buildDBFromCSV
 }

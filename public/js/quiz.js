@@ -4,6 +4,7 @@ async function loadFirstBird(){
         .then((nextBird) => {
             updateBirdFields(nextBird);
             showPage();
+            document.getElementById("audio-player").play();
         })
         .catch(err => {
             console.log('Request Failed', err);

@@ -61,17 +61,19 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
 
         // add recording info
         let xeno_id = json[i].xeno_id;
-        let recording_info = await xeno.getRecordingInfo(xeno_id)
+        await xeno.getRecordingInfo(xeno_id)
         .catch(err => {
             console.log('err getting recording id '+xeno_id);
             console.log(err)
-        });
-        for (let [key, value] of Object.entries(recording_info)) {
-            // only write if value doesn't already exist, so doesn't overwrite manual updates
-            if(!json[i][key]){
-                json[i][key] = value;
+        })
+        .then((recording_info) => {
+            for (let [key, value] of Object.entries(recording_info)) {
+                // only update from if value doesn't exist in csv, so doesn't overwrite manual updates
+                if(!json[i][key]){
+                    json[i][key] = value;
+                }
             }
-        }
+        });
 
         // add image info
         let image_info_url = wiki.extractMainImageInfoURL(json[i].image_info_url);
@@ -82,17 +84,19 @@ async function updateBirdsJsonAndCsv(csvFilePath=birdsCSV, jsonFilePath=birdsJSO
         json[i].image_url = image_url;   
 
         // add image author and license fields
-        let image_info = await wiki.getImageInfo(image_info_url)
+        await wiki.getImageInfo(image_info_url)
         .catch(err => {
             console.log('err getting image info '+image_info_url);
             console.log(err)
-        });
-        for (let [key, value] of Object.entries(image_info)) {
-            // only write if value doesn't already exist, so doesn't overwrite manual updates
-            if(!json[i][key]){
-                json[i][key] = value;
+        })
+        .then((image_info) => {
+            for (let [key, value] of Object.entries(image_info)) {
+                // only update if value doesn't exist in csv, so doesn't overwrite manual updates
+                if(!json[i][key]){
+                    json[i][key] = value;
+                }
             }
-        }
+        });
     }
 
     // archive existing birds.json, and replace with updated json

@@ -6,20 +6,26 @@
     <title>Bird Listener</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/quiz.css"/>
     <script src="../js/quiz.js"></script>
     <script src="../js/refreshToken.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark" onload="loadFirstBird()">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
-            <div>
-                <nav class="nav float-md-start">
-                    <h4><a class="nav-link" href="menu">Menu</a></h4>
-                </nav>
-            </div>
+            <nav class="nav navbar">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <h4><a class="nav-link" href="menu">Menu</a></h4>
+                    </div>
+                    <div id="quizProgress" class="navbar-right">
+                        <h5><span id="page">1</span> of 10</h5>
+                    </div>
+                </div>
+            </nav>
         </header>
-        <main class="px-3">
-            <div class="loader" id="loader">
+        <main class="">
+            <div class="loader" id="loader" style="border: blue 2px solid;">
                 <div class="d-flex justify-content-center" id="loader-animation">
                     <div class="loader-animation"></div>
                 </div>
@@ -29,43 +35,48 @@
             </div>
             <div id="errorMessage"></div>
             <div class="content" id="content" style="display: none;">
-                <div class="quiz-question">
-                    <h1 id="listen">Listen</h1>
-                    <p id="play-sound-button">
-                        <button class="btn-circle" onclick="playSoundButton()">
-                            <img src="../images/icons/play-arrow.svg" alt="Play Button">
-                        </button>
-                        <figure>
-                            <audio id="player">
-                                <source src="" preload="auto">
-                                Your browser does not support the <code>audio</code> element.
-                            </audio>
-                        </figure>
-                    </p>
-                    <p id="reveal-bird-button" style="display: none;">
-                        <button class="btn btn-lg border-white bg-white" onclick="revealBirdButton()">Reveal Bird</button>
-                    </p>
-                </div>
-                <div id="quiz-answer" style="display: none;">
-                    <h3 id="common-name"></h3>
-                    <h5 style="font-style: italic;">Scientific Name: <span id="scientific-name"></span></h5>                    
-                    <h6>Recordist: <span id="recordist"></span></h6>
-                    <h6>Xeno-Canto <a id="xeno-url" href="" target="_blank" rel="noopener noreferrer"></a></h6>
-                    <h6><img style="width: 20px;" src="../images/icons/cc.svg" alt="Creative Commons Icon"> <a id="sound-license-code" href="" target="_blank" rel="noopener noreferrer"></a></h6>
-                    <p id="next-button">
-                        <button class="btn btn-md border-white bg-white" onclick="nextBirdButton()">Next</button>
-                    </p>
-                </div>
-                <div id="finish-block" style="display: none; margin-top: 40px;">
-                    <p><button class="btn btn-md border-white bg-white" onclick="quizGalleryButton()">Review</button></p>
-                </div>
                 <div>
-                    <h6 class="mb-0"><span id="page">1</span> of 10</h6>
+                    <h1 id="common-name" style="visibility: hidden;">Swift</h1>
+                    <h4 style="font-style: italic; visibility: hidden;"><span id="scientific-name">Apus Apus</span></h4>
+                </div>
+                <!-- image -->
+                <figure>
+                    <button id="reveal-button" onclick="revealBird()">Reveal bird</button>
+                    <img id="bird-image" src="" alt="bird image" style="display: none;">
+                </figure>
+                <figcaption id="image-license-panel" class="licenseInfo" style="visibility: hidden;">                    
+                    <a id="image-url" href="" target="_blank" rel="noopener noreferrer">
+                        Image by <span id="image-author"></span>, via Wikimedia Commons |
+                    </a>
+                    <a id="image-license" href="" target="_blank" rel="noopener noreferrer">
+                        <span id="image-license-code"></span>
+                    </a>
+                </figcaption>
+                <!-- sound -->
+                <figure>
+                    <audio id="audio-player"
+                        src="https://www.xeno-canto.org/sounds/uploaded/BPSDQEOJWG/Tornseglaresommarflock.mp3"
+                        controls controlsList="nodownload" autoplay
+                        preload="auto">
+                        Your browser does not support the <code>audio</code> element.
+                        It can be found at <a href="" target="_blank" rel="noopener noreferrer">Xeno</a>.
+                    </audio>
+                    <figcaption class="licenseInfo">
+                        <a id="sound-info" href="" target="_blank" rel="noopener noreferrer">
+                            Audio by <span id="sound-recordist"></span>, via Xeno-Canto <span id="xeno-id"></span> | 
+                        </a>
+                        <a id="sound-license" href="" target="_blank" rel="noopener noreferrer">
+                            CC <span id="sound-license-code"></span>
+                        </a>    
+                    </figcaption>
+                </figure>
+                <div id="nextButtonSection">
+                    <button id="next-button" class="btn btn-md border-white bg-white" onclick="showNextBird()" style="visibility: hidden;">Next</button>
+                    <button id="review-button" class="btn btn-md border-white bg-white" onclick="goToQuizReview()" style="display: none;">Review</button>
                 </div>
             </div>
         </main>
         <footer class="mt-auto text-white-50">
-            <!-- <p>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google" class="text-white">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon" class="text-white">www.flaticon.com</a></p> -->
             <p>Website by <a href="https://github.com/charlywhitlow/bird-listener" target="_blank" rel="noopener noreferrer">Charly Whitlow</a></p>
         </footer>
     </div>

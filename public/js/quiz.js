@@ -105,9 +105,9 @@ async function getNextBird(){
 function updateBirdFields(nextBird){
     document.getElementById("common-name").innerHTML = nextBird.common_name;
     document.getElementById("scientific-name").innerHTML = nextBird.scientific_name;
-    document.getElementById("recordist").innerHTML = nextBird.recordist;
-    document.getElementById("cc_license_code").innerHTML = nextBird.cc_license_code;
-    document.getElementById("cc_license_code").href = nextBird.cc_license_url;
+    document.getElementById("recordist").innerHTML = nextBird.sound_recordist;
+    document.getElementById("sound-license-code").innerHTML = nextBird.sound_license_code;
+    // document.getElementById("sound-license-url").href = nextBird.sound_license_url;
     document.getElementById("player").setAttribute('src', nextBird.sound_url);
     document.getElementById("xeno-url").href = 'https://www.xeno-canto.org/'+nextBird.xeno_id;
     document.getElementById("xeno-url").innerHTML = 'XC'+nextBird.xeno_id;

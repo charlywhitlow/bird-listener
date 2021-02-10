@@ -14,28 +14,34 @@
         <header class="mb-auto">
             <div>
                 <nav class="nav float-md-start">
-                    <h4><a class="nav-link" href="index">Back</a></h4>
                 </nav>
             </div>
         </header>
         <main>
+            <div>
+                <div id="app-intro">
+                    <h1>Bird Listener</h1>
+                    <p>Welcome to the Bird Listener App!</p>
+                    <p>Train your ears and test your knowledge of UK birdsong.</p>
+                </div>
+            </div>
             <div id="signup">
-                <h1>Sign up</h1>
+                <h3>Sign up</h3>
                 <div id="signup-form">
                     <div class="form-row">
-                        <input type="text" class="form-control-lg" placeholder="Username" id="username" name="username">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username">
                     </div>
                     <div class="form-row">
-                        <input type="email" class="form-control-lg" placeholder="Email" id="email" name="email">
+                        <input type="email" class="form-control" placeholder="Email" id="email" name="email">
                     </div>
                     <div class="form-row">
-                        <input type="password" class="form-control-lg" placeholder="Password" id="password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
                     </div>
                     <div class="form-row">
-                        <button type="submit" class="btn btn-lg btn-secondary" id="signupButton" name="signupButton" onclick="signup()">Go</button>
+                        <button type="submit" class="btn btn-secondary" id="signupButton" name="signupButton" onclick="signup()">Go</button>
                     </div>
                 </div>
-                <div><p>Already have an account? <a href="login">Login</a></p></div>
+                <div><p>Already have an account? <a href="index">Login</a></p></div>
             </div>
         </main>
         <footer class="mt-auto text-white-50">

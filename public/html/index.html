@@ -12,23 +12,27 @@
         <header class="mb-auto">
         </header>
         <main class="px-3">
-            <div id="menu">
+            <div>
                 <div id="app-intro">
                     <h1>Bird Listener</h1>
                     <p>Welcome to the Bird Listener App!</p>
                     <p>Train your ears and test your knowledge of UK birdsong.</p>
                 </div>
-                <ul>
-                    <li>
-                        <button class="btn-lg bg-grey" 
-                        onclick="location.href='login'">Login</button>
-                    </li>
-                    <li>
-                        <button class="btn-lg bg-grey" 
-                        onclick="location.href='signup'">Create Account</button>
-                    </li>
-                    <li>
-                </ul>
+            </div>
+            <div>
+                <h3>Login</h3>
+                <div id="login-form">
+                    <div class="form-row">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username">
+                    </div>
+                    <div class="form-row">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-secondary" id="loginButton" name="loginButton" onclick="login()">Go</button>
+                    </div>
+                </div>
+                <div><p>Don't have an account? <a href="signup">Sign up</a></p></div>
             </div>
         </main>
         <footer class="mt-auto text-white-50">

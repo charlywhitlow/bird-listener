@@ -48,7 +48,9 @@
                 </div>
                 <!-- image -->
                 <figure>
-                    <button id="reveal-button" onclick="revealBird()">Reveal bird</button>
+                    <div id="image-placeholder">
+                        <h3>?</h3>
+                    </div>
                     <img id="bird-image" src="" alt="bird image" style="display: none;">
                 </figure>
                 <figcaption id="image-license-panel" class="licenseInfo" style="visibility: hidden;">                    
@@ -74,8 +76,10 @@
                         </a>    
                     </figcaption>
                 </figure>
+                <!-- buttons -->
                 <div id="nextButtonSection">
-                    <button id="next-button" class="btn btn-md border-white bg-white" onclick="showNextBird()" style="visibility: hidden;">Next</button>
+                    <button id="reveal-button" class="btn btn-md border-white bg-white" onclick="revealBird()">Reveal bird</button>
+                    <button id="next-button" class="btn btn-md border-white bg-white" onclick="showNextBird()" style="display: none;">Next</button>
                     <button id="review-button" class="btn btn-md border-white bg-white" onclick="goToQuizReview()" style="display: none;">Review</button>
                 </div>
             </div>

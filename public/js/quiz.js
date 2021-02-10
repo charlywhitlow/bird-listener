@@ -50,13 +50,14 @@ async function revealBird(){
     document.getElementById('scientific-name').style.visibility = "visible";
     document.getElementById('image-license-panel').style.visibility = "visible";
     document.getElementById('bird-image').style.display = "";
+    document.getElementById('image-placeholder').style.display = "none";
     // show 'review' button when on last bird (bird 10)
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     if (page == 10) {
         document.getElementById("next-button").style.display = "none";
         document.getElementById("review-button").style.display = "";
     }else{
-        document.getElementById('next-button').style.visibility = "visible";    
+        document.getElementById('next-button').style.display = "";    
     }
 };
 async function showNextBird(){
@@ -66,7 +67,8 @@ async function showNextBird(){
     document.getElementById('scientific-name').style.visibility = "hidden";
     document.getElementById('image-license-panel').style.visibility = "hidden";
     document.getElementById('bird-image').style.display = "none";
-    document.getElementById("next-button").style.visibility = "hidden";
+    document.getElementById('image-placeholder').style.display = "";
+    document.getElementById("next-button").style.display = "none";
     // increment page- up to page 10 (last bird)
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     document.getElementById("page").innerHTML = page+1;

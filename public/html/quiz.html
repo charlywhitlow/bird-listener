@@ -24,8 +24,8 @@
                 </div>
             </nav>
         </header>
-        <main class="">
-            <div class="loader" id="loader" style="border: blue 2px solid;">
+        <main>
+            <div class="loader" id="loader">
                 <div class="d-flex justify-content-center" id="loader-animation">
                     <div class="loader-animation"></div>
                 </div>
@@ -34,6 +34,13 @@
                 </div>
             </div>
             <div id="errorMessage"></div>
+            <div id="welcome">
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <button onclick="startQuiz()">Start</button>
+                    </div>
+                </div>
+            </div>
             <div class="content" id="content" style="display: none;">
                 <div>
                     <h1 id="common-name" style="visibility: hidden;">Swift</h1>
@@ -54,8 +61,7 @@
                 </figcaption>
                 <!-- sound -->
                 <figure>
-                    <audio id="audio-player" src="" controls controlsList="nodownload" 
-                        autoplay="true" preload="true">
+                    <audio id="audio-player" src="" controls controlsList="nodownload" preload="true">
                         Your browser does not support the <code>audio</code> element.
                         It can be found at <a href="" target="_blank" rel="noopener noreferrer">Xeno</a>.
                     </audio>

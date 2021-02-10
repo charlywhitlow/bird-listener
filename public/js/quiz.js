@@ -3,8 +3,7 @@ async function loadFirstBird(){
     await getNextBird()
         .then((nextBird) => {
             updateBirdFields(nextBird);
-            showPage();
-            document.getElementById("audio-player").play();
+            showWelcomePage();
         })
         .catch(err => {
             console.log('Request Failed', err);
@@ -12,9 +11,15 @@ async function loadFirstBird(){
         }
     );
 }
-function showPage() {
+function showWelcomePage() {
     document.getElementById("loader").style.display = "none";
+    document.getElementById("welcome").style.display = "block";
+}
+function startQuiz(){
+    document.getElementById("welcome").style.display = "none";
     document.getElementById("content").style.display = "block";
+    document.getElementById("audio-player").autoplay = true;
+    document.getElementById("audio-player").play();
 }
 function showErrorPage(error) {
     var errorP = document.createElement("P");

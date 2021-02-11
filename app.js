@@ -37,7 +37,7 @@ app.use('/', [
 ]);
 
 // secure routes
-app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/login' }),
+app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
   [
     require(path.join(__dirname + '/api/main')),
     require(path.join(__dirname + '/api/birds')),

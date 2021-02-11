@@ -213,10 +213,34 @@ async function getBirdsJSON(jsonFilePath=birdsJSON){
     })
 }
 
+// get rows in birds.csv with blanks for css fields (i.e. that need updating)
+async function getCssFields(csvPath=birdsCSV){
+    
+    let blanks = await csvtoJson({
+        includeColumns: 
+            /(image_url|image_css_x|image_css_y|common_name|scientific_name)/
+    }).fromFile(csvPath)
+    .then(json => {
+        let blanks = [];
+        for (let i=0; i<json.length; i++){
+            if (json[i].image_css_x === "" | json[i].image_css_x === ""){
+                blanks.push(json[i])
+            }
+        }
+        return blanks;
+    });
+    return {
+        "status": "ok",
+        "message": "Database and user queues updated from JSON",
+        "blanks": blanks
+    }
+}
+
 
 module.exports = {
     getBirdsJSON,
     createBirdsJSONFromCSV,
     updateBirdsJsonAndCsv,
-    buildDBFromCSV
+    buildDBFromCSV,
+    getCssFields
 }

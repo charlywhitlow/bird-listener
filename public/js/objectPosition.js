@@ -16,6 +16,19 @@ async function getBlanks(){
     return blanks;
 }
 
+// save updates to birds.csv
+async function saveUpdatesToCSV(updates){
+    return await fetch('/api/admin/update-csv', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updates)
+    })
+    .then(response => response.json()) 
+    .catch(err => console.log(err));
+}
+
 // load first bird
 async function loadFirstBird(){
 
@@ -26,7 +39,6 @@ async function loadFirstBird(){
 
     // load first bird
     let bird = getNextBird();
-    // add to dom
     loadBird(bird, true); // set defaults
 }
 
@@ -57,10 +69,10 @@ function disableNavIfApplicable(){
     }else document.getElementById('back-button').disabled = false;
 }
 
-
-// save updated values
+// update values in blanks array
 function saveBird(){
-    console.log('save bird- TODO')
+    blanks[pos].image_css_x = document.getElementById('x').value;
+    blanks[pos].image_css_y = document.getElementById('y').value;
 }
 
 // navigation buttons
@@ -74,8 +86,27 @@ function back(){
     let bird = getPreviousBird();
     loadBird(bird, true);
 }
-function saveAndQuit(){
-    console.log('saveAndQuit- TODO');
+async function saveAndQuit(){
+    saveBird(); // save current bird
+
+    // write all updates to csv
+    let updates = []
+    blanks.forEach(bird => {
+        if(bird.image_css_x | bird.image_css_y){
+            updates.push(bird);
+        }        
+    });
+    let response = await saveUpdatesToCSV({
+        'updates' : updates
+    });
+    
+    // redirect to admin page (TBC)
+    if (response.status === 'ok'){
+        console.log('success- redirect')
+    }else{
+        console.log('error saving updates:')
+        console.log(response)
+    }
 }
 
 // load next bird on page

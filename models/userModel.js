@@ -46,16 +46,7 @@ UserSchema.methods.isValidPassword = async function (password) {
 
 // populate bird queue from db, and shuffle using fisher-yates algorithm
 UserSchema.methods.buildQueue = async function () {
-  let birds = await BirdModel.find({}, {
-    common_name: 1, 
-    scientific_name: 1,
-    sound_url: 1,
-    recordist: 1,
-    cc_license_url: 1,
-    cc_license_code: 1,
-    xeno_id: 1
-  });
-  
+  let birds = await BirdModel.find();
   shuffleInPlace(birds);
   return birds;
 };

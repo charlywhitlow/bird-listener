@@ -13,12 +13,12 @@ header {
 }
 
 /* Login / Sign up form */
-#login-form div, #login-form button, 
-#signup-form div, #signup-form button {
+#login-form div, #signup-form div {
     margin: 6px;
 }
-#login-form input, 
-#signup-form input {
+#login-form input, #signup-form input {
+    width: 280px;
+    margin: auto;
     max-width: 96%;
 }
 
@@ -35,25 +35,15 @@ header {
     margin: 5px;
 }
 
-/* Menu page: app intro */
+/* App intro paragraph */
 #app-intro p {
-    margin: 0px;
+    margin: 1px;
 }
-#app-intro, #app-intro h1 {
+#app-intro h1 {
     margin: 20px;
 }
-
-/* Quiz page: Play Button */
-.btn-circle {
-    width: 120px;
-    height: 120px;
-    padding: 0px 0px;
-    border-radius: 360px;
-    border-width: 0px;
-}
-.btn-circle img {
-    width: 116px;
-    padding: 0px;
+#app-intro{
+    margin: 50px;
 }
 
 /* Settings page */

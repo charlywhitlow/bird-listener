@@ -33,5 +33,10 @@ router.get(['/settings','/settings.html'], (req, res, next) => {
 	res.sendFile(path.join(__dirname + '/../public/html/settings.html'));
 });
 
+// object-position
+router.get(['/admin/object-position', '/object-position.html'], (req, res, next) => {
+	res.sendFile(path.join(__dirname + '/../public/html/object-position.html'));
+});
+
 
 module.exports = router;

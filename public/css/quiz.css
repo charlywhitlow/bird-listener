@@ -1,0 +1,50 @@
+/* Quiz page */
+
+#bird-image{
+    width: 240px;
+    height: 240px;
+    margin: 0;
+    border: 6px;
+    border-radius: 6px;
+    object-fit: cover;
+    object-position: 50% 50%; /* default middle center- updated in js */
+}
+#image-placeholder {
+    width: 240px;
+    height: 240px;
+    margin: auto;
+    border: 6px solid white;
+    border-radius: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#image-placeholder h3{
+    font-size: 100px;
+}
+/*  object-position (x y):
+    x = [ left | center | right  ]
+        [   0  |   50%  |  100%  ]
+    y = [ top  | center | bottom ] 
+        [   0  |   50%  |  100%  ] */
+
+figcaption {
+    margin: 0;
+    padding: 0;
+}
+figure {
+    margin: 4px;
+}
+
+.licenseInfo, .licenseInfo a {
+    color: rgba(255,255,255,.5);
+    font-size: small;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+#audio-player{
+    margin: -4px;
+}
+#nextButton{
+    margin: 20px;
+}

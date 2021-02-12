@@ -31,7 +31,7 @@ setInterval(function() {
     .then(response => {
         if (response.status===401){
             console.log('Unauthorized')
-            window.location.replace('/login');
+            window.location.replace('/index');
         }
         return response.json()
     }) 

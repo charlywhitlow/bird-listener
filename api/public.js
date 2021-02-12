@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const path = require('path');
+const router = express.Router();
 
 // status
 router.get('/api/status', (req, res, next) => {
@@ -10,14 +10,9 @@ router.get('/api/status', (req, res, next) => {
 	});
 });
 
-// homepage
+// index/login
 router.get(['/', '/index', '/index.html'], (req, res, next) => {
 	res.sendFile(path.join(__dirname + '/../public/html/index.html'));
-});
-
-// login
-router.get(['/login', '/login.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/login.html'));
 });
 
 // signup

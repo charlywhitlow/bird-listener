@@ -1,7 +1,7 @@
 const express = require('express');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
 const router = express.Router();
-const userController = require('../controllers/users');
+const userCheck = require('../util/userCheck');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { TOKEN_SECRET, REFRESH_SECRET } = require('../config/config');
@@ -132,7 +132,7 @@ function deleteTokens(req){
 // check-username-available
 router.post('/api/users/check-username-available', asyncMiddleware( async (req, res, next) => {
 	const username = req.body.username.toLowerCase();
-	const user = await userController.checkUsernameAvailable(username);
+	const user = await userCheck.checkUsernameAvailable(username);
 	if (!user) {
 		res.status(200).json({ 
 			'status': 'ok',
@@ -148,7 +148,7 @@ router.post('/api/users/check-username-available', asyncMiddleware( async (req, 
 // check-email-available
 router.post('/api/users/check-email-available', asyncMiddleware( async (req, res, next) => {
 	const email = req.body.email.toLowerCase();
-	const user = await userController.checkEmailAvailable(email);
+	const user = await userCheck.checkEmailAvailable(email);
 	if (!user) {
 		res.status(200).json({ 
 			'status': 'ok',

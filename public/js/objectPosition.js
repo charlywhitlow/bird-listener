@@ -1,6 +1,8 @@
 let blanks = [];
 let num = 0;
 let pos = -1;
+let textRed = "rgb(207, 18, 18)";
+let backgroundRed = "rgb(219, 129, 129)";
 
 // get relevant fields from birds.csv
 async function getBlanks(){
@@ -153,15 +155,18 @@ function updateX(x, setDefaults=false){
     }else if(x < 0){
         setImagePositionX(0);
         setInputValueX(0);
-        document.getElementById('warning').style.visibility = "visible";
+        document.getElementById('warning').style.color = textRed;
+        document.getElementById('x').style.backgroundColor = backgroundRed;
     }else if(x > 100){
         setImagePositionX(100);
         setInputValueX(100);
-        document.getElementById('warning').style.visibility = "visible";
+        document.getElementById('warning').style.color = textRed;
+        document.getElementById('x').style.backgroundColor = backgroundRed;
     }else{
         setImagePositionX(x);
         setInputValueX(x);
-        document.getElementById('warning').style.visibility = "hidden";
+        document.getElementById('warning').style.color = "white";
+        document.getElementById('x').style.backgroundColor = "white";
     }
 }
 function updateY(y, setDefaults=false){
@@ -171,15 +176,18 @@ function updateY(y, setDefaults=false){
     }else if(y < 0){
         setImagePositionY(0);
         setInputValueY(0);
-        document.getElementById('warning').style.visibility = "visible";
+        document.getElementById('warning').style.color = textRed;
+        document.getElementById('y').style.backgroundColor = backgroundRed;
     }else if(y > 100){
         setImagePositionY(100);
         setInputValueY(100);
-        document.getElementById('warning').style.visibility = "visible";
+        document.getElementById('warning').style.color = textRed;
+        document.getElementById('y').style.backgroundColor = backgroundRed;
     }else{
         setImagePositionY(y);
         setInputValueY(y);
-        document.getElementById('warning').style.visibility = "hidden";
+        document.getElementById('warning').style.color = "white";
+        document.getElementById('y').style.backgroundColor = "white";
     }
 }
 function setImagePositionX(x){

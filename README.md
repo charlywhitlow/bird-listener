@@ -41,6 +41,12 @@ ______________________________________
         * Check `image_author` against `image_author_raw` to check an appropriate value has been extracted
 
         * Check values in other image and sounds columns look sensible
+    
+    * Next update the css object-fit values:
+
+        * The following page can be used to loop through and update any rows of the spreadsheet which have blanks in either the image_css_x/y columns:
+
+            * http://localhost:8000/admin/object-position
 
 4. ### Update database from updated birds.csv file
 

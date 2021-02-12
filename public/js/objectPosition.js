@@ -4,7 +4,7 @@ let pos = -1;
 
 // get relevant fields from birds.csv
 async function getBlanks(){
-    let blanks = await fetch('/api/admin/get-css-fields', {
+    let blanks = await fetch('/api/admin/get-blanks', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

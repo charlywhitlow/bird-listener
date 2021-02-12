@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/main.css"/>
     <link rel="stylesheet" href="../css/quiz.css"/>
     <link rel="stylesheet" href="../css/objectPosition.css"/>
+    <script src="../js/refreshToken.js"></script>
+    <script src="../js/objectPosition.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark" onload="loadFirstBird()">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -15,7 +17,7 @@
             <nav class="nav navbar">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <h4><a class="nav-link" href="menu">Menu</a></h4>
+                        <h4><a class="nav-link" href="/menu">Menu</a></h4>
                     </div>
                     <div id="quizProgress" class="navbar-right">
                         <h5><span id="pos"></span> of <span id="num"></span></h5>
@@ -60,7 +62,6 @@
                     </div>
                     <p id="warning">Values must be within 0-100</p>
                 </div>
-                <!-- image nav buttons -->
                 <div>
                     <button id="back-button" class="btn btn-md border-white bg-white" 
                         onclick="back()">Back</button>
@@ -76,5 +77,4 @@
         </footer>
     </div>
 </body>
-<script src="../js/objectPosition.js"></script>
 </html>

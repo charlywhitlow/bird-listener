@@ -1,4 +1,6 @@
 let blanks = [];
+let num = 0;
+let pos = -1;
 
 // get relevant fields from birds.csv
 async function getBlanks(){
@@ -19,13 +21,62 @@ async function loadFirstBird(){
 
     // load blanks
     blanks = await getBlanks();
+    num = blanks.length;
+    document.getElementById("num").innerHTML = num;
 
     // load first bird
-    let bird = blanks.pop();
+    let bird = getNextBird();
     // add to dom
     loadBird(bird, true); // set defaults
 }
 
+function getNextBird(){
+    incrementPos();
+    return blanks[pos];
+}
+function getPreviousBird(){
+    decrementPos();
+    return blanks[pos];
+}
+function incrementPos(){
+    pos++;
+    document.getElementById("pos").innerHTML = pos+1;
+    disableNavIfApplicable();
+}
+function decrementPos(){
+    pos--;
+    document.getElementById("pos").innerHTML = pos+1;
+    disableNavIfApplicable();
+}
+function disableNavIfApplicable(){
+    if (pos === num-1){
+        document.getElementById('next-button').disabled = true;
+    }else document.getElementById('next-button').disabled = false;
+    if (pos === 0){
+        document.getElementById('back-button').disabled = true;
+    }else document.getElementById('back-button').disabled = false;
+}
+
+
+// save updated values
+function saveBird(){
+    console.log('save bird- TODO')
+}
+
+// navigation buttons
+function next(){
+    saveBird(); // TODO
+    let bird = getNextBird();
+    loadBird(bird, true);
+}
+function back(){
+    saveBird(); // TODO
+    let bird = getPreviousBird();
+    loadBird(bird, true);
+}
+function saveAndQuit(){
+    console.log('saveAndQuit- TODO');
+}
 
 // load next bird on page
 function loadBird(bird, setDefaults=false){
@@ -113,14 +164,4 @@ function setInputValueX(x){
 }
 function setInputValueY(y){
     document.getElementById('y').value = y;
-}
-// navigation buttons
-function back(){
-    console.log('back');
-}
-function next(){
-    console.log('next');
-}
-function saveAndQuit(){
-    console.log('saveAndQuit');
 }

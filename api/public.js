@@ -31,7 +31,7 @@ const csvtoJson = require('csvtojson');
 const birdsCSV = 'data/birds.csv';
 
 // set object-position page
-router.get(['/object-position', '/object-position.html'], (req, res, next) => {
+router.get(['/admin/object-position', '/object-position.html'], (req, res, next) => {
 	res.sendFile(path.join(__dirname + '/../public/html/object-position.html'));
 });
 

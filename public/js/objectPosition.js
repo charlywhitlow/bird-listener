@@ -1,14 +1,30 @@
+let blanks = [];
 
-// load bird.csv
+// get relevant fields from birds.csv
+async function getBlanks(){
+    let blanks = await fetch('/api/admin/get-css-fields', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(json => json.blanks)
+    .catch(err => console.log('Request Failed', err));  
+    return blanks;
+}
 
-// get image_urls and css columns, for all images with 'blank' in either css col
-// "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Apus_apus_-Barcelona%2C_Spain-8_%281%29.jpg"
-// "image_css_x": 50,
-// "image_css_y": 50
+// load first bird
+async function loadFirstBird(){
 
-// add next/back buttons to loop through images
+    // load blanks
+    blanks = await getBlanks();
 
-// add save button- to write back to csv any values which have been updated
+    // load first bird
+    let bird = blanks.pop();
+    // add to dom
+    //
+}
 
 
 // update image in page

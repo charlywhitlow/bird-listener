@@ -119,6 +119,17 @@ router.post('/api/admin/update-csv', asyncMiddleware( async (req, res, next) => 
         birds.find(bird => bird.common_name === update.common_name).image_css_y = update.image_css_y;
     });
 
+    // archive existing birds.csv
+    let archived = await fileFunctions.archiveFile(birdsCSV);
+    if (archived.error){
+        console.log('error archiving csv:')
+        console.log(archived.error)
+        return {
+            "message": "error archiving csv",
+            "error": archived.error
+        }
+    }
+   
     // write updates to csv
     let csvUpdated = await fileFunctions.writeCSV(birds, birdsCSV);
     if (csvUpdated.error){

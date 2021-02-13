@@ -1,41 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 
 
-// menu
-router.get(['/menu','/menu.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/menu.html'));
+// index / login
+router.get(['/menu','/menu.html'], function (req, res) {
+    res.render('menu', {layout: false});
 });
 
 // browse
-router.get(['/browse','/browse.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/browse.html'));
+router.get(['/browse','/browse.html'], function (req, res) {
+    res.render('browse', {layout: false});
 });
 
 // quiz
-router.get(['/quiz','/quiz.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/quiz.html'));
+router.get(['/quiz','/quiz.html'], function (req, res) {
+    res.render('quiz', {layout: false});
 });
 
 // quiz-gallery
-router.get(['/quiz-gallery','/quiz-gallery.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/quiz-gallery.html'));
+router.get(['/quiz-gallery','/quiz-gallery.html'], function (req, res) {
+    res.render('quiz-gallery', {layout: false});
 });
 
 // about
-router.get(['/about','/about.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/about.html'));
+router.get(['/about','/about.html'], function (req, res) {
+    res.render('about', {layout: false});
 });
 
 // settings
-router.get(['/settings','/settings.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/settings.html'));
+router.get(['/settings','/settings.html'], function (req, res) {
+    res.render('settings', {layout: false});
 });
 
 // object-position
-router.get(['/admin/object-position', '/object-position.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/object-position.html'));
+router.get(['/admin/object-position','/admin/object-position.html'], function (req, res) {
+    res.render('admin/object-position', {layout: false});
 });
 
 

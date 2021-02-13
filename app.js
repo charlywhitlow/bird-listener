@@ -7,6 +7,7 @@ const { exec } = require('child_process');
 const path = require('path');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const handlebars  = require('express-handlebars');
 
 // setup mongo connection
 const uri = MONGO_CONNECTION_URL;
@@ -25,6 +26,10 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
 app.use(cookieParser()); // cookies will be included in request object
+
+// view engine
+app.engine('.hbs', handlebars({extname: '.hbs'}));
+app.set('view engine', '.hbs');
 
 // require passport auth
 require('./auth/auth');

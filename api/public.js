@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 
 // status
@@ -10,14 +9,14 @@ router.get('/api/status', (req, res, next) => {
 	});
 });
 
-// index/login
-router.get(['/', '/index', '/index.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/index.html'));
+// index / login
+router.get(['/', '/index', '/index.html'], function (req, res) {
+    res.render('index', {layout: false});
 });
 
 // signup
-router.get(['/signup', '/signup.html'], (req, res, next) => {
-	res.sendFile(path.join(__dirname + '/../public/html/signup.html'));
+router.get(['/signup', '/signup.html'], function (req, res) {
+    res.render('signup', {layout: false});
 });
 
 

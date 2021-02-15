@@ -22,6 +22,8 @@
         <main class="px-3">
             <div id="browse">
                 <h1>Browse the birds</h1>
+                    <button onclick="sortAZ()">Sort A-Z</button>
+                    <button onclick="sortZA()">Sort Z-A</button>
                 <div class="container">
                     <div class="row">
                         {{#each birds as |bird|}}

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const asyncMiddleware = require('../middleware/asyncMiddleware');
+const birds = require('../controllers/birds.js');
 
 
 // index / login
@@ -8,9 +10,10 @@ router.get(['/menu','/menu.html'], function (req, res) {
 });
 
 // browse
-router.get(['/browse','/browse.html'], function (req, res) {
-    res.render('browse', {layout: false});
-});
+router.get(['/browse','/browse.html'], asyncMiddleware( async (req, res, next) => {
+	let birdsJson = await birds.getBirds();
+    res.render('browse', {layout: false, birds: birdsJson});
+}));
 
 // quiz
 router.get(['/quiz','/quiz.html'], function (req, res) {

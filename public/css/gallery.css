@@ -1,4 +1,6 @@
-
+h1{
+    margin-bottom: 1em;
+}
 .bird-panel{
     border: solid 2px rgb(68, 68, 68);
     padding: 1em;
@@ -6,24 +8,29 @@
     margin-bottom: 1em;
 
 }
- 
 .bird-image{
     width: 200px;
     height: 200px;
     max-width: 100%;
     object-fit: cover;
-    object-position: 90% 10%;
+    object-position: 50% 50%;
 }
-
-h1{
-    margin-bottom: 1em;
+.license-panel, .license-panel a{
+    font-size: x-small;   
+    color:  rgba(255, 255, 255, .4);
+}
+/* .name-panel{
+    height: 6em;
+} */
+.scientific-name{
+    font-size: small;
+    font-style: italic;
 }
 audio{
     width: 100%;
     height: 2.5em;
     margin-top: 1em;
 }
-
 footer{
     padding-top: 2.5em;
 }

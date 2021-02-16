@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const handlebars  = require('express-handlebars');
 const passport = require('passport');
 require('./auth/auth');
+const { checkAdminUser } = require('./auth/checkAdminUser');
 
 // setup mongo connection
 const uri = MONGO_CONNECTION_URL;
@@ -47,7 +48,8 @@ app.use('/',
 
 // admin routes
 app.use('/', 
-  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }), [
+  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
+  checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
     require(path.join(__dirname + '/api/admin/db')),
     require(path.join(__dirname + '/api/admin/xeno-canto'))

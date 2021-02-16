@@ -21,7 +21,11 @@ const UserSchema = new Schema({
     type : String,
     required : true
   },
-  birdQueue : []
+  birdQueue : [],
+  admin : {
+    type: Boolean,
+    default: false  // set to true manually in mongo
+  }
 });
 
 // called before a document is saved

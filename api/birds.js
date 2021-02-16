@@ -1,7 +1,7 @@
 const express = require('express');
-const asyncMiddleware = require('../middleware/asyncMiddleware');
-const BirdModel = require('../models/birdModel');
-const UserModel = require('../models/userModel');
+const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
+const BirdModel = require(__root + '/models/birdModel');
+const UserModel = require(__root + '/models/userModel');
 const router = express.Router();
 
 

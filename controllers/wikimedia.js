@@ -1,5 +1,5 @@
 const HTMLParser = require('node-html-parser');
-const getRequest = require('../util/apiRequest.js');
+const getRequest = require(__root + '/util/apiRequest.js');
 const puppeteer = require('puppeteer');
 
 

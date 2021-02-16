@@ -1,13 +1,13 @@
 const fs = require('fs');
 const csvtoJson = require('csvtojson');
-const BirdModel = require('../models/birdModel');
-const UserModel = require('../models/userModel');
-const xeno = require('../controllers/xeno-canto.js');
-const wiki = require('../controllers/wikimedia.js');
-const fileFunctions = require('../util/fileFunctions.js');
+const BirdModel = require(__root + '/models/birdModel');
+const UserModel = require(__root + '/models/userModel');
+const xeno = require(__root + '/controllers/xeno-canto.js');
+const wiki = require(__root + '/controllers/wikimedia.js');
+const fileFunctions = require(__root + '/util/fileFunctions.js');
 
-const birdsJSON = 'data/birds.json';
-const birdsCSV = 'data/birds.csv';
+const birdsJSON = __root + 'data/birds.json';
+const birdsCSV = __root + 'data/birds.csv';
 
 
 // 1. create/update bird.json from birds.csv (creates backup of existing birds.json first)

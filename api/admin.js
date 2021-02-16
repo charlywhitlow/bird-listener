@@ -1,10 +1,10 @@
 const express = require('express');
 const csvtoJson = require('csvtojson');
-const asyncMiddleware = require('../middleware/asyncMiddleware');
+const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const router = express.Router();
-const admin = require('../controllers/admin.js');
-const fileFunctions = require('../util/fileFunctions.js');
-const birdsCSV = 'data/birds.csv';
+const admin = require(__root + '/controllers/admin.js');
+const fileFunctions = require(__root + '/util/fileFunctions.js');
+const birdsCSV = __root + 'data/birds.csv';
 
 
 // 1. Create/update birds.json from birds.csv

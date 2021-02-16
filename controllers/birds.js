@@ -1,4 +1,4 @@
-const BirdModel = require('../models/birdModel');
+const BirdModel = require(__root + '/models/birdModel');
 
 async function getBirds(){
     const birds = await BirdModel.find().sort({common_name:1});

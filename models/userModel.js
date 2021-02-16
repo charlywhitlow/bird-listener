@@ -2,7 +2,7 @@ const mongoose = require('mongoose')  // to connect to mongodb
 const bcrypt = require('bcrypt');  // helper library for hashing passwords
 const Schema = mongoose.Schema; // schema object provides built-in typecasting and validation
 const validator = require('validator');
-const BirdModel = require('../models/birdModel');
+const BirdModel = require(__root + '/models/birdModel');
 const shuffleInPlace = require('fisher-yates/inplace');
 
 const UserSchema = new Schema({

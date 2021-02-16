@@ -1,10 +1,10 @@
 const express = require('express');
-const asyncMiddleware = require('../middleware/asyncMiddleware');
+const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const router = express.Router();
-const userCheck = require('../util/userCheck');
+const userCheck = require(__root + '/util/userCheck');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { TOKEN_SECRET, REFRESH_SECRET } = require('../config/config');
+const { TOKEN_SECRET, REFRESH_SECRET } = require(__root + '/config/config');
 
 const tokenList = {}; // temp stored locally, TODO: add to db
 const tokenExpiry = 300; // 5 mins (user token valid for 5 mins, updated by refreshToken route)

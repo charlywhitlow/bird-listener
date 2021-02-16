@@ -1,7 +1,7 @@
 const express = require('express');
-const asyncMiddleware = require('../middleware/asyncMiddleware');
+const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const router = express.Router();
-const xeno = require('../controllers/xeno-canto.js');
+const xeno = require(__root + '/controllers/xeno-canto.js');
 
 
 // get recording info from xeno-canto by xeno id

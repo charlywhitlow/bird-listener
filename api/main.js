@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const asyncMiddleware = require('../middleware/asyncMiddleware');
-const birds = require('../controllers/birds.js');
+const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
+const birds = require(__root + '/controllers/birds.js');
 
 
 // index / login

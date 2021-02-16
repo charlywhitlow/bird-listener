@@ -1,4 +1,4 @@
-const UserModel = require('../models/userModel');
+const UserModel = require(__root + '/models/userModel');
 
 async function checkEmailAvailable(email) {
 	const user = await UserModel.findOne({ email : email.toLowerCase() });

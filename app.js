@@ -1,4 +1,4 @@
-const { PORT, MONGO_CONNECTION_URL } = require('./config/config');
+global.__root = __dirname; // set app root var for easier dir addressing
 
 const express = require('express');
 const bodyParser = require('body-parser');

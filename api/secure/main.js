@@ -4,7 +4,7 @@ const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const birds = require(__root + '/controllers/birds.js');
 
 
-// index / login
+// menu
 router.get(['/menu','/menu.html'], function (req, res) {
     res.render('menu', {layout: false});
 });
@@ -33,11 +33,6 @@ router.get(['/about','/about.html'], function (req, res) {
 // settings
 router.get(['/settings','/settings.html'], function (req, res) {
     res.render('settings', {layout: false});
-});
-
-// object-position
-router.get(['/admin/object-position','/admin/object-position.html'], function (req, res) {
-    res.render('admin/object-position', {layout: false});
 });
 
 

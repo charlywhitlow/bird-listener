@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { exec } = require('child_process');
 const path = require('path');
-const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const handlebars  = require('express-handlebars');
+const passport = require('passport');
+require('./auth/auth');
 
 // setup mongo connection
 const uri = MONGO_CONNECTION_URL;
@@ -31,24 +32,26 @@ app.use(cookieParser()); // cookies will be included in request object
 app.engine('.hbs', handlebars({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-// require passport auth
-require('./auth/auth');
- 
 // public routes
 app.use('/', [
-  require(path.join(__dirname + '/api/public')),
-  require(path.join(__dirname + '/api/users')),
-  require(path.join(__dirname + '/api/admin')) // TODO: add admin-user auth
+    require(path.join(__dirname + '/api/public/main')),
+    require(path.join(__dirname + '/api/public/users'))
 ]);
 
-// secure routes
-app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
-  [
-    require(path.join(__dirname + '/api/main')),
-    require(path.join(__dirname + '/api/birds')),
-    require(path.join(__dirname + '/api/xeno-canto'))
-  ]
-);
+// secure user routes
+app.use('/', 
+  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }), [
+    require(path.join(__dirname + '/api/secure/main')),
+    require(path.join(__dirname + '/api/secure/birds'))
+]);
+
+// admin routes
+app.use('/', 
+  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }), [
+    require(path.join(__dirname + '/api/admin/main')),
+    require(path.join(__dirname + '/api/admin/db')),
+    require(path.join(__dirname + '/api/admin/xeno-canto'))
+]);
   
 // catch all other routes
 app.use((req, res, next) => {

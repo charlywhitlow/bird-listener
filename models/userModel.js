@@ -5,6 +5,12 @@ const validator = require('validator');
 const BirdModel = require('../models/birdModel');
 const shuffleInPlace = require('fisher-yates/inplace');
 
+// const birdsSeenSchema = new Schema({
+//   // bird id
+//   // sound id
+//   // count of times seen
+// }
+
 const UserSchema = new Schema({
   username : {
     type: String,
@@ -21,7 +27,9 @@ const UserSchema = new Schema({
     type : String,
     required : true
   },
-  birdQueue : []
+  birdsSeen : [
+    // birdsSeenSchema - for each sound in db: [birdID, soundID, count]
+  ]
 });
 
 // called before a document is saved

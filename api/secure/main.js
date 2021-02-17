@@ -6,7 +6,7 @@ const birds = require(__root + '/controllers/birds.js');
 
 // menu
 router.get(['/menu','/menu.html'], function (req, res) {
-    res.render('menu', {layout: false});
+    res.render('menu', {layout: false, admin: req.user.admin});
 });
 
 // browse

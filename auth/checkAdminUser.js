@@ -1,13 +1,5 @@
-const UserModel = require(__root + '/models/userModel');
-
-
-async function checkAdminUser(req, res, next){
-    let user = await UserModel.findOne(
-        { email: req.user.email }, 
-        { admin: 1 }
-    );
-    if (!user.admin) {
-        console.log('not authorised')
+function checkAdminUser(req, res, next){
+    if (!req.user.admin) {
         res.redirect('/menu'); // TODO: flash error
         return;
     }

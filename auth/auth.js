@@ -1,4 +1,4 @@
-const { TOKEN_SECRET, REFRESH_SECRET } = require(__root + '/config/config');
+const { TOKEN_SECRET } = require(__root + '/config/config');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const jwtStrategy = require('passport-jwt').Strategy;

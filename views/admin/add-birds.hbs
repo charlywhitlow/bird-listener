@@ -13,31 +13,25 @@
         <header class="mb-auto">
             <div>
                 <nav class="nav float-md-start">
-                    <h4><a class="nav-link" href="../menu">Menu</a></h4>
+                    <h4><a class="nav-link" href="../admin/dashboard">Back</a></h4>
                 </nav>
             </div>
         </header>
         <main class="px-3">
             <div>
                 <div id="app-intro">
-                    <h1>Bird Listener</h1>
-                    <h3>Admin Dashboard</h3>
+                    <h3>Add Birds</h3>
                 </div>
-                <div class="menu">
-                    <ul>
-                        <li>
-                            <button class="btn-lg bg-grey" 
-                            onclick="location.href='add-birds'">Add birds</button>
-                        </li>
-                        <li>
-                            <button class="btn-lg bg-grey" 
-                            onclick="location.href='add-images'">Add images</button>
-                        </li>
-                        <li>
-                            <button class="btn-lg bg-grey" 
-                            onclick="location.href='add-sounds'">Add sounds</button>
-                        </li>
-                    </ul>
+                <div class="admin-tasks">
+                    <div>
+                        <h4>1. Load CSV of bird names</h4>
+                        <p>This function expects a csv with the following headings:<br>
+                        <code>common_name, scientific_name</code></p>
+                        <form action="">
+                            <input type="file" name="add-birds" id="add-birds">
+                            <input type="button" value="Add birds" class="admin-submit">
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>

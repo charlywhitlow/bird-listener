@@ -1,4 +1,14 @@
+let feedbackDivs = {
+    'addBirds' : 'load-csv-feedback',
+    'deleteDb' : 'empty-db-feedback'
+}
+function clearFeedback(feedbackDivs){
+    for (let id in feedbackDivs) {
+        document.getElementById(feedbackDivs[id]).innerHTML = '';
+    }
+}
 function addNames(){
+    clearFeedback(feedbackDivs);
     let feedbackDiv = document.getElementById('load-csv-feedback');
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
@@ -38,5 +48,24 @@ function postCSVtoAPI(feedbackDiv){
     .catch(err => {
         console.log('Upload Failed', err);
         feedbackDiv.innerHTML = json.message;
+    });
+}
+
+function emptyDatabase(){
+    clearFeedback(feedbackDivs);
+    let feedbackDiv = document.getElementById('empty-db-feedback');
+
+    fetch('/api/admin/empty-db', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json()).then(json => {
+        feedbackDiv.innerHTML = json.message;
+    })
+    .catch(err => {
+        feedbackDiv.innerHTML = 'Problem clearing database';
+        console.log(err);
     });
 }

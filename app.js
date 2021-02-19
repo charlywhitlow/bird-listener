@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const { exec } = require('child_process');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const handlebars  = require('express-handlebars');
 const passport = require('passport');
 require('./auth/auth');
@@ -30,7 +31,9 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
 app.use(cookieParser()); // cookies will be included in request object
-
+app.use(fileUpload({
+  limits: { fileSize: 1024 * 1024 }
+}));
 // view engine
 app.engine('.hbs', handlebars({extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -53,7 +56,7 @@ app.use('/',
   passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
   checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
-    require(path.join(__dirname + '/api/admin/db')),
+    require(path.join(__dirname + '/api/admin/add-names')),
     require(path.join(__dirname + '/api/admin/xeno-canto'))
 ]);
   

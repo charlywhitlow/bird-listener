@@ -15,9 +15,9 @@ router.get('/admin/dashboard', function (req, res) {
     res.render('admin/dashboard', {layout: false});
 });
 
-// add birds
-router.get('/admin/add-birds', function (req, res) {
-    res.render('admin/add-birds', {layout: false});
+// add birds names
+router.get('/admin/add-names', function (req, res) {
+    res.render('admin/add-names', {layout: false});
 });
 
 // add sounds

@@ -80,8 +80,38 @@ const BirdSchema = new Schema({
     required : true,
     unique : true
   },
-  sounds: [ soundSchema ],
-  images: [ imageSchema ]
+  sounds: [], // nested schemas causing problems so use custom validation on save?
+  images: []
+  // sounds: {
+  //   type: [soundSchema],
+  //   default: [],
+  //   required : false
+  // },
+  // images: {
+  //   type: [imageSchema],
+  //   default: [],
+  //   required : false
+  // }
+});
+
+BirdSchema.pre('save', async function (next) {
+  if (this.sounds.length > 0){
+    console.log('validate sounds')
+  }
+  if (this.images.length > 0){
+    console.log('validate images')
+  }
+  next();
+});
+
+BirdSchema.pre('update', async function (next) {
+  if (this.sounds.length > 0){
+    console.log('validate sounds')
+  }
+  if (this.images.length > 0){
+    console.log('validate images')
+  }
+  next();
 });
 
 // create and export user model

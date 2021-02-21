@@ -12,6 +12,11 @@ header {
     border-bottom-color: rgba(255, 255, 255, .25);
 }
 
+/* Footer */
+footer{
+    padding-top: 2.5em;
+}
+
 /* Login / Sign up form */
 #login-form div, #signup-form div {
     margin: 6px;

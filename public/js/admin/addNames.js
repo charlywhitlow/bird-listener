@@ -1,5 +1,5 @@
 let feedbackDivs = {
-    'addBirds' : 'load-csv-feedback',
+    'uploadCSV' : 'upload-csv-feedback',
     'deleteDb' : 'empty-db-feedback'
 }
 function clearFeedback(feedbackDivs){
@@ -7,9 +7,9 @@ function clearFeedback(feedbackDivs){
         document.getElementById(feedbackDivs[id]).innerHTML = '';
     }
 }
-function addNames(){
+function uploadNamesCSV(){
     clearFeedback(feedbackDivs);
-    let feedbackDiv = document.getElementById('load-csv-feedback');
+    let feedbackDiv = document.getElementById('upload-csv-feedback');
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
     if (csvValid !== true){

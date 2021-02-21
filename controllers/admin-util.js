@@ -13,10 +13,10 @@ function uploadCSV(uploadPath, req){
     });
     return false;
 }
-function checkCSVHeaders(expectedHeaders, csvHeaders){
+function checkCSVHeaders(expectedHeaders, uploadHeaders){
     let headersOk = true;
     expectedHeaders.forEach(header => {
-        if (!csvHeaders.includes(header)){
+        if (!uploadHeaders.includes(header)){
             headersOk = false;
         }
     });

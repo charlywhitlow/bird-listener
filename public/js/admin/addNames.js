@@ -1,22 +1,68 @@
+function getURL(type){
+    switch (type) {
+        case 'names':
+            return '/api/admin/add-names'
+        case 'images':
+            return '/api/admin/add-sounds'
+        case 'sounds':
+            return '/api/admin/add-images'
+    }
+}
 let feedbackDivs = {
     'uploadCSV' : 'upload-csv-feedback',
-    'deleteDb' : 'empty-db-feedback'
+    'deleteDb' : 'empty-db-feedback',
+    'checkTable' : 'check-table-feedback',
+    'objectFit' : 'object-fit-feedback'
 }
 function clearFeedback(feedbackDivs){
     for (let id in feedbackDivs) {
-        document.getElementById(feedbackDivs[id]).innerHTML = '';
+        let div = document.getElementById(feedbackDivs[id]);
+        if (div !== undefined && div !== null){
+            div.innerHTML = '';
+        }
     }
 }
-function uploadNamesCSV(){
+function testNext(){
+    console.log('testNext')
+}
+function uploadCSV(type, next=null){
     clearFeedback(feedbackDivs);
-    let feedbackDiv = document.getElementById('upload-csv-feedback');
+    let feedbackDiv = document.getElementById(feedbackDivs.uploadCSV);
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
     if (csvValid !== true){
         feedbackDiv.innerHTML = csvValid;
         return;
     }
-    postCSVtoAPI(feedbackDiv);
+    postCSV(getURL(type))
+    .then(data => {
+        // add feedback to page
+        let p = document.createElement("p");
+        p.innerHTML = data.message;
+        feedbackDiv.appendChild(p);
+        // toggle next function
+        if (data.status !== 'failed' && next){
+            next();
+        }
+        // handle errors
+        if (data.errors){
+            let ul = document.createElement("UL");
+            data.errors.forEach(error => {
+                let li = document.createElement("LI");
+                li.innerHTML = error;
+                ul.appendChild(li);
+            });
+            feedbackDiv.appendChild(ul);
+        }
+    });
+}
+async function postCSV(url) {
+    let formData = new FormData(document.getElementById('uploadForm'));
+    const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+    });
+    return response.json();
 }
 function checkValidCSV(csv){
     if(csv === undefined){
@@ -29,26 +75,6 @@ function checkValidCSV(csv){
         return 'File must be smaller than 1MB';
     }
     return true; // return true if no errors
-}
-function postCSVtoAPI(feedbackDiv){
-    let formData = new FormData(document.getElementById('uploadForm'));
-    fetch('/api/admin/add-names', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => res.json())
-    .then(json => {
-        if(json.errors){
-            feedbackDiv.innerHTML = json.message + ':<br>' + json.errors;
-            console.log(json.errors)
-        }else{
-            feedbackDiv.innerHTML = json.message;
-        }
-    })
-    .catch(err => {
-        console.log('Upload Failed', err);
-        feedbackDiv.innerHTML = json.message;
-    });
 }
 
 function emptyDatabase(){

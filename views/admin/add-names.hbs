@@ -24,16 +24,8 @@
                     <h3>Add Bird names</h3>
                 </div>
                 <div class="admin-tasks">
-                    <div>
-                        <h4>1. Load CSV of bird names</h4>
-                        <p>This function expects a csv with the following headings:<br>
-                        <code>common_name, scientific_name</code></p>
-                        <form id="uploadForm" ref="uploadForm" id="uploadForm" encType="multipart/form-data">
-                            <input type="file" name="uploadFile" id="uploadFile">
-                            <input type="button" value="Upload CSV" class="admin-submit" onclick="uploadCSV('names', testNext)">
-                        </form>
-                        <p id="upload-csv-feedback"></p>
-                    </div>
+                    {{> load-csv-form }}
+
                     <div>
                         <h5>OPTIONAL: Empty Database</h5>
                         <p>This will clear the birds table in the database, USE WITH CAUTION</p>

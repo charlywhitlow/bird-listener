@@ -17,7 +17,12 @@ router.get('/admin/dashboard', function (req, res) {
 
 // add birds names
 router.get('/admin/add-names', function (req, res) {
-    res.render('admin/add-names', {layout: false});
+    res.render('admin/add-names', {
+        layout: false, 
+        type: 'names',
+        expectedHeadings: 'common_name, scientific_name',
+        next: null
+    });
 });
 
 // add sounds

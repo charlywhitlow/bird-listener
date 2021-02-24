@@ -36,25 +36,19 @@ function uploadCSV(type, next=null){
     }
     postCSV(getURL(type))
     .then(data => {
-        // add feedback to page
-        let p = document.createElement("p");
-        p.innerHTML = data.message;
-        feedbackDiv.appendChild(p);
-        // toggle next function
-        if (data.status !== 'failed' && next){
-            next();
-        }
-        // handle errors
-        if (data.errors){
-            let ul = document.createElement("UL");
-            data.errors.forEach(error => {
-                let li = document.createElement("LI");
-                li.innerHTML = error;
-                ul.appendChild(li);
-            });
-            feedbackDiv.appendChild(ul);
-        }
-    });
+function addFeedback(data, feedbackDiv){
+    let p = document.createElement("p");
+    p.innerHTML = data.message;
+    feedbackDiv.appendChild(p);
+    if (data.errors){
+        let ul = document.createElement("UL");
+        data.errors.forEach(error => {
+            let li = document.createElement("LI");
+            li.innerHTML = error;
+            ul.appendChild(li);
+        });
+        feedbackDiv.appendChild(ul);
+    }
 }
 async function postCSV(url) {
     let formData = new FormData(document.getElementById('uploadForm'));

@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const soundSchema = new Schema({ 
+  sound_name : {
+    type: String,
+    required : true,
+    unique: false
+  },
   xeno_id : {
     type: Number,
     required : true,
@@ -30,6 +35,11 @@ const soundSchema = new Schema({
 });
 
 const imageSchema = new Schema({ 
+  image_name : {
+    type: String,
+    required : true,
+    unique: false
+  },
   image_info_url : {
     type: String,
     required : true,

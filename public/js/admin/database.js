@@ -1,11 +1,10 @@
-function getURL(type){
-    switch (type) {
-        case 'names':
-            return '/api/admin/add-names'
-        case 'images':
-            return '/api/admin/add-sounds'
-        case 'sounds':
-            return '/api/admin/add-images'
+function getURL(func, type){
+    switch (func){
+        case 'upload':
+            return `/api/admin/upload-${type}-csv`
+
+        case 'save':
+            return `/api/admin/save-${type}-to-db`
     }
 }
 let feedbackDivs = {
@@ -13,6 +12,24 @@ let feedbackDivs = {
     'deleteDb' : 'empty-db-feedback',
     'checkTable' : 'check-table-feedback',
     'objectFit' : 'object-fit-feedback'
+}
+const tableHeadings = {
+    'names': {
+        'common_name' : 'text',
+        'scientific_name' : 'text'
+    },
+    'images': {
+        'common_name' : 'text',
+        'image_info_url' : 'link',
+        'image_name' : 'input',
+        'image_url' : 'input',
+        'image_author' : 'input',
+        'image_license_code' : 'input',
+        'image_license_url' : 'input'
+    },
+    'sounds': {
+        'common_name' : 'text',
+    }
 }
 function clearFeedback(feedbackDivs){
     for (let id in feedbackDivs) {
@@ -22,11 +39,12 @@ function clearFeedback(feedbackDivs){
         }
     }
 }
-function testNext(){
-    console.log('testNext')
+function clearTable(){
+    document.getElementById('birdsTable').innerHTML = '';
 }
-function uploadCSV(type, next=null){
+function uploadCSV(type, afterCSVLoad=null){
     clearFeedback(feedbackDivs);
+    clearTable();
     let feedbackDiv = document.getElementById(feedbackDivs.uploadCSV);
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
@@ -34,8 +52,16 @@ function uploadCSV(type, next=null){
         feedbackDiv.innerHTML = csvValid;
         return;
     }
-    postCSV(getURL(type))
+    postCSV(getURL('upload', type))
     .then(data => {
+        addFeedback(data, feedbackDiv);
+        // populate table and call afterCSVLoad function if set
+        if (data.status !== 'failed'){
+            populateTable(data.birds, tableHeadings[type]);
+            if (afterCSVLoad) afterCSVLoad();
+        }
+    });
+}
 function addFeedback(data, feedbackDiv){
     let p = document.createElement("p");
     p.innerHTML = data.message;
@@ -70,19 +96,55 @@ function checkValidCSV(csv){
     }
     return true; // return true if no errors
 }
-
+function populateTable(json, headings){
+    // create table head
+    let table = document.getElementById('birdsTable');
+    let thead = table.createTHead();
+    let row = thead.insertRow();
+    for (let key in headings) {
+        let th = document.createElement("th");
+        let text = document.createTextNode(key);
+        th.appendChild(text);
+        row.appendChild(th);
+    }
+    // create table body
+    let tbody = table.createTBody();
+    for (let item of json) {
+        let row = tbody.insertRow();
+        for (let key in headings) {
+            let cell = row.insertCell();
+            let text = (item[key] === undefined) ? "" : item[key];
+            let node;
+            switch (headings[key]) {
+            case 'text':
+                node = document.createTextNode(text);
+                break;
+            case 'link':
+                node = document.createElement('a');
+                node.setAttribute('href', text);
+                node.innerHTML = text;
+                break;
+            case 'input':
+                node = document.createElement('input');
+                node.setAttribute("type", "text");
+                node.setAttribute("value", text);
+                break;
+            }
+            cell.appendChild(node);
+        }
+    }
+}
 function emptyDatabase(){
     clearFeedback(feedbackDivs);
-    let feedbackDiv = document.getElementById('empty-db-feedback');
-
     fetch('/api/admin/empty-db', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(res => res.json()).then(json => {
-        feedbackDiv.innerHTML = json.message;
+    .then(res => res.json()).then(data => {
+        let feedbackDiv = document.getElementById('empty-db-feedback');
+        addFeedback(data, feedbackDiv)
     })
     .catch(err => {
         feedbackDiv.innerHTML = 'Problem clearing database';

@@ -24,7 +24,6 @@
 
 /* admin database functions */
 .admin-tasks {
-    width: 700px;
     max-width: 100%;
     margin: auto;
     text-align: left;
@@ -40,4 +39,7 @@
 
 .admin-submit{
     float: right;
+}
+.table {
+    font-size: small;
 }

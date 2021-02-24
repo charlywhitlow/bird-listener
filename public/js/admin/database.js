@@ -9,6 +9,7 @@ function getURL(func, type){
 }
 let feedbackDivs = {
     'uploadCSV' : 'upload-csv-feedback',
+    'save' : 'save-feedback',
     'deleteDb' : 'empty-db-feedback',
     'checkTable' : 'check-table-feedback',
     'objectFit' : 'object-fit-feedback'
@@ -41,6 +42,10 @@ function clearFeedback(feedbackDivs){
 }
 function clearTable(){
     document.getElementById('birdsTable').innerHTML = '';
+}
+function enableSaveButton(){
+    console.log('enableSaveButton')
+    document.querySelector("#saveForm > input").style.visibility = "visible";
 }
 function uploadCSV(type, afterCSVLoad=null){
     clearFeedback(feedbackDivs);
@@ -96,6 +101,14 @@ function checkValidCSV(csv){
     }
     return true; // return true if no errors
 }
+async function saveData(url, json) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-type': 'application/json;charset=UTF-8'},
+        body: json
+    });
+    return response.json();
+}
 function populateTable(json, headings){
     // create table head
     let table = document.getElementById('birdsTable');
@@ -133,6 +146,34 @@ function populateTable(json, headings){
             cell.appendChild(node);
         }
     }
+}
+function parseTable(){
+    // get headers
+    let table = document.getElementById('birdsTable');
+    let headers = [];
+    for (cell of table.rows[0].cells){
+        headers.push(cell.innerHTML)
+    }    
+    // build rows
+    let data = [];
+    for (let i=1; i<table.rows.length; i++) {
+        let tableRow = table.rows[i];
+        let rowData = {};
+        for (let j=0; j<tableRow.cells.length; j++) {
+            rowData[ headers[j] ] = tableRow.cells[j].innerHTML;
+        }
+        data.push(rowData);
+    }
+    return JSON.stringify(data);
+}
+function save(type){
+    let json = parseTable();
+    let url = getURL('save', type)
+    saveData(url, json)
+    .then(data => {
+        let feedbackDiv = document.getElementById(feedbackDivs['save']);
+        addFeedback(data, feedbackDiv)
+    });
 }
 function emptyDatabase(){
     clearFeedback(feedbackDivs);

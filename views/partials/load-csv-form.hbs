@@ -1,10 +1,10 @@
 <div>
-    <h4>1. Load CSV of bird {{type}}</h4>
+    <h4>{{num}}. Load CSV of bird {{type}}</h4>
     <p>This function expects a csv with the following headings:<br>
     <code>{{expectedHeadings}}</code></p>
     <form id="uploadForm" ref="uploadForm" id="uploadForm" encType="multipart/form-data">
         <input type="file" name="uploadFile" id="uploadFile">
-        <input type="button" value="Upload CSV" class="admin-submit" onclick="uploadCSV('{{type}}', {{next}})">
+        <input type="button" value="Upload CSV" class="admin-submit" onclick="uploadCSV('{{type}}', {{afterCSVLoad}})">
     </form>
     <p id="upload-csv-feedback"></p>
 </div>

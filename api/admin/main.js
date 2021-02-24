@@ -21,7 +21,7 @@ router.get('/admin/add-names', function (req, res) {
         layout: false, 
         type: 'names',
         expectedHeadings: 'common_name, scientific_name',
-        next: null
+        afterCSVLoad: 'enableSaveButton'
     });
 });
 

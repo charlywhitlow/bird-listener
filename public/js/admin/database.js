@@ -32,7 +32,7 @@ const tableHeadings = {
         'common_name' : 'text',
     }
 }
-function clearFeedback(feedbackDivs){
+function clearFeedback(){
     for (let id in feedbackDivs) {
         let div = document.getElementById(feedbackDivs[id]);
         if (div !== undefined && div !== null){
@@ -44,11 +44,9 @@ function clearTable(){
     document.getElementById('birdsTable').innerHTML = '';
 }
 function enableSaveButton(){
-    console.log('enableSaveButton')
     document.querySelector("#saveForm > input").style.visibility = "visible";
 }
 function uploadCSV(type, afterCSVLoad=null){
-    clearFeedback(feedbackDivs);
     clearTable();
     let feedbackDiv = document.getElementById(feedbackDivs.uploadCSV);
     let csv = document.getElementById('uploadFile').files[0];
@@ -68,6 +66,7 @@ function uploadCSV(type, afterCSVLoad=null){
     });
 }
 function addFeedback(data, feedbackDiv){
+    clearFeedback();
     let p = document.createElement("p");
     p.innerHTML = data.message;
     feedbackDiv.appendChild(p);
@@ -176,7 +175,6 @@ function save(type){
     });
 }
 function emptyDatabase(){
-    clearFeedback(feedbackDivs);
     fetch('/api/admin/empty-db', {
         method: 'GET',
         headers: {

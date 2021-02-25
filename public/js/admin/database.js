@@ -55,7 +55,8 @@ function uploadCSV(type, afterCSVLoad=null){
         feedbackDiv.innerHTML = csvValid;
         return;
     }
-    postCSV(getURL('upload', type))
+    let url = getURL('upload', type)
+    postCSV(url)
     .then(data => {
         addFeedback(data, feedbackDiv);
         // populate table and call afterCSVLoad function if set

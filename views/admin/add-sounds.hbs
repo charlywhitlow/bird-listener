@@ -20,34 +20,12 @@
         <main class="px-3">
             <div>
                 <div id="app-intro">
-                    {{!-- <h1>Bird Listener</h1> --}}
                     <h3>Add Sounds</h3>
                 </div>
                 <div class="admin-tasks">
-                    <div>
-                        <h4>1. Load CSV of bird sounds</h4>
-                        <p>This function expects a csv with the following headings:<br>
-                        <code>common_name, xeno_id, sound_ref</code></p>
-                        <form action="">
-                            <input type="file" name="add-sounds" id="add-sounds">
-                            <input type="button" value="Load CSV" class="admin-submit">
-                        </form>
-                    </div>
-
-                    <div>
-                        <h4>2. Check author and license fields</h4>
-
-                        {{!-- if csv data available, show following: --}}
-                        <p>Check the auto-populated fields below look correct and amend as required:</p>
-
-                        {{!-- display editable csv data --}}
-                        <p>[TABLE]</p>
-
-                        <form action="">
-                            <input type="button" value="Save to database" class="admin-submit">
-                        </form>
-                        <br>
-                    </div>
+                    {{> load-csv-form num=1}}
+                    {{> save-to-database num=2}}
+                    {{> empty-database-form }}
                 </div>
             </div>
         </main>

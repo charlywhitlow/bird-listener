@@ -53,8 +53,14 @@ router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, ne
     }
 
     // get additional sound fields and return to browser
-    // 
-
+    birds = await adminUtil.getRecordingDetails(birds)
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json({ 
+            'status' : 'failed',
+            'message' : 'Problem getting additional fields from Xeno-Canto'
+        })
+    })
     res.status(200).json({ 
         'status' : 'ok',
         'message' : 'CSV uploaded',

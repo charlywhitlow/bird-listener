@@ -19,6 +19,17 @@ const tableHeadings = {
         'common_name' : 'text',
         'scientific_name' : 'text'
     },
+    'sounds': {
+        'common_name' : 'text',
+        'sound_name' : 'text',
+        'difficulty' : 'text',
+        'xeno_id' : 'text',
+        'sound_info_url' : 'link',
+        'sound_url' : 'link',
+        'sound_recordist' : 'input',
+        'sound_license_code' : 'input',
+        'sound_license_url' : 'input'
+    },
     'images': {
         'common_name' : 'text',
         'image_info_url' : 'link',
@@ -27,9 +38,6 @@ const tableHeadings = {
         'image_author' : 'input',
         'image_license_code' : 'input',
         'image_license_url' : 'input'
-    },
-    'sounds': {
-        'common_name' : 'text',
     }
 }
 function clearFeedback(){

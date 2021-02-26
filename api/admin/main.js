@@ -27,7 +27,12 @@ router.get('/admin/add-names', function (req, res) {
 
 // add sounds
 router.get('/admin/add-sounds', function (req, res) {
-    res.render('admin/add-sounds', {layout: false});
+    res.render('admin/add-sounds', {
+        layout: false,
+        type: 'sounds',
+        expectedHeadings: 'common_name, sound_info_url, sound_name, difficulty',
+        afterCSVLoad: 'enableSaveButton'
+    });
 });
 
 // add images

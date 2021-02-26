@@ -56,7 +56,7 @@ app.use('/',
   passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
   checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
-    require(path.join(__dirname + '/api/admin/add-names')),
+    require(path.join(__dirname + '/api/admin/update-database')),
     require(path.join(__dirname + '/api/admin/empty-db')),
     require(path.join(__dirname + '/api/admin/xeno-canto'))
 ]);

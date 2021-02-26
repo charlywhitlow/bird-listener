@@ -16,7 +16,7 @@ const { checkAdminUser } = require('./auth/checkAdminUser');
 // setup mongo connection
 // const uri = MONGO_CONNECTION_URL;
 const uri = MONGO_TEST_URL; // test db
-mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', (error) => {
   console.log(error);
   process.exit(1);

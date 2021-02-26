@@ -112,7 +112,7 @@ router.post('/api/admin/save-names', asyncMiddleware( async (req, res, next) => 
                     { $set: 
                         { key : birdNames[i][key] } // update each given key
                     },
-                    { upsert: true, useFindAndModify: false }) // add values which don't already exist
+                    { upsert: true }) // add values which don't already exist
                 .catch(function(err){
                     dbErrors.push(err.message)
                 });
@@ -136,5 +136,54 @@ router.post('/api/admin/save-names', asyncMiddleware( async (req, res, next) => 
         'message' : 'Database updated'
     });
 }));
+
+// 2b. Save JSON of bird sounds to database
+router.post('/api/admin/save-sounds', asyncMiddleware( async (req, res, next) => {
+    let sounds = req.body;
+    let dbErrors = []
+    for(let i in sounds) {
+        if (! await BirdModel.exists({ common_name: sounds[i].common_name })){
+            dbErrors.push(
+                `${sounds[i].common_name} - bird not in database - add names first`)
+        }else{
+            let recording = sounds[i]
+            let common_name = recording.common_name;
+            delete recording.common_name;
+
+            // push new recordings / update existing (determined by xeno_id)
+            let recordingExists = await BirdModel.exists({ 'common_name' : common_name, 'sounds.xeno_id' : recording.xeno_id })
+            if (recordingExists){
+                console.log('update')
+                await BirdModel.findOneAndUpdate(
+                    { 'common_name' : common_name, 'sounds.xeno_id' : recording.xeno_id},
+                    { '$set' : { 'sounds.$' : recording } }
+                ).catch(function(err){
+                    dbErrors.push(err.message)
+                });
+            }else{
+                console.log('add new')
+                await BirdModel.findOneAndUpdate(
+                    { common_name: common_name },
+                    { $addToSet: { sounds : recording } },
+                    { upsert: true }
+                ).catch(function(err){
+                    dbErrors.push(err.message)
+                });
+            }
+        }
+    }
+    if (dbErrors.length>0){
+        return res.status(200).json({ 
+            'status' : 'error',
+            'message' : 'Errors',
+            'errors' : dbErrors
+        });
+    }
+    res.status(200).json({ 
+        'status' : 'ok',
+        'message' : 'Database updated'
+    });
+}));
+
 
 module.exports = router;

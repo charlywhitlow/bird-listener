@@ -69,7 +69,7 @@ router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, ne
 }));
 
 // 1c. Upload CSV of bird images (and return json with additional fields)
-router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, next) => {
+router.post('/api/admin/upload-images-csv', asyncMiddleware( async (req, res, next) => {
     let uploadPath = uploadDir + 'add-images.csv';
     let expectedHeaders = ['common_name', 'image_info_url', 'image_ref'];
 

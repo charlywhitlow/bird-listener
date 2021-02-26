@@ -168,7 +168,19 @@ function parseTable(){
         let tableRow = table.rows[i];
         let rowData = {};
         for (let j=0; j<tableRow.cells.length; j++) {
-            rowData[ headers[j] ] = tableRow.cells[j].innerHTML;
+            let td = tableRow.cells[j];
+            if(td.firstElementChild === null){
+                rowData[headers[j]] = td.innerText;
+            }else{
+                switch (td.firstElementChild.tagName) {
+                    case 'A':
+                        rowData[headers[j]] = tableRow.cells[j].firstChild.href;
+                        break;
+                    case 'INPUT':
+                        rowData[headers[j]] = tableRow.cells[j].firstChild.value;
+                        break;
+                }
+            }
         }
         data.push(rowData);
     }

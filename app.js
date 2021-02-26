@@ -34,8 +34,12 @@ app.use(cookieParser()); // cookies will be included in request object
 app.use(fileUpload({
   limits: { fileSize: 1024 * 1024 }
 }));
+
 // view engine
-app.engine('.hbs', handlebars({extname: '.hbs'}));
+app.engine('.hbs', handlebars({
+  extname: '.hbs',
+  helpers: require(__dirname + '/util/handlebarHelpers')
+}));
 app.set('view engine', '.hbs');
 
 // public routes

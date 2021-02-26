@@ -1,5 +1,20 @@
 <div>
-    <h4>{{num}}. Save to database</h4>
+    <h4>{{num}}. Check values and save to database</h4>
+
+    {{#ifEquals type 'sounds'}}
+        <p>
+            Check auto-populated fields in table above and amend as required.<br>
+            Visit page listed in <code>sound_info_url</code> for any missing details.
+        </p>
+    {{/ifEquals}}
+
+    {{#ifEquals type 'images'}}
+        <p>
+            Check auto-populated fields below and amend as required.<br>
+            Visit page listed in <code>image_info_url</code> for any missing details.
+        </p>
+    {{/ifEquals}}
+
     <form id="saveForm" ref="saveForm" id="saveForm" encType="multipart/form-data">
         <input type="button" class="admin-submit" style="visibility: hidden;" 
             value="Save to database" onclick="save('{{type}}')">

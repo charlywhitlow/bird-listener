@@ -4,7 +4,7 @@ function getURL(func, type){
             return `/api/admin/upload-${type}-csv`
 
         case 'save':
-            return `/api/admin/save-${type}-to-db`
+            return `/api/admin/save-${type}`
     }
 }
 let feedbackDivs = {

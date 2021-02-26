@@ -98,14 +98,31 @@ router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, ne
         'birds' : birds
     });
 }));
-    // get birds from json in request body
-    let birds = req.body;
+
+
+// 2a. Save JSON of bird names to database
+router.post('/api/admin/save-names', asyncMiddleware( async (req, res, next) => {
+    let birdNames = req.body;
     let dbErrors = []
-    for(let i in birds) {
-        await BirdModel.create(birds[i])
-        .catch(function(err){
-            dbErrors.push(err.message)
-        });
+    for(let i in birdNames) {
+        if (await BirdModel.exists({ common_name: birdNames[i].common_name })){
+            for (let key in birdNames[i]) {
+                await BirdModel.findOneAndUpdate(
+                    { common_name: birdNames[i].common_name }, // find bird by common_name
+                    { $set: 
+                        { key : birdNames[i][key] } // update each given key
+                    },
+                    { upsert: true, useFindAndModify: false }) // add values which don't already exist
+                .catch(function(err){
+                    dbErrors.push(err.message)
+                });
+            }
+        }else{
+            await BirdModel.create(birdNames[i])
+            .catch(function(err){
+                dbErrors.push(err.message)
+            });
+        }
     }
     if (dbErrors.length>0){
         return res.status(200).json({ 

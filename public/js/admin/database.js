@@ -32,12 +32,15 @@ const tableHeadings = {
     },
     'images': {
         'common_name' : 'text',
-        'image_info_url' : 'link',
         'image_name' : 'input',
+        'image_info_url' : 'link',
         'image_url' : 'input',
+        'image_author_raw' : 'text',
         'image_author' : 'input',
         'image_license_code' : 'input',
-        'image_license_url' : 'input'
+        'image_license_url' : 'input',
+        // 'image_css_x' : 'input',
+        // 'image_css_y' : 'input'
     }
 }
 function clearFeedback(){

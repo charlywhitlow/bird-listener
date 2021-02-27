@@ -71,7 +71,7 @@ router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, ne
 // 1c. Upload CSV of bird images (and return json with additional fields)
 router.post('/api/admin/upload-images-csv', asyncMiddleware( async (req, res, next) => {
     let uploadPath = uploadDir + 'add-images.csv';
-    let expectedHeaders = ['common_name', 'image_info_url', 'image_ref'];
+    let expectedHeaders = ['common_name', 'image_info_url', 'image_name'];
 
     // save csv in uploads folder
     let uploadError = adminUtil.uploadCSV(uploadPath, req)
@@ -87,14 +87,24 @@ router.post('/api/admin/upload-images-csv', asyncMiddleware( async (req, res, ne
             'message' : 'Expects required headings: '+JSON.stringify(expectedHeaders)
         })
     }
+    // get additional fields, update CSV, and return json to browser
+    birds = await adminUtil.getImageDetails(birds)
+    .then((updated) => {
+        // write updated CSV
+        // TODO
 
-    // add additional fields
-    //
-
-
+        return updated;
+    })
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json({ 
+            'status' : 'failed',
+            'message' : 'Problem getting additional fields from Wikimedia Commons API'
+        })
+    })
     res.status(200).json({ 
         'status' : 'ok',
-        'message' : 'CSV uploaded',
+        'message' : 'CSV uploaded - check details and save to database',
         'birds' : birds
     });
 }));

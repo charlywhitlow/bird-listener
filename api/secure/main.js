@@ -11,8 +11,8 @@ router.get(['/menu','/menu.html'], function (req, res) {
 
 // browse
 router.get(['/browse','/browse.html'], asyncMiddleware( async (req, res, next) => {
-	let birdsJson = await birds.getBirds();
-    res.render('browse', {layout: false, birds: birdsJson});
+	let json = await birds.getBirds(true);
+    res.render('browse', {layout: false, birds: json});
 }));
 
 // quiz

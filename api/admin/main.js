@@ -37,7 +37,12 @@ router.get('/admin/add-sounds', function (req, res) {
 
 // add images
 router.get('/admin/add-images', function (req, res) {
-    res.render('admin/add-images', {layout: false});
+    res.render('admin/add-images', {
+        layout: false,
+        type: 'images',
+        expectedHeadings: 'common_name, image_info_url, image_name',
+        afterCSVLoad: 'enableSaveButton'
+    });
 });
 
 // object-position

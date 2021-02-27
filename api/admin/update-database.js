@@ -163,7 +163,7 @@ router.post('/api/admin/save-sounds', asyncMiddleware( async (req, res, next) =>
             // push new recordings / update existing (determined by xeno_id)
             let recordingExists = await BirdModel.exists({ 'common_name' : common_name, 'sounds.xeno_id' : recording.xeno_id })
             if (recordingExists){
-                console.log('update')
+                console.log('update sound...')
                 await BirdModel.findOneAndUpdate(
                     { 'common_name' : common_name, 'sounds.xeno_id' : recording.xeno_id},
                     { '$set' : { 'sounds.$' : recording } }
@@ -171,10 +171,60 @@ router.post('/api/admin/save-sounds', asyncMiddleware( async (req, res, next) =>
                     dbErrors.push(err.message)
                 });
             }else{
-                console.log('add new')
+                console.log('add new sound...')
                 await BirdModel.findOneAndUpdate(
                     { common_name: common_name },
                     { $addToSet: { sounds : recording } },
+                    { upsert: true }
+                ).catch(function(err){
+                    dbErrors.push(err.message)
+                });
+            }
+        }
+    }
+    if (dbErrors.length>0){
+        return res.status(200).json({ 
+            'status' : 'error',
+            'message' : 'Errors',
+            'errors' : dbErrors
+        });
+    }
+    res.status(200).json({ 
+        'status' : 'ok',
+        'message' : 'Database updated'
+    });
+}));
+
+// 2c. Save JSON of bird images to database
+router.post('/api/admin/save-images', asyncMiddleware( async (req, res, next) => {
+    console.log('save images')
+    let images = req.body;
+    let dbErrors = []
+    for(let i in images) {
+        if (! await BirdModel.exists({ common_name: images[i].common_name })){
+            dbErrors.push(
+                `${images[i].common_name} - bird not in database - add names first`)
+        }else{
+            let image = images[i]
+            let common_name = image.common_name;
+            delete image.common_name;
+            delete image.image_author_raw;
+
+            // push new recordings / update existing (determined by image_url)
+            let imageExists = await BirdModel.exists({ 'common_name' : common_name, 'images.image_url' : image.image_url })
+            if (imageExists){
+                console.log('update image...')
+                await BirdModel.findOneAndUpdate(
+                    { 'common_name' : common_name, 'images.image_url' : image.image_url},
+                    { '$set' : { 'images.$' : image } }
+                ).catch(function(err){
+                    dbErrors.push(err.message)
+                });
+            }else{
+                console.log('add new image...')
+                await BirdModel.findOneAndUpdate(
+                    { common_name: common_name },
+                    { $addToSet: { images : image } },
                     { upsert: true }
                 ).catch(function(err){
                     dbErrors.push(err.message)

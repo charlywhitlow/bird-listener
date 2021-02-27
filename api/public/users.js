@@ -13,8 +13,9 @@ router.post('/api/users/signup', async (req, res, next) => {
 	async (err, user, info) => {
 		try {
 			if (err || !user) {
+				console.log(err)
 				return res.status(401).json({ 
-					"message" : info.message
+					"message" : (info.message)
 				});
 			}
 			// log user in after signup
@@ -35,12 +36,14 @@ router.post('/api/users/login', async (req, res, next) => {
 	async (err, user, info) => {
 		try {
 			if (err || !user) {
+				console.log(err)
 				return res.status(401).json({ 
 					"message" : info.message
 				});
 			}
 			req.login(user, { session: false }, async (error) => {
 				if (error) {
+					console.log(error)
 					return next(error);
 				}
 				let {token} = await login(user, res);

@@ -27,7 +27,6 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-handlebars": "^5.2.0",
-    "fisher-yates": "^1.0.3",
     "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.5",

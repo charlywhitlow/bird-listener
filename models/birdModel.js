@@ -75,28 +75,34 @@ const BirdSchema = new Schema({
     type: [ImageSchema],
     required : true,
     default: []
+  },
+  include : { 
+    type: Boolean, // determines whether bird is ready for inclusion (i.e. contains sounds & images) 
+    required : true, 
+    default: false
   }
 });
 
-BirdSchema.pre('save', async function (next) {
-  // console.log('PRE-SAVE')
-  // if (this.sounds.length > 0){
-  //   console.log('validate sounds')
-  // }
-  // if (this.images.length > 0){
-  //   console.log('validate images')
-  // }
-  next();
-});
 
-BirdSchema.pre('findOneAndUpdate', async function (next) {
-  // console.log('PRE-UPDATE')
-  // if (this.sounds.length > 0){
-  //   console.log('validate sounds')
-  // }
-  // if (this.images.length > 0){
-  //   console.log('validate images')
-  // }
+BirdSchema.post('findOneAndUpdate', async function(doc, next) {
+  let updatedDoc = await this.model.findOne(this.getQuery());
+
+  // bird newly ready for inclusion, set include and add to user queues
+  if (updatedDoc.sounds.length > 0 && updatedDoc.images.length > 0 && updatedDoc.include === false){
+    doc.set({ include: true });
+    doc.save();
+    // add to user queues
+    // TODO
+  }
+  // bird no longer ready for inclusion, set include and remove from user queues
+  if (updatedDoc.sounds.length === 0 && updatedDoc.images.length === 0 && updatedDoc.include === true){
+    doc.set({ include: false });
+    doc.save();
+    // remove from user queues
+    // TODO
+  }
+  // TODO: also need to remove sounds from user queues when removing single sounds (not just whole bird)
+  //
   next();
 });
 

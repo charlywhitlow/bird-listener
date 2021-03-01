@@ -37,21 +37,14 @@ router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
 
 // get next bird from user queue
 router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) => {
-
-    // get next bird
     let username = req.body;
     let user = await UserModel.findOne(username);
-    let nextBird = user.birdQueue.shift();
-
-    // return bird to back of queue
-    user.birdQueue.push(nextBird);
-    await UserModel.updateOne(username, { birdQueue: user.birdQueue });
-
+    let nextSound = await user.getNextSound();
     res.status(200);
 	res.json({ 
         'status' : 'ok',
-        'message' : 'bird retrieved and moved to back of queue',
-        'nextBird' : nextBird
+        'message' : 'bird retrieved and returned to queue',
+        'nextBird' : nextSound
 	});
 }));
 

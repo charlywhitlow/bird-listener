@@ -16,7 +16,7 @@ const birdsQueueSchema = new Schema({
   difficulty:{
     type: Number, required : true, min: 1, max: 4
   },
-  seenCount:{
+  seen_count:{
     type: Number, required : true, default: 0
   }
 });
@@ -52,7 +52,50 @@ const UserSchema = new Schema({
   }    
 });
 
-// hash password and create user queue before user saved
+
+// get next sound from queue
+UserSchema.methods.getNextSound = async function () { 
+  let nextSound = this.birdQueue.shift();
+  nextSound.seen_count ++;
+  this.returnToQueue(nextSound);
+  return await BirdModel.findOne({common_name: nextSound.common_name})
+  .then(bird => {
+    return {
+      common_name : bird.common_name,
+      scientific_name : bird.scientific_name,
+      sound: bird.sounds.find(sound => sound.xeno_id == nextSound.xeno_id),
+      images: bird.images
+    }  
+  }).catch(err => console.log(err))  
+};
+
+// return sound to queue based on seen_count
+UserSchema.methods.returnToQueue = async function (sound) { 
+  let len = this.birdQueue.length;
+  let index = 0;
+  if (len > 35){
+    if(sound.seen_count <= 2){
+      index = 10 + getRandomInt(1,5);
+    }else if(sound.seen_count <= 5){
+      index = 15 + getRandomInt(1,5);
+    }else if(sound.seen_count <= 8){
+      index = 25 + getRandomInt(1,10);
+    }else{
+      index = len;
+    }
+  }else{
+    index = len;
+  }
+  // return to queue at index
+  this.birdQueue.splice(index, 0, sound);
+  this.save();
+}
+function getRandomInt(min, max) { // range inclusive
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 UserSchema.pre('save', async function (next) {
   // hash password and create user queue before first save
   if(this.isNew){

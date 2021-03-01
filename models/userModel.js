@@ -14,7 +14,7 @@ const birdsQueueSchema = new Schema({
     type: String, required : true // unique: true
   },
   difficulty:{
-    type: Number, required : true
+    type: Number, required : true, min: 1, max: 4
   },
   seenCount:{
     type: Number, required : true, default: 0

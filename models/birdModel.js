@@ -9,7 +9,7 @@ const SoundSchema = new Schema({
     type: Number, required : true, // unique: true
   },
   difficulty : {
-    type: Number, required : true
+    type: Number, required : true, min: 1, max: 4
   },
   sound_info_url: {
     type : String, required : true, // unique : true

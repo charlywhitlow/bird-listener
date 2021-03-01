@@ -54,9 +54,12 @@ const UserSchema = new Schema({
 
 // hash password and create user queue before user saved
 UserSchema.pre('save', async function (next) {
-  const hash = await bcrypt.hash(this.password, 10);
-  this.password = hash;
-  this.birdQueue = await this.buildQueue();
+  // hash password and create user queue before first save
+  if(this.isNew){
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+    this.birdQueue = await this.buildQueue();  
+  }
   next();
 });
 

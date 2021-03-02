@@ -12,7 +12,8 @@ let feedbackDivs = {
     'save' : 'save-feedback',
     'emptyDB' : 'empty-db-feedback',
     'checkTable' : 'check-table-feedback',
-    'objectFit' : 'object-fit-feedback'
+    'objectFit' : 'object-fit-feedback',
+    'userQueues' : 'update-queues-feedback'
 }
 const tableHeadings = {
     'names': {
@@ -212,6 +213,21 @@ function emptyDatabase(){
     })
     .catch(err => {
         feedbackDiv.innerHTML = 'Problem clearing database';
+        console.log(err);
+    });
+}
+
+async function updateUserQueues(){
+    fetch('/api/admin/update-user-queues', {
+        method: "GET",
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(res => res.json()).then(json => {
+        let feedbackDiv = document.getElementById(feedbackDivs['userQueues']);
+        addFeedback(json, feedbackDiv)
+    })
+    .catch(err => {
+        feedbackDiv.innerHTML = 'Problem updating queues';
         console.log(err);
     });
 }

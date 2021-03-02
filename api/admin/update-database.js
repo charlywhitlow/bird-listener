@@ -3,6 +3,7 @@ const csvtoJson = require('csvtojson');
 const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const router = express.Router();
 const BirdModel = require(__root + '/models/birdModel');
+const UserModel = require(__root + '/models/userModel');
 const adminUtil = require(__root + '/controllers/admin-util.js');
 const uploadDir = __root + '/data/uploads/';
 
@@ -242,6 +243,30 @@ router.post('/api/admin/save-images', asyncMiddleware( async (req, res, next) =>
     res.status(200).json({ 
         'status' : 'ok',
         'message' : 'Database updated'
+    });
+}));
+
+// 3. Update user queues from database
+router.get('/api/admin/update-user-queues', asyncMiddleware( async (req, res, next) => {
+    let dbErrors = [];
+
+    // loop through user.birdQueue and append any sounds not in queue
+    for await (const user of await UserModel.find()) {
+        await user.updateQueue().catch(err => {
+            console.log(err)
+            dbErrors.push(err.message)
+        })
+    }
+    if (dbErrors.length>0){
+        return res.status(200).json({ 
+            'status' : 'error',
+            'message' : 'Errors',
+            'errors' : dbErrors
+        });
+    }
+    res.status(200).json({ 
+        'status' : 'ok',
+        'message' : 'User queues updated'
     });
 }));
 

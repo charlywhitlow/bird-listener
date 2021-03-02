@@ -45,6 +45,11 @@ router.get('/admin/add-images', function (req, res) {
     });
 });
 
+// update user queues
+router.get('/admin/update-queues', function (req, res) {
+    res.render('admin/update-queues', {layout: false});
+});
+
 // empty database
 router.get('/admin/empty-database', function (req, res) {
     res.render('admin/empty-database', {layout: false});

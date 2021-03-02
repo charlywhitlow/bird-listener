@@ -10,7 +10,7 @@ function getURL(func, type){
 let feedbackDivs = {
     'uploadCSV' : 'upload-csv-feedback',
     'save' : 'save-feedback',
-    'deleteDb' : 'empty-db-feedback',
+    'emptyDB' : 'empty-db-feedback',
     'checkTable' : 'check-table-feedback',
     'objectFit' : 'object-fit-feedback'
 }
@@ -57,17 +57,18 @@ function clearTable(){
 function enableSaveButton(){
     document.querySelector("#saveForm > input").style.visibility = "visible";
 }
-function uploadCSV(type, afterCSVLoad=null){
+async function uploadCSV(type, afterCSVLoad=null){
     clearTable();
-    let feedbackDiv = document.getElementById(feedbackDivs.uploadCSV);
+    let feedbackDiv = document.getElementById(feedbackDivs['uploadCSV']);
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
     if (csvValid !== true){
+        clearFeedback();
         feedbackDiv.innerHTML = csvValid;
         return;
     }
     let url = getURL('upload', type)
-    postCSV(url)
+    await postCSV(url)
     .then(data => {
         addFeedback(data, feedbackDiv);
         // populate table and call afterCSVLoad function if set
@@ -118,7 +119,7 @@ async function saveData(url, json) {
         headers: {'Content-type': 'application/json;charset=UTF-8'},
         body: json
     });
-    return response.json();
+    return await response.json();
 }
 function populateTable(json, headings){
     // create table head
@@ -205,9 +206,9 @@ function emptyDatabase(){
             'Content-Type': 'application/json'
         }
     })
-    .then(res => res.json()).then(data => {
-        let feedbackDiv = document.getElementById('empty-db-feedback');
-        addFeedback(data, feedbackDiv)
+    .then(res => res.json()).then(json => {
+        let feedbackDiv = document.getElementById(feedbackDivs['emptyDB']);
+        addFeedback(json, feedbackDiv)
     })
     .catch(err => {
         feedbackDiv.innerHTML = 'Problem clearing database';

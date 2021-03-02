@@ -83,23 +83,18 @@ const BirdSchema = new Schema({
   }
 });
 
-
 BirdSchema.post('findOneAndUpdate', async function(doc, next) {
   let updatedDoc = await this.model.findOne(this.getQuery());
 
-  // bird newly ready for inclusion, set include and add to user queues
+  // bird newly ready for inclusion, set include flag
   if (updatedDoc.sounds.length > 0 && updatedDoc.images.length > 0 && updatedDoc.include === false){
     doc.set({ include: true });
     doc.save();
-    // add to user queues
-    // TODO
   }
-  // bird no longer ready for inclusion, set include and remove from user queues
+  // bird no longer ready for inclusion, set include flag
   if (updatedDoc.sounds.length === 0 && updatedDoc.images.length === 0 && updatedDoc.include === true){
     doc.set({ include: false });
     doc.save();
-    // remove from user queues
-    // TODO
   }
   // TODO: also need to remove sounds from user queues when removing single sounds (not just whole bird)
   //

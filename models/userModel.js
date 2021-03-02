@@ -101,7 +101,7 @@ UserSchema.pre('save', async function (next) {
   if(this.isNew){
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
-    this.birdQueue = await this.buildQueue();  
+    await this.updateQueue(true);
   }
   next();
 });
@@ -113,27 +113,24 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-// populate user queue from database
-UserSchema.methods.buildQueue = async function () {
+// init/update user queue from database
+UserSchema.methods.updateQueue = async function (init=false) {
   let birds = await BirdModel.find({include:true}, {common_name:true, sounds:true});
-  let sounds = [];
   birds.forEach(bird => {
     bird.sounds.forEach(sound => {
-      sounds.push({
-        common_name : bird.common_name,
-        xeno_id : sound.xeno_id,
-        difficulty : sound.difficulty,
-        seenCount : 0
-      })
+      let exists = this.birdQueue.find(el => el.xeno_id == sound.xeno_id);
+      if(exists === undefined){
+        this.birdQueue.push({
+          common_name : bird.common_name,
+          xeno_id : sound.xeno_id,
+          difficulty : sound.difficulty,
+          seenCount : 0
+        })
+      }
     })
-  });  
-  return sounds.sort(compareDifficulty);
+  })
+  if (!init) this.save();
 };
-function compareDifficulty(a, b){
-  if (a.difficulty < b.difficulty) return -1;
-  if (a.difficulty > b.difficulty) return 1;
-  return 0;
-}
 
 // create and export user model
 const UserModel = mongoose.model('user', UserSchema);

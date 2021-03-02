@@ -174,7 +174,7 @@ async function buildDBFromJSON(jsonFilePath=birdsJSON){
 
     // update user queues to reflect new db
     for await (const user of UserModel.find()) {
-        let birdQueue = await user.buildQueue()
+        let birdQueue = await user.initQueue()
         await UserModel.findOneAndUpdate(
             { _id : user._id}, 
             { birdQueue: birdQueue }, 

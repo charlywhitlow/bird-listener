@@ -23,20 +23,17 @@
 }
 
 /* admin database functions */
-.admin-tasks {
+.admin-task {
     max-width: 100%;
     margin: auto;
     text-align: left;
-}
-.admin-tasks div{
     padding: 8px;
     border: solid 2px  rgb(92, 92, 92);
 }
-.admin-tasks form{
+.admin-task form{
     padding: 8px;
     color: grey;
 }
-
 .admin-submit{
     float: right;
 }

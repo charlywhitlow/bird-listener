@@ -59,18 +59,21 @@ function enableSaveButton(){
     document.querySelector("#saveForm > input").style.visibility = "visible";
 }
 async function uploadCSV(type, afterCSVLoad=null){
+    clearFeedback();
     clearTable();
     let feedbackDiv = document.getElementById(feedbackDivs['uploadCSV']);
     let csv = document.getElementById('uploadFile').files[0];
     let csvValid = checkValidCSV(csv);
     if (csvValid !== true){
-        clearFeedback();
         feedbackDiv.innerHTML = csvValid;
         return;
     }
+    // if csv valid, fetch image data from api
+    showLoader('upload');
     let url = getURL('upload', type)
     await postCSV(url)
     .then(data => {
+        hideLoader('upload');
         addFeedback(data, feedbackDiv);
         // populate table and call afterCSVLoad function if set
         if (data.status !== 'failed'){
@@ -121,6 +124,14 @@ async function saveData(url, json) {
         body: json
     });
     return await response.json();
+}
+function showLoader(formName) {
+    let id = `${formName}-loader-div`
+    document.getElementById(id).style.display = "";
+}
+function hideLoader(formName) {
+    let id = `${formName}-loader-div`
+    document.getElementById(id).style.display = "none";
 }
 function populateTable(json, headings){
     // create table head

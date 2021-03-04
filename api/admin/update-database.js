@@ -53,7 +53,7 @@ router.post('/api/admin/upload-sounds-csv', asyncMiddleware( async (req, res, ne
         })
     }
 
-    // get additional sound fields and return to browser
+    // get additional fields and return json to browser
     birds = await adminUtil.getRecordingDetails(birds)
     .catch((err) => {
         console.log(err)
@@ -105,7 +105,7 @@ router.post('/api/admin/upload-images-csv', asyncMiddleware( async (req, res, ne
     })
     res.status(200).json({ 
         'status' : 'ok',
-        'message' : 'CSV uploaded - check details and save to database',
+        'message' : 'CSV uploaded',
         'birds' : birds
     });
 }));
@@ -198,7 +198,6 @@ router.post('/api/admin/save-sounds', asyncMiddleware( async (req, res, next) =>
 
 // 2c. Save JSON of bird images to database
 router.post('/api/admin/save-images', asyncMiddleware( async (req, res, next) => {
-    console.log('save images')
     let images = req.body;
     let dbErrors = []
     for(let i in images) {
@@ -218,7 +217,8 @@ router.post('/api/admin/save-images', asyncMiddleware( async (req, res, next) =>
                 await BirdModel.findOneAndUpdate(
                     { 'common_name' : common_name, 'images.image_url' : image.image_url},
                     { '$set' : { 'images.$' : image } }
-                ).catch(function(err){
+                ).catch((err) => {
+                    console.log(err)
                     dbErrors.push(err.message)
                 });
             }else{
@@ -227,7 +227,8 @@ router.post('/api/admin/save-images', asyncMiddleware( async (req, res, next) =>
                     { common_name: common_name },
                     { $addToSet: { images : image } },
                     { upsert: true }
-                ).catch(function(err){
+                ).catch((err) => {
+                    console.log(err)
                     dbErrors.push(err.message)
                 });
             }
@@ -270,5 +271,31 @@ router.get('/api/admin/update-user-queues', asyncMiddleware( async (req, res, ne
     });
 }));
 
+// 4. empty birds table and clean indexes
+router.get('/api/admin/empty-db', asyncMiddleware( async (req, res, next) => {
+
+    // empty birds table
+    await BirdModel.deleteMany({})
+    .catch(function(err){
+        return res.status(400).json({ 
+            'status' : 'error',
+            'message' : 'Problem clearing database',
+            'error' : err
+        });
+    });
+    // clean indexes
+    await BirdModel.cleanIndexes()
+    .catch(function(err){
+        return res.status(400).json({ 
+            'status' : 'error',
+            'message' : 'Problem clearing indexes',
+            'error' : err
+        });
+    });
+    res.status(200).json({ 
+        'status' : 'ok',
+        'message' : 'Database cleared'
+    });
+}));
 
 module.exports = router;

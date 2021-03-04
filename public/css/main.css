@@ -12,6 +12,11 @@ header {
     border-bottom-color: rgba(255, 255, 255, .25);
 }
 
+/* Footer */
+footer{
+    padding-top: 2.5em;
+}
+
 /* Login / Sign up form */
 #login-form div, #signup-form div {
     margin: 6px;
@@ -23,14 +28,14 @@ header {
 }
 
 /* Menu page: menu buttons */
-#menu ul li {
+.menu li {
     list-style: none;
 }
-#menu ul, #menu ul li {
+.menu, .menu li {
     margin: 0px;
     padding: 0px;
 }
-#menu button {
+.menu button {
     width: 200px;
     margin: 5px;
 }
@@ -53,19 +58,4 @@ header {
 #settings ul, #settings ul li {
     margin: 0px;
     padding: 0px;
-}
-
-/* Loader */
-.loader-animation {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-    margin: 10px;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }

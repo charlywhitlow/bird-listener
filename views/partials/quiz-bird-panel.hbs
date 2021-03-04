@@ -1,0 +1,40 @@
+<div>
+    <h1 id="common-name" style="visibility: hidden;"></h1>
+    <h4 style="font-style: italic; visibility: hidden;"><span id="scientific-name"></span></h4>
+</div>
+<!-- image -->
+<figure>
+    <div id="image-placeholder">
+        <h3>?</h3>
+    </div>
+    <img id="bird-image" src="" alt="bird image" style="display: none;">
+</figure>
+<figcaption id="image-license-panel" class="licenseInfo" style="visibility: hidden;">                    
+    <a id="image-url" href="" target="_blank" rel="noopener noreferrer">
+        Image by <span id="image-author"></span>, via Wikimedia Commons |
+    </a>
+    <a id="image-license" href="" target="_blank" rel="noopener noreferrer">
+        <span id="image-license-code"></span>
+    </a>
+</figcaption>
+<!-- sound -->
+<figure>
+    <audio id="audio-player" src="" controls controlsList="nodownload" preload="true">
+        Your browser does not support the <code>audio</code> element.
+        It can be found at <a href="" target="_blank" rel="noopener noreferrer">Xeno</a>.
+    </audio>
+    <figcaption class="licenseInfo">
+        <a id="sound-info" href="" target="_blank" rel="noopener noreferrer">
+            Audio by <span id="sound-recordist"></span>, via Xeno-Canto <span id="xeno-id"></span> | 
+        </a>
+        <a id="sound-license" href="" target="_blank" rel="noopener noreferrer">
+            CC <span id="sound-license-code"></span>
+        </a>    
+    </figcaption>
+</figure>
+<!-- buttons -->
+<div id="nextButtonSection">
+    <button id="reveal-button" class="btn btn-md border-white bg-white" onclick="revealBird()">Reveal bird</button>
+    <button id="next-button" class="btn btn-md border-white bg-white" onclick="showNextBird()" style="display: none;">Next</button>
+    <button id="review-button" class="btn btn-md border-white bg-white" onclick="goToQuizReview()" style="display: none;">Review</button>
+</div>

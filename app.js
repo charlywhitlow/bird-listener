@@ -1,17 +1,22 @@
-const { PORT, MONGO_CONNECTION_URL } = require('./config/config');
+const { PORT, MONGO_TEST_URL, MONGO_CONNECTION_URL } = require('./config/config');
+global.__root = __dirname; // set app root var for easier dir addressing
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { exec } = require('child_process');
 const path = require('path');
-const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const handlebars  = require('express-handlebars');
+const passport = require('passport');
+require('./auth/auth');
+const { checkAdminUser } = require('./auth/checkAdminUser');
 
 // setup mongo connection
-const uri = MONGO_CONNECTION_URL;
-mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true });
+// const uri = MONGO_CONNECTION_URL;
+const uri = MONGO_TEST_URL; // test db
+mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', (error) => {
   console.log(error);
   process.exit(1);
@@ -26,29 +31,37 @@ app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-
 app.use(bodyParser.json()); // parse application/json
 app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
 app.use(cookieParser()); // cookies will be included in request object
+app.use(fileUpload({
+  limits: { fileSize: 1024 * 1024 }
+}));
 
 // view engine
-app.engine('.hbs', handlebars({extname: '.hbs'}));
+app.engine('.hbs', handlebars({
+  extname: '.hbs',
+  helpers: require(__dirname + '/util/handlebarHelpers')
+}));
 app.set('view engine', '.hbs');
 
-// require passport auth
-require('./auth/auth');
- 
 // public routes
 app.use('/', [
-  require(path.join(__dirname + '/api/public')),
-  require(path.join(__dirname + '/api/users')),
-  require(path.join(__dirname + '/api/admin')) // TODO: add admin-user auth
+    require(path.join(__dirname + '/api/public/main')),
+    require(path.join(__dirname + '/api/public/users'))
 ]);
 
-// secure routes
-app.use('/', passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
-  [
-    require(path.join(__dirname + '/api/main')),
-    require(path.join(__dirname + '/api/birds')),
-    require(path.join(__dirname + '/api/xeno-canto'))
-  ]
-);
+// secure user routes
+app.use('/', 
+  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }), [
+    require(path.join(__dirname + '/api/secure/main')),
+    require(path.join(__dirname + '/api/secure/birds'))
+]);
+
+// admin routes
+app.use('/', 
+  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
+  checkAdminUser, [
+    require(path.join(__dirname + '/api/admin/main')),
+    require(path.join(__dirname + '/api/admin/database')),
+]);
   
 // catch all other routes
 app.use((req, res, next) => {

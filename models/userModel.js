@@ -1,9 +1,29 @@
-const mongoose = require('mongoose')  // to connect to mongodb
-const bcrypt = require('bcrypt');  // helper library for hashing passwords
-const Schema = mongoose.Schema; // schema object provides built-in typecasting and validation
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const Schema = mongoose.Schema;
 const validator = require('validator');
-const BirdModel = require('../models/birdModel');
-const shuffleInPlace = require('fisher-yates/inplace');
+const BirdModel = require(__root + '/models/birdModel');
+
+
+// lists each sound in db: [common_name, xeno_id, difficulty, seenCount]
+const birdsQueueSchema = new Schema({
+  common_name : {
+    type: String, required : true // not unique because multiple sounds
+  },
+  xeno_id :{
+    type: String, required : true // unique: true
+  },
+  difficulty:{
+    type: Number, required : true, min: 1, max: 4
+  },
+  seen_count:{
+    type: Number, required : true, default: 0
+  }
+});
+// birdsQueueSchema.index(
+//   { common_name: 1, xeno_id: 1 }, // compound key
+//   { unique: true }
+// );
 
 const UserSchema = new Schema({
   username : {
@@ -21,19 +41,68 @@ const UserSchema = new Schema({
     type : String,
     required : true
   },
-  birdQueue : []
+  admin : {
+    type: Boolean,
+    default: false  // set to true manually in mongo
+  },
+  birdQueue : {
+    type: [ birdsQueueSchema ],
+    required: true,
+    default: []
+  }    
 });
 
-// called before a document is saved
+
+// get next sound from queue
+UserSchema.methods.getNextSound = async function () { 
+  let nextSound = this.birdQueue.shift();
+  nextSound.seen_count ++;
+  this.returnToQueue(nextSound);
+  return await BirdModel.findOne({common_name: nextSound.common_name})
+  .then(bird => {
+    return {
+      common_name : bird.common_name,
+      scientific_name : bird.scientific_name,
+      sound: bird.sounds.find(sound => sound.xeno_id == nextSound.xeno_id),
+      images: bird.images
+    }  
+  }).catch(err => console.log(err))  
+};
+
+// return sound to queue based on seen_count
+UserSchema.methods.returnToQueue = async function (sound) { 
+  let len = this.birdQueue.length;
+  let index = 0;
+  if (len > 35){
+    if(sound.seen_count <= 2){
+      index = 10 + getRandomInt(1,5);
+    }else if(sound.seen_count <= 5){
+      index = 15 + getRandomInt(1,5);
+    }else if(sound.seen_count <= 8){
+      index = 25 + getRandomInt(1,10);
+    }else{
+      index = len;
+    }
+  }else{
+    index = len;
+  }
+  // return to queue at index
+  this.birdQueue.splice(index, 0, sound);
+  this.save();
+}
+function getRandomInt(min, max) { // range inclusive
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 UserSchema.pre('save', async function (next) {
-
-  // hash password
-  const hash = await bcrypt.hash(this.password, 10);
-  this.password = hash;
-
-  // initialise bird queue
-  this.birdQueue = await this.buildQueue();
-
+  // hash password and create user queue before first save
+  if(this.isNew){
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+    await this.updateQueue(true);
+  }
   next();
 });
 
@@ -44,11 +113,23 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-// populate bird queue from db, and shuffle using fisher-yates algorithm
-UserSchema.methods.buildQueue = async function () {
-  let birds = await BirdModel.find();
-  shuffleInPlace(birds);
-  return birds;
+// init/update user queue from database
+UserSchema.methods.updateQueue = async function (init=false) {
+  let birds = await BirdModel.find({include:true}, {common_name:true, sounds:true});
+  birds.forEach(bird => {
+    bird.sounds.forEach(sound => {
+      let exists = this.birdQueue.find(el => el.xeno_id == sound.xeno_id);
+      if(exists === undefined){
+        this.birdQueue.push({
+          common_name : bird.common_name,
+          xeno_id : sound.xeno_id,
+          difficulty : sound.difficulty,
+          seenCount : 0
+        })
+      }
+    })
+  })
+  if (!init) this.save();
 };
 
 // create and export user model

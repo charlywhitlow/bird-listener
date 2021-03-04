@@ -1,0 +1,45 @@
+/* object-position */
+#instructions{
+    margin-top: 20px;
+}
+#x, #y{
+    width: 80px;
+    margin: auto;
+    text-align: center;
+    border: 0;
+}
+#axesInputs div{
+    padding: 0;
+}
+#yDiv, #xDiv {
+    border: solid gray 1px;
+    width: 200px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+#xDiv {
+    margin-left:auto;
+    margin-right:0;
+}
+
+/* admin database functions */
+.admin-task {
+    max-width: 100%;
+    margin: auto;
+    text-align: left;
+    padding: 8px;
+    border: solid 2px  rgb(92, 92, 92);
+}
+.admin-task form{
+    padding: 8px;
+    color: grey;
+}
+.admin-submit{
+    float: right;
+}
+.table {
+    font-size: small;
+}
+#object-fit-panel{
+    text-align: center;
+}

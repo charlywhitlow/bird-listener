@@ -1,0 +1,48 @@
+<div class="admin-task">
+    <h4>{{num}}b. Update object-fit values to center cropped images</h4>
+    <div id="object-fit-div" style="display: none;">
+        <p id="object-fit-info">Click through the images and update x/y values as required</p>
+        <div id="object-fit-panel" style="border: 0px;">
+            <div>
+                <h1 id="common-name"></h1>
+                <h4 style="font-style: italic;"><span id="scientific-name"></span></h4>
+            </div>
+            <figure>
+                <img id="bird-image" src="" alt="bird image">
+            </figure>
+            <div>
+                <p>Set the applicable x or y value below to center the image in the window:</p>
+            </div>
+            <div id="axesInputs" class="row">
+                <div class="w-50">
+                    <div id="xDiv">
+                        <label for="x">X object-position:</label>
+                        <input type="number" min="0" max="100" step="5" 
+                            class="form-control" value="" id="x" name="x" oninput="updateX(value)">
+                    </div>
+                </div>
+                <div class="w-50">
+                    <div id="yDiv">
+                        <label for="y">Y object-position:</label>
+                        <input type="number" min="0" max="100" step="5" 
+                            class="form-control" value="" id="y" name="y" oninput="updateY(value)">
+                    </div>
+                </div>
+                <p id="object-fit-warning">Values must be within 0-100</p>
+            </div>
+            <div>
+                <button id="back-button" class="btn btn-md border-white bg-white" 
+                    onclick="back()">Back</button>
+                <button id="next-button" class="btn btn-md border-white bg-white" 
+                    onclick="next()">Next</button>
+            </div>
+            <h6><span id="pos"></span> of <span id="num"></span></h6>
+        </div>
+    </div>
+    <p id="object-fit-feedback"></p>
+    <form encType="multipart/form-data">
+        <input type="button" class="admin-submit" id="object-fit-button" style="visibility: hidden;"
+            value="Confirm CSS values" onclick="confirmObjectFit('{{type}}')">
+    </form>
+    <br>
+</div>

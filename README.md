@@ -1,74 +1,182 @@
 
 # Bird Listener
 
-A web app to learn about UK bird sounds.
+A web app to learn UK bird sounds.
 
 https://bird-listener.herokuapp.com/
 ______________________________________
-## To initialise / update database:
 
-1. ### Create birds.json from birds.csv
+## API
 
-    * This first archives existing `birds.json` to `data/archive` directory
-    * It then loads file `birds.csv` and writes contents to new `birds.json`
+## Users
+### check-username-available
+    curl -X POST \
+    http://localhost:8000/api/users/check-username-available \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "john" }'
 
-    ``` 
-        curl -X GET \
-        http://localhost:8000/api/admin/create-birds-json-from-csv \
-        -H 'Content-Type: application/json'
-    ```
-
-2. ### Populate birds.json and birds.csv with additional fields from wikimedia / xeno-canto
-
-    * This loads the current `birds.json` file
-    * It uses the value in `xeno_id` column to extract information about the recording from Xeno-Canto
-    * It uses the value in `image_info_url` column to extract information about the image from Wikimedia Commons
-    * It then archives the current `birds.json` file to `data/archive`, and writes the updated json back to `birds.json`
-    * Finally it archives the current `birds.csv` file to `data/archive`, then writes the updated json to `birds.csv` for manual checking
-
-    ``` 
-        curl -X GET \
-        http://localhost:8000/api/admin/populate-birds-json-and-csv \
-        -H 'Content-Type: application/json'
-    ```
-
-3. ### Manual checking
-
-    * The programmatically pulled additional fields in `birds.csv` may have some problems which require manual checking, in particular:
-
-        * Look in `image_update_manually` column for any rows with a 'true' need to be updated manually
-
-        * Check `image_author` against `image_author_raw` to check an appropriate value has been extracted
-
-        * Check values in other image and sounds columns look sensible
-    
-    * Next update the css object-fit values:
-
-        * The following page can be used to loop through and update any rows of the spreadsheet which have blanks in either the image_css_x/y columns:
-
-            * http://localhost:8000/admin/object-position
-
-4. ### Update database from updated birds.csv file
-
-    * When the manual checks are complete, we can run the `init-db-from-csv` function
-    * This first loads the updated `birds.csv` and uses it to update `birds.json`
-    * It then uses the updated `birds.json` file to build the database
-    * NB- if running locally, can't run this using nodemon / devStart script as updating the json file restarts the server. Use `node app.jss` instead
-
-``` 
-    curl -X GET \
-    http://localhost:8000/api/admin/init-db-from-csv \
-    -H 'Content-Type: application/json'
+```json
+{"status":"ok","message":"Username available"}
 ```
-______________________________________
+```json
+{"message":"Username taken"}
+```
+### check-email-available
+    curl -X POST \
+    http://localhost:8000/api/users/check-email-available \
+    -H 'Content-Type: application/json' \
+    -d '{ "email": "john@test.com" }'
 
-## To view current birds.json:
+```json
+{"status":"ok","message":"Email available"}
+```
+```json
+{"message":"Email already registered"}
+```
+### signup
+    curl -X POST \
+    http://localhost:8000/api/users/signup \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "john", "email": "john@test.com", "password": "1234" }'
 
-* This loads and returns the current `birds.json`
+```json
+{"status":"ok","message":"User created"}
+```
+```json
+{"message":"Email already registered, please login or try again"}
+```
+```json
+{"message":"Username taken, please try again"}
+```
+```json
+{"error":"user validation failed: email: Please enter a valid email"}
+```
+### login (with username)
+    curl -X POST \
+    http://localhost:8000/api/users/login \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "john", "password": "1234" }'
 
-    ``` 
-        curl -X GET \
-        http://localhost:8000/api/admin/view-birds-json \
-        -H 'Content-Type: application/json'
-    ```
+```json
+{
+    "status":"ok",
+    "message":"User logged in",
+    "user":{
+        "_id":"XXX",
+        "username":"john"
+    }
+}
+```
+```json
+{"message":"User not found"}
+```
+### login (with email)
+    curl -X POST \
+    http://localhost:8000/api/users/login \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "john@test.com", "password": "1234" }'
+
+```json
+{
+    "status":"ok",
+    "message":"User logged in",
+    "user":{
+        "_id":"XXX",
+        "username":"john"
+    }
+}
+```
+```json
+{"message":"User not found"}
+```
+__________________
+
+## Birds db
+### get all birds in db
+    curl -X GET \
+    http://localhost:8000/api/birds/all \
+    -H 'Content-Type: application/json'
+
+```json
+{   
+    "status":"ok",
+    "birds":[
+        {
+            "_id":"600afd62e8d87d5f17efdf7c",
+            "common_name":"Robin",
+            "scientific_name":"Erithacus rubecula",
+            "__v":0
+        },
+        {
+            "_id":"600b03496cab9f66ff80ef47",
+            "common_name":"Blue tit",
+            "scientific_name":"Cyanistes caeruleus",
+            "__v":0
+        }
+    ]
+}
+```
+### get a specific bird from db (by common name)
+    curl -X POST \
+    http://localhost:8000/api/birds/get \
+    -H 'Content-Type: application/json' \
+    -d '{ "common_name": "Robin" }'
+
+```json
+{
+    "status":"ok",
+    "bird":{
+        "_id":"600afd62e8d87d5f17efdf7c",
+        "common_name":"Robin",
+        "scientific_name":"Erithacus rubecula",
+        "__v":0
+    }
+}
+```
+### get a specific bird from db (by scientific name)
+    curl -X POST \
+    http://localhost:8000/api/birds/get \
+    -H 'Content-Type: application/json' \
+    -d '{ "scientific_name": "Erithacus rubecula" }'
+
+```json
+{
+    "status":"ok",
+    "bird":{
+        "_id":"600afd62e8d87d5f17efdf7c",
+        "common_name":"Robin",
+        "scientific_name":"Erithacus rubecula",
+        "__v":0
+    }
+}
+```
+### get next bird from user queue (and return it to back of queue)
+    curl -X POST \
+    http://localhost:8000/api/birds/get-next-bird \
+    -H 'Content-Type: application/json' \
+    -d '{ "username": "cdog" }'
+
+
+```json
+{
+    "status":"ok",
+    "message":"bird retrieved and moved to back of queue",
+    "nextBird":{
+        "_id":"600c59a99bee2f42c54d47b8",
+        "common_name":"Robin"
+    }
+}
+```
+### add a single bird to the database
+    curl -X POST \
+    http://localhost:8000/api/birds/add \
+    -H 'Content-Type: application/json' \
+    -d '{ "common_name": "Robin", "scientific_name": "Erithacus rubecula" }'
+
+```json
+{
+    "status":"ok",
+    "message":"Bird added"
+}
+```
 ______________________________________

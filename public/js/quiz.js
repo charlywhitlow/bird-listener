@@ -3,7 +3,7 @@ async function loadFirstBird(){
     await getNextBird()
         .then((nextBird) => {
             updateBirdFields(nextBird);
-            showWelcomePage();
+            showStartPanel();
         })
         .catch(err => {
             console.log('Request Failed', err);
@@ -11,12 +11,12 @@ async function loadFirstBird(){
         }
     );
 }
-function showWelcomePage() {
+function showStartPanel() {
     document.getElementById("loader").style.display = "none";
-    document.getElementById("welcome").style.display = "block";
+    document.getElementById("start-panel").style.display = "block";
 }
 function startQuiz(){
-    document.getElementById("welcome").style.display = "none";
+    document.getElementById("start-panel").style.display = "none";
     document.getElementById("content").style.display = "block";
     document.getElementById("audio-player").autoplay = true;
     document.getElementById("audio-player").play();
@@ -113,19 +113,23 @@ async function getNextBird(){
 function updateBirdFields(nextBird){
     document.getElementById("common-name").innerHTML = nextBird.common_name;
     document.getElementById("scientific-name").innerHTML = nextBird.scientific_name;
+
     // audio
-    document.getElementById("audio-player").setAttribute('src', nextBird.sound_url);
-    document.getElementById("sound-recordist").innerHTML = nextBird.sound_recordist;
-    document.getElementById("sound-info").href = 'https://www.xeno-canto.org/'+nextBird.xeno_id;
-    document.getElementById("xeno-id").innerHTML = 'XC'+nextBird.xeno_id;
-    document.getElementById("sound-license-code").innerHTML = nextBird.sound_license_code;
-    document.getElementById("sound-license").href = nextBird.sound_license_url;
-    // image
-    document.getElementById("bird-image").setAttribute('src', nextBird.image_url);
-    document.getElementById("image-url").href = nextBird.image_url;
-    document.getElementById("image-author").innerHTML = nextBird.image_author;
-    document.getElementById("image-license").innerHTML = nextBird.image_license_code;
-    document.getElementById("image-license").href = nextBird.image_license_url;
-    let objectPosition = nextBird.image_css_x+"% "+nextBird.image_css_y+"%";
+    let sound = nextBird.sound;
+    document.getElementById("audio-player").setAttribute('src', sound.sound_url);
+    document.getElementById("sound-recordist").innerHTML = sound.sound_recordist;
+    document.getElementById("sound-info").href = 'https://www.xeno-canto.org/'+sound.xeno_id;
+    document.getElementById("xeno-id").innerHTML = 'XC'+sound.xeno_id;
+    document.getElementById("sound-license-code").innerHTML = sound.sound_license_code;
+    document.getElementById("sound-license").href = sound.sound_license_url;
+
+    // image (temp use first image, TODO: add slideshow)
+    let image = nextBird.images[0];
+    document.getElementById("bird-image").setAttribute('src', image.image_url);
+    document.getElementById("image-url").href = image.image_url;
+    document.getElementById("image-author").innerHTML = image.image_author;
+    document.getElementById("image-license").innerHTML = image.image_license_code;
+    document.getElementById("image-license").href = image.image_license_url;
+    let objectPosition = image.image_css_x+"% "+image.image_css_y+"%";
     document.getElementById('bird-image').style.objectPosition = objectPosition;
 }

@@ -1,0 +1,50 @@
+{{!-- upload csv --}}
+<div class="admin-task">
+    <h4>{{num}}a. Load CSV of bird {{type}}</h4>
+    <p>This function expects a csv with the following headings:<br>
+    <code>{{expectedHeadings}}</code></p>
+    <form id="uploadForm" ref="uploadForm" id="uploadForm" encType="multipart/form-data">
+        <input type="file" name="uploadFile" id="uploadFile">
+        <input type="button" value="Upload CSV" class="admin-submit" onclick="uploadCSV('{{type}}', {{afterCSVLoad}})">
+    </form>
+    <div id="upload-csv-feedback" style="border: none;"></div>
+    <div id="upload-loader-div" class="loader-div" style="display: none;">
+        {{> loader }}
+    </div>
+</div>
+
+{{!-- object-fit --}}
+{{#ifEquals type 'images'}}
+  {{> object-fit-form }}
+{{/ifEquals}}
+
+{{!-- check table and save to datbase --}}
+<div class="admin-task">
+    {{#ifEquals type 'names'}}
+        <h4>{{num}}b. Check values and save to database</h4>
+    {{/ifEquals}}
+    {{#ifEquals type 'sounds'}}
+        <h4>{{num}}b. Check values and save to database</h4>
+        <p>
+            Check auto-populated fields in table below and amend as required.<br>
+            Visit page listed in <code>sound_info_url</code> for any missing details.
+        </p>
+    {{/ifEquals}}
+    {{#ifEquals type 'images'}}
+        <h4>{{num}}c. Check values and save to database</h4>
+        <p>
+            Check auto-populated fields in table below and amend as required.<br>
+            Visit page listed in <code>image_info_url</code> for any missing details.
+        </p>
+    {{/ifEquals}}
+    <div class="table-responsive" style="border: none;">
+        <table class="table table-light table-bordered" id="birdsTable">
+        </table>
+    </div>
+    <form id="saveForm" ref="saveForm" id="saveForm" encType="multipart/form-data">
+        <input type="button" class="admin-submit" style="visibility: hidden;" 
+            value="Save to database" onclick="save('{{type}}')">
+    </form>
+    <br>
+    <div id="save-feedback" style="border: none;"></div>
+</div>

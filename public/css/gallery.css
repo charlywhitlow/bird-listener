@@ -3,7 +3,6 @@
     padding: 1em;
     margin: 0;
     margin-bottom: 1em;
-
 }
 .bird-image{
     width: 200px;
@@ -16,7 +15,17 @@ audio{
     width: 100%;
     max-width: 100%;
     height: 2.5em;
-    margin-top: 1em;
+}
+.image-div{
+    margin-bottom: 1em;
+}
+.sound-div{
+    padding: 0.2em;
+    margin: 0.2em;
+}
+.sound-div h6{
+    font-size: small;
+    text-align: left;
 }
 @media screen and (max-width: 576px) {
     .bird-image {
@@ -40,9 +49,6 @@ audio{
     font-size: x-small;   
     color:  rgba(255, 255, 255, .4);
 }
-/* .name-panel{
-    height: 6em;
-} */
 .scientific-name{
     font-size: small;
     font-style: italic;
@@ -52,7 +58,4 @@ audio{
 }
 #filters input, #filters button{
     margin: 0.2em;
-}
-footer{
-    padding-top: 2.5em;
 }

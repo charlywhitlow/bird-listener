@@ -4,6 +4,6 @@ require('dotenv').config();
 module.exports = {
     PORT: process.env.PORT,
     MONGO_CONNECTION_URL: process.env.MONGO_CONNECTION_URL,
-    TOKEN_SECRET: process.env.TOKEN_SECRET,
-    REFRESH_SECRET: process.env.REFRESH_SECRET
+    MONGO_TEST_URL: process.env.MONGO_TEST_URL,
+    TOKEN_SECRET: process.env.TOKEN_SECRET
 }

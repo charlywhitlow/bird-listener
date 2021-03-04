@@ -61,7 +61,6 @@ app.use('/',
   checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
     require(path.join(__dirname + '/api/admin/update-database')),
-    require(path.join(__dirname + '/api/admin/xeno-canto'))
 ]);
   
 // catch all other routes

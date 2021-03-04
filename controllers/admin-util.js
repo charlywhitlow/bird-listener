@@ -2,6 +2,29 @@ const unirest = require('unirest');
 const HTMLParser = require('node-html-parser');
 const puppeteer = require('puppeteer');
 
+function toProperCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
+}
+async function getResponse(url){
+    return new Promise((resolve, reject) => {
+        unirest.get(url)
+        .headers({
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json'
+        })
+        .end(function (response) {
+            if (response.error) {
+                return reject(response.error)
+            }
+            return resolve(response.body);
+        });
+    })
+}
 
 function uploadCSV(uploadPath, req){
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -34,7 +57,7 @@ async function getRecordingDetails(birds){
         .then(res => res.recordings[0])
         .then(sound => {
             bird.sound_info_url = 'https://www.xeno-canto.org/'+bird.xeno_id;        
-            bird.sound_recordist = sound.rec;
+            bird.sound_recordist = toProperCase(sound.rec);
             bird.sound_license_url = "https:"+sound.lic;
             bird.sound_license_code = getRecordingLicenseCode("https:"+sound.lic);
             bird.sound_url = "https:" + sound.sono.small.split("ffts")[0] + sound['file-name'];
@@ -51,6 +74,7 @@ function getRecordingLicenseCode(license_url){
 
 async function getImageDetails(birds){
     for(let bird of birds) {
+        console.log(`getting image info for ${bird.common_name}...`)
         bird.image_info_url = bird.image_info_url.split('#')[0]; // remove any #section bookmarks
         bird.image_url = await getImageURL(bird.image_info_url); // use puppeteer to extract image_url
         let filename = bird.image_info_url.split('/wiki/')[1];
@@ -77,10 +101,10 @@ async function getImageDetails(birds){
         })
         .catch(err => console.log(err))
     }
+    console.log('images loaded')
     return birds;
 }
 async function getImageURL(image_info_url) {
-    // get image_url from image_info_page using Puppeteer
     const browser = await puppeteer.launch();
     page = await browser.newPage();
     await page.goto(image_info_url, {waitUntil: 'load'});
@@ -89,34 +113,12 @@ async function getImageURL(image_info_url) {
     return image_url;
 };
 
-async function getResponse(url){
-    return new Promise((resolve, reject) => {
-        unirest.get(url)
-        .headers({
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json'
-        })
-        .end(function (response) {
-            if (response.error) {
-                return reject(response.error)
-            }
-            return resolve(response.body);
-        });
-    })
-}
-function toProperCase(str) {
-    return str.replace(
-        /\w\S*/g,
-        function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        }
-    );
-}
-
 
 module.exports = {
     uploadCSV,
     checkCSVHeaders,
     getRecordingDetails,
-    getImageDetails
+    getImageDetails,
+    toProperCase,
+    getResponse
 }

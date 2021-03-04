@@ -79,12 +79,12 @@ function saveBird(){
 
 // navigation buttons
 function next(){
-    saveBird(); // TODO
+    saveBird();
     let bird = getNextBird();
     loadBird(bird, true);
 }
 function back(){
-    saveBird(); // TODO
+    saveBird();
     let bird = getPreviousBird();
     loadBird(bird, true);
 }

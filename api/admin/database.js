@@ -90,12 +90,6 @@ router.post('/api/admin/upload-images-csv', asyncMiddleware( async (req, res, ne
     }
     // get additional fields, update CSV, and return json to browser
     birds = await adminUtil.getImageDetails(birds)
-    .then((updated) => {
-        // write updated CSV
-        // TODO
-
-        return updated;
-    })
     .catch((err) => {
         console.log(err)
         return res.status(400).json({ 

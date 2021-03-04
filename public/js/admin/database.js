@@ -1,3 +1,9 @@
+let birds = []
+let num = 0;
+let pos = 0;
+let textRed = "rgb(207, 18, 18)";
+let backgroundRed = "rgb(219, 129, 129)";
+
 function getURL(func, type){
     switch (func){
         case 'upload':
@@ -35,13 +41,13 @@ const tableHeadings = {
         'common_name' : 'text',
         'image_name' : 'input',
         'image_info_url' : 'link',
-        'image_url' : 'input',
+        'image_url' : 'link',
         'image_author_raw' : 'text',
         'image_author' : 'input',
         'image_license_code' : 'input',
         'image_license_url' : 'input',
-        // 'image_css_x' : 'input',
-        // 'image_css_y' : 'input'
+        'image_css_x' : 'text',
+        'image_css_y' : 'text'
     }
 }
 function clearFeedback(){
@@ -78,7 +84,7 @@ async function uploadCSV(type, afterCSVLoad=null){
         // populate table and call afterCSVLoad function if set
         if (data.status !== 'failed'){
             populateTable(data.birds, tableHeadings[type]);
-            if (afterCSVLoad) afterCSVLoad();
+            if (afterCSVLoad) afterCSVLoad(data.birds);
         }
     });
 }
@@ -178,7 +184,7 @@ function parseTable(){
     for (cell of table.rows[0].cells){
         headers.push(cell.innerHTML)
     }    
-    // build rows
+    // get rows
     let data = [];
     for (let i=1; i<table.rows.length; i++) {
         let tableRow = table.rows[i];
@@ -201,6 +207,27 @@ function parseTable(){
         data.push(rowData);
     }
     return JSON.stringify(data);
+}
+function addCssValuesToTable(){
+    // get css heading indexes
+    let table = document.getElementById('birdsTable');
+    let css_x_index = -1;
+    let css_y_index = -1;
+    for (let i in table.rows[0].cells) {
+        if (table.rows[0].cells[i].innerHTML === 'image_css_x'){
+            css_x_index = i;
+        }
+        if (table.rows[0].cells[i].innerHTML === 'image_css_y'){
+            css_y_index = i;
+        }
+    }
+    // update table with css values
+    for (let i=1; i<table.rows.length; i++) {
+        let x = birds[i-1].image_css_x;
+        let y = birds[i-1].image_css_y;
+        table.rows[i].cells[css_x_index].innerHTML = x;
+        table.rows[i].cells[css_y_index].innerHTML = y;
+    }
 }
 function save(type){
     let json = parseTable();
@@ -227,7 +254,6 @@ function emptyDatabase(){
         console.log(err);
     });
 }
-
 async function updateUserQueues(){
     fetch('/api/admin/update-user-queues', {
         method: "GET",
@@ -241,4 +267,158 @@ async function updateUserQueues(){
         feedbackDiv.innerHTML = 'Problem updating queues';
         console.log(err);
     });
+}
+function loadObjectFitPanel(json){
+    document.getElementById('birdsTable').style.display = 'none';
+    birds = json;
+    document.getElementById("object-fit-div").style.display = "";
+    setPos(pos);
+    setNum(birds.length);
+    loadBird(birds[pos], true); // set defaults
+}
+// load next bird on page
+function loadBird(bird, setDefaults=false){
+    setImage(bird.image_url);
+    setCommonName(bird.common_name);
+    updateX(bird.image_css_x, setDefaults);
+    updateY(bird.image_css_y, setDefaults);
+}
+function setImage(image_url){
+    let img = document.getElementById("bird-image");
+    img.setAttribute('src', image_url);
+    img.onload = function(){
+        if (img.naturalHeight > img.naturalWidth) {
+            // disable x
+            document.getElementById("x").disabled = true;
+            document.getElementById("x").style.backgroundColor = 'grey';
+            // enable y
+            document.getElementById("y").disabled = false;
+            document.getElementById("y").style.backgroundColor = 'white';
+        }else{
+            // disable y
+            document.getElementById("y").disabled = true;
+            document.getElementById("y").style.backgroundColor = 'grey';
+            // enable x
+            document.getElementById("x").disabled = false;
+            document.getElementById("x").style.backgroundColor = 'white';
+        }
+    };
+}
+function setCommonName(common_name){
+    document.getElementById("common-name").innerHTML = common_name;
+}
+function saveBird(){
+    birds[pos].image_css_x = document.getElementById('x').value;
+    birds[pos].image_css_y = document.getElementById('y').value;
+}
+function next(){
+    saveBird();
+    let bird = getNextBird();
+    loadBird(bird, true);
+}
+function back(){
+    saveBird();
+    let bird = getPreviousBird();
+    loadBird(bird, true);
+}
+function getNextBird(){
+    incrementPos();
+    return birds[pos];
+}
+function getPreviousBird(){
+    decrementPos();
+    return birds[pos];
+}
+function setNum(x){
+    num = x;
+    document.getElementById("num").innerHTML = x;
+}
+function setPos(x){
+    pos = x;
+    document.getElementById("pos").innerHTML = x+1;
+    disableNavIfApplicable();
+}
+function incrementPos(){
+    pos++;
+    document.getElementById("pos").innerHTML = pos+1;
+    disableNavIfApplicable();
+    if (pos+1 === num) {
+        document.getElementById("object-fit-button").style.visibility = 'visible';
+    }
+}
+function confirmObjectFit(){
+    saveBird(); // save current bird
+    addCssValuesToTable();
+    document.getElementById('birdsTable').style.display = '';
+    enableSaveButton();
+}
+function decrementPos(){
+    pos--;
+    document.getElementById("pos").innerHTML = pos+1;
+    disableNavIfApplicable();
+}
+function disableNavIfApplicable(){
+    if (pos === num-1){
+        document.getElementById('next-button').disabled = true;
+    }else document.getElementById('next-button').disabled = false;
+    if (pos === 0){
+        document.getElementById('back-button').disabled = true;
+    }else document.getElementById('back-button').disabled = false;
+}
+// update x and y values on page
+function updateX(x, setDefaults=false){
+    if (setDefaults===true && ( x === "" || x === undefined)){
+        setImagePositionX(50);
+        setInputValueX(50);
+    }else if(x < 0){
+        setImagePositionX(0);
+        setInputValueX(0);
+        document.getElementById('object-fit-warning').style.color = textRed;
+        document.getElementById('x').style.backgroundColor = backgroundRed;
+    }else if(x > 100){
+        setImagePositionX(100);
+        setInputValueX(100);
+        document.getElementById('object-fit-warning').style.color = textRed;
+        document.getElementById('x').style.backgroundColor = backgroundRed;
+    }else{
+        setImagePositionX(x);
+        setInputValueX(x);
+        document.getElementById('object-fit-warning').style.color = "white";
+        document.getElementById('x').style.backgroundColor = "white";
+    }
+}
+function updateY(y, setDefaults=false){
+    if (setDefaults===true && ( y === "" || y === undefined)){
+        setImagePositionY(50);
+        setInputValueY(50);
+    }else if(y < 0){
+        setImagePositionY(0);
+        setInputValueY(0);
+        document.getElementById('object-fit-warning').style.color = textRed;
+        document.getElementById('y').style.backgroundColor = backgroundRed;
+    }else if(y > 100){
+        setImagePositionY(100);
+        setInputValueY(100);
+        document.getElementById('object-fit-warning').style.color = textRed;
+        document.getElementById('y').style.backgroundColor = backgroundRed;
+    }else{
+        setImagePositionY(y);
+        setInputValueY(y);
+        document.getElementById('object-fit-warning').style.color = "white";
+        document.getElementById('y').style.backgroundColor = "white";
+    }
+}
+function setImagePositionX(x){
+    let y = document.getElementById('y').value;
+    document.getElementById('bird-image').style.objectPosition = `${x}% ${y}%`;
+}
+function setImagePositionY(y){
+    let x = document.getElementById('x').value;
+    document.getElementById('bird-image').style.objectPosition = `${x}% ${y}%`;
+}
+function setInputValueX(x){
+    document.getElementById('x').value = x;
+}
+function setInputValueY(y){
+    document.getElementById('y').value = y;
 }

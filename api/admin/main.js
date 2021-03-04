@@ -41,7 +41,7 @@ router.get('/admin/add-images', function (req, res) {
         layout: false,
         type: 'images',
         expectedHeadings: 'common_name, image_info_url, image_name',
-        afterCSVLoad: 'enableSaveButton'
+        afterCSVLoad: 'loadObjectFitPanel'
     });
 });
 

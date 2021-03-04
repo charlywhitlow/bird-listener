@@ -60,7 +60,7 @@ app.use('/',
   passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
   checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
-    require(path.join(__dirname + '/api/admin/update-database')),
+    require(path.join(__dirname + '/api/admin/database')),
 ]);
   
 // catch all other routes

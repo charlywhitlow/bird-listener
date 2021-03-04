@@ -4,7 +4,7 @@ const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const router = express.Router();
 const BirdModel = require(__root + '/models/birdModel');
 const UserModel = require(__root + '/models/userModel');
-const adminUtil = require(__root + '/controllers/admin-util.js');
+const adminUtil = require(__root + '/controllers/admin.js');
 const uploadDir = __root + '/data/uploads/';
 
 // 1a. Upload CSV of bird names

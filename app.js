@@ -50,14 +50,14 @@ app.use('/', [
 
 // secure user routes
 app.use('/', 
-  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }), [
+  passport.authenticate('jwt', { session : false, failureRedirect: '/login' }), [
     require(path.join(__dirname + '/api/secure/main')),
     require(path.join(__dirname + '/api/secure/birds'))
 ]);
 
 // admin routes
 app.use('/', 
-  passport.authenticate('jwt', { session : false, failureRedirect: '/index' }),
+  passport.authenticate('jwt', { session : false, failureRedirect: '/login' }),
   checkAdminUser, [
     require(path.join(__dirname + '/api/admin/main')),
     require(path.join(__dirname + '/api/admin/database')),

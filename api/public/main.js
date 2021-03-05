@@ -8,8 +8,8 @@ router.get(['/signup', '/signup.html'], function (req, res) {
 });
 
 // login page
-router.get(['/', '/index', '/index.html'], function (req, res) {
-    res.render('index', {layout: false});
+router.get(['/', '/login', '/login.html'], function (req, res) {
+    res.render('login', {layout: false});
 });
 
 

@@ -8,9 +8,9 @@ async function logout(){
     });
     if (response.status === 200){
         alert('Logged out')
-        location.href='index';
+        location.href='login';
     }else{
         console.log('Problem logging out');
-        location.href='index';
+        location.href='login';
     }
 }

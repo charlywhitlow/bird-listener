@@ -1,4 +1,4 @@
-const { PORT, MONGO_TEST_URL, MONGO_CONNECTION_URL } = require('./config/config');
+const { PORT, MONGO_CONNECTION_URL } = require('./config/config');
 global.__root = __dirname; // set app root var for easier dir addressing
 
 const express = require('express');
@@ -14,8 +14,7 @@ require('./auth/auth');
 const { checkAdminUser } = require('./auth/checkAdminUser');
 
 // setup mongo connection
-// const uri = MONGO_CONNECTION_URL;
-const uri = MONGO_TEST_URL; // test db
+const uri = MONGO_CONNECTION_URL;
 mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', (error) => {
   console.log(error);

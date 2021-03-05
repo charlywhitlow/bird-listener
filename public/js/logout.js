@@ -7,7 +7,6 @@ async function logout(){
         console.log('Request Failed', err);
     });
     if (response.status === 200){
-        alert('Logged out')
         location.href='login';
     }else{
         console.log('Problem logging out');

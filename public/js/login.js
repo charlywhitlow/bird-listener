@@ -1,6 +1,6 @@
 function login(){
-
     // check inputs completed
+    const feedbackP = document.getElementById('login-feedback');
     let inputUsername = document.getElementById('username').value.trim();
     let inputPassword = document.getElementById('password').value.trim();
     if (inputUsername !== '' && inputPassword !== '') {
@@ -9,9 +9,8 @@ function login(){
             password: inputPassword
         });
     }else{
-        window.alert('Please enter username and password to continue'); 
+        flashError('Please enter username and password to continue', feedbackP)
     }
-
     // attempt login
     async function login(data){
         const response = await fetch('/api/users/login', {
@@ -24,16 +23,16 @@ function login(){
         .catch(err => {
             console.log('Request Failed', err);
         });
-        
         // handle response
         let json = await response.json();
         if (response.status === 401){
-            alert(json.message+', please try again');
+            flashError(json.message+', please try again', feedbackP);
         }
         if (response.status === 200){
-            alert('Logged in')
-            // console.log(json.user)
-            location.href='menu';
+            flashSuccess('Logged in', feedbackP)
+            setTimeout(function() {
+                location.href='menu'
+            }, 500);
         }
     }
 }

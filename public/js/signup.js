@@ -1,20 +1,24 @@
 function signup(){
-
     // check inputs completed
+    let feedbackP = document.getElementById('signup-feedback');
     let inputUsername = document.getElementById('username').value.trim();
     let inputEmail = document.getElementById('email').value.trim();
     let inputPassword = document.getElementById('password').value.trim();
-
     if (inputEmail !== '' && inputPassword !== '' && inputUsername !== ''){
-        signup({
-            username: inputUsername.toLowerCase(), 
-            password: inputPassword,
-            email: inputEmail.toLowerCase()
-        });
+        let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let emailValid = emailRegEx.test(inputEmail.toLowerCase());
+        if (!emailValid){
+            flashError('Please enter a valid email', feedbackP);            
+        }else{
+            signup({
+                username: inputUsername.toLowerCase(), 
+                password: inputPassword,
+                email: inputEmail.toLowerCase()
+            });
+        }
     }else{
-        window.alert('Please complete all fields');
+        flashError('Please complete all fields', feedbackP);
     }
-
     // attempt signup
     async function signup(data){
         const response = await fetch('/api/users/signup', {
@@ -27,20 +31,15 @@ function signup(){
         .catch(err => {
             console.log('Request Failed', err);
         });
-        
         // handle response
         let json = await response.json();
         if (response.status === 200){
-            alert('Account created');
-            location.href='menu';
+            flashSuccess('Account created', feedbackP)
+            setTimeout(function() {
+                location.href='menu';
+            }, 500);
         }else {
-            if (response.status === 401){
-                alert(json.message);
-            }else{
-                if (json.error == 'user validation failed: email: Please enter a valid email'){
-                    alert('Please enter a valid email');
-                }
-            }
+            flashError(json.message+', please try again', feedbackP);
         }
     }
 }

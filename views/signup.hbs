@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/main.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/signup.js"></script>
+    <script src="../js/util/flashMessage.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">            
@@ -41,7 +42,8 @@
                         <button type="submit" class="btn btn-secondary" id="signupButton" name="signupButton" onclick="signup()">Go</button>
                     </div>
                 </div>
-                <div><p>Already have an account? <a href="login">Login</a></p></div>
+                <p>Already have an account? <a href="login">Login</a></p>
+                <p id="signup-feedback" class="transparent"></p>
             </div>
         </main>
         {{> footer }}

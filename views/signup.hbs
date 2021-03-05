@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../js/signup.js"></script>
     <script src="../js/util/flashMessage.js"></script>
+    <script src="../js/util/enterToSubmit.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">            
@@ -30,13 +31,13 @@
                 <h3>Sign up</h3>
                 <div id="signup-form">
                     <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Username" id="username" name="username">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(event, signup)">
                     </div>
                     <div class="form-row">
-                        <input type="email" class="form-control" placeholder="Email" id="email" name="email">
+                        <input type="email" class="form-control" placeholder="Email" id="email" name="email" onkeyup="enterToSubmit(event, signup)">
                     </div>
                     <div class="form-row">
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(event, signup)">
                     </div>
                     <div class="form-row">
                         <button type="submit" class="btn btn-secondary" id="signupButton" name="signupButton" onclick="signup()">Go</button>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/main.css"/>
     <script src="../js/login.js"></script>
     <script src="../js/util/flashMessage.js"></script>
+    <script src="../js/util/enterToSubmit.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -25,10 +26,10 @@
                 <h3>Login</h3>
                 <div id="login-form">
                     <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Username" id="username" name="username">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(event, login)">
                     </div>
                     <div class="form-row">
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(event, login)">
                     </div>
                     <div class="form-row">
                         <button type="submit" class="btn btn-secondary" id="loginButton" name="loginButton" onclick="login()">Go</button>

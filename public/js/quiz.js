@@ -72,7 +72,8 @@ async function showNextBird(){
     // increment page- up to page 10 (last bird)
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     document.getElementById("page").innerHTML = page+1;
-    // preload next bird
+    document.getElementById("bird-image").setAttribute('src', ''); // clear previous bird
+    // load next bird
     let nextBird = await getNextBird();
     updateBirdFields(nextBird);
 }

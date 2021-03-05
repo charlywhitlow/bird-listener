@@ -40,7 +40,6 @@ figure {
     color: rgba(255,255,255,.5);
     font-size: small;
     margin-bottom: 20px;
-    text-decoration: none;
 }
 #audio-player{
     margin: -4px;

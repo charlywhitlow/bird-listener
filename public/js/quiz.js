@@ -120,7 +120,6 @@ function updateBirdFields(nextBird){
     document.getElementById("audio-player").setAttribute('src', sound.sound_url);
     document.getElementById("sound-recordist").innerHTML = sound.sound_recordist;
     document.getElementById("sound-info").href = 'https://www.xeno-canto.org/'+sound.xeno_id;
-    document.getElementById("xeno-id").innerHTML = 'XC'+sound.xeno_id;
     document.getElementById("sound-license-code").innerHTML = sound.sound_license_code;
     document.getElementById("sound-license").href = sound.sound_license_url;
 

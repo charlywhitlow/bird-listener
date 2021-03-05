@@ -55,9 +55,4 @@ router.get('/admin/empty-database', function (req, res) {
     res.render('admin/empty-database', {layout: false});
 });
 
-// object-position
-router.get('/admin/object-position', function (req, res) {
-    res.render('admin/object-position', {layout: false});
-});
-
 module.exports = router;

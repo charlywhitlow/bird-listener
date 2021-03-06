@@ -40,6 +40,16 @@ footer{
     margin: 5px;
 }
 
+/* About */
+#about{
+    max-width: 650px;
+    margin: auto;
+}
+#about h1{
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
 /* App intro paragraph */
 #app-intro p {
     margin: 1px;

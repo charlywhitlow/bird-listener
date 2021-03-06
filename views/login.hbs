@@ -26,10 +26,10 @@
                 <h3>Login</h3>
                 <div id="login-form">
                     <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(event, login)">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(this, event, login)">
                     </div>
                     <div class="form-row">
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(event, login)">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(this, event, login)">
                     </div>
                     <div class="form-row">
                         <button type="submit" class="btn btn-secondary" id="loginButton" name="loginButton" onclick="login()">Go</button>

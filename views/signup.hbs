@@ -31,13 +31,13 @@
                 <h3>Sign up</h3>
                 <div id="signup-form">
                     <div class="form-row">
-                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(event, signup)">
+                        <input type="text" class="form-control" placeholder="Username" id="username" name="username" onkeyup="enterToSubmit(this, event, signup)">
                     </div>
                     <div class="form-row">
-                        <input type="email" class="form-control" placeholder="Email" id="email" name="email" onkeyup="enterToSubmit(event, signup)">
+                        <input type="email" class="form-control" placeholder="Email" id="email" name="email" onkeyup="enterToSubmit(this, event, signup)">
                     </div>
                     <div class="form-row">
-                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(event, signup)">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password" onkeyup="enterToSubmit(this, event, signup)">
                     </div>
                     <div class="form-row">
                         <button type="submit" class="btn btn-secondary" id="signupButton" name="signupButton" onclick="signup()">Go</button>

@@ -60,6 +60,7 @@ footer{
 #app-intro{
     margin: auto;
     margin-bottom: 40px;
+    max-width: 400px;
 }
 #menu-intro{
     max-width: 450px;

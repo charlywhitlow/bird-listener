@@ -32,7 +32,7 @@ function login(){
             flashSuccess('Logged in', feedbackP)
             setTimeout(function() {
                 location.href='menu'
-            }, 500);
+            }, 400);
         }
     }
 }

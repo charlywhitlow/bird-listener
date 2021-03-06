@@ -3,6 +3,7 @@ function flashError(message, feedbackP){
     feedbackP.classList.add('error');
     feedbackP.classList.add('fade-in');
     feedbackP.innerHTML = message;
+    feedbackP.focus(); 
     setTimeout(function() {
         feedbackP.classList.remove('transparent');
         feedbackP.classList.remove('fade-in');
@@ -13,8 +14,9 @@ function flashSuccess(message, feedbackP){
     feedbackP.classList.add('success');
     feedbackP.classList.add('fade-in-quick');
     feedbackP.innerHTML = message;
+    feedbackP.focus(); 
     setTimeout(function() {
         feedbackP.classList.remove('transparent');
         feedbackP.classList.remove('fade-in-quick');
-    }, 400);
+    }, 300);
 }

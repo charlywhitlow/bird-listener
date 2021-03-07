@@ -119,14 +119,14 @@ function updateBirdFields(nextBird){
     let sound = nextBird.sound;
     document.getElementById("audio-player").setAttribute('src', sound.sound_url);
     document.getElementById("sound-recordist").innerHTML = sound.sound_recordist;
-    document.getElementById("sound-info").href = 'https://www.xeno-canto.org/'+sound.xeno_id;
+    document.getElementById("sound-info-url").href = 'https://www.xeno-canto.org/'+sound.xeno_id;
     document.getElementById("sound-license-code").innerHTML = sound.sound_license_code;
     document.getElementById("sound-license").href = sound.sound_license_url;
 
     // image (temp use first image, TODO: add slideshow)
     let image = nextBird.images[0];
     document.getElementById("bird-image").setAttribute('src', image.image_url);
-    document.getElementById("image-url").href = image.image_url;
+    document.getElementById("image-info-url").href = image.image_info_url;
     document.getElementById("image-author").innerHTML = image.image_author;
     document.getElementById("image-license").innerHTML = image.image_license_code;
     document.getElementById("image-license").href = image.image_license_url;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const birds = require(__root + '/controllers/birds.js');
+const UserModel = require(__root + '/models/userModel.js');
 
 
 // menu
@@ -21,8 +22,9 @@ router.get(['/quiz','/quiz.html'], function (req, res) {
 });
 
 // quiz-gallery
-router.get(['/quiz-gallery','/quiz-gallery.html'], function (req, res) {
-    res.render('quiz-gallery', {layout: false});
+router.get(['/quiz-gallery','/quiz-gallery.html'], async function (req, res) {
+    let user = await UserModel.findOne({_id: req.user._id});
+    res.render('quiz-gallery', { layout: false, birds: user.lastTen });
 });
 
 // about

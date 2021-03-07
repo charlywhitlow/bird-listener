@@ -49,23 +49,34 @@ const UserSchema = new Schema({
     type: [ birdsQueueSchema ],
     required: true,
     default: []
-  }    
+  },
+  lastTen : {
+    type: [ BirdModel.BirdSchema ],
+    required: true,
+    default: []
+  }
 });
 
 
-// get next sound from queue
 UserSchema.methods.getNextSound = async function () { 
+  // get next bird sound from queue and return to queue
   let nextSound = this.birdQueue.shift();
   nextSound.seen_count ++;
   this.returnToQueue(nextSound);
   return await BirdModel.findOne({common_name: nextSound.common_name})
   .then(bird => {
+    // add bird to lastTen array
+    this.lastTen.push(bird)
+    if (this.lastTen.length > 10){
+      this.lastTen.shift();
+    }
+    this.save()
     return {
       common_name : bird.common_name,
       scientific_name : bird.scientific_name,
       sound: bird.sounds.find(sound => sound.xeno_id == nextSound.xeno_id),
       images: bird.images
-    }  
+    }
   }).catch(err => console.log(err))  
 };
 
@@ -88,7 +99,6 @@ UserSchema.methods.returnToQueue = async function (sound) {
   }
   // return to queue at index
   this.birdQueue.splice(index, 0, sound);
-  this.save();
 }
 function getRandomInt(min, max) { // range inclusive
   min = Math.ceil(min);

@@ -6,7 +6,9 @@
     <title>Bird Listener</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/gallery.css"/>
     <script src="../js/quiz.js"></script>
+    <script src="../js/gallery.js"></script>
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
     <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">            
@@ -20,9 +22,7 @@
         <main class="px-3">
             <div class="quiz-question">
                 <h1 id="listen">Quiz Gallery</h1>
-                <p>[add gallery of 10 birds in quiz]</p>
-                <p>[links to detailed page for each bird, and back again]</p>
-                <p>[include stats i.e. answered correctly when not training]</p>
+                <p>{{>bird-gallery}}</p>
             </div>
             <p><button class="btn btn-md border-white bg-white" onclick="location.href='quiz'">Another Set</button></p>
         </main>

@@ -58,27 +58,37 @@ const UserSchema = new Schema({
 });
 
 
+// get next bird sound from queue and return to queue
 UserSchema.methods.getNextSound = async function () { 
-  // get next bird sound from queue and return to queue
-  let nextSound = this.birdQueue.shift();
-  nextSound.seen_count ++;
-  this.returnToQueue(nextSound);
-  return await BirdModel.findOne({common_name: nextSound.common_name})
+  let nextInQueue = this.birdQueue.shift();
+  nextInQueue.seen_count ++;
+  this.returnToQueue(nextInQueue);
+    return await BirdModel.findOne({ common_name: nextInQueue.common_name })
   .then(bird => {
-    // add bird to lastTen array
-    this.lastTen.push(bird)
-    if (this.lastTen.length > 10){
-      this.lastTen.shift();
-    }
-    this.save()
+    this.addToLastTen(bird, nextInQueue.xeno_id);
+    this.save();
     return {
       common_name : bird.common_name,
       scientific_name : bird.scientific_name,
-      sound: bird.sounds.find(sound => sound.xeno_id == nextSound.xeno_id),
+      sound: bird.sounds.find(sound => sound.xeno_id == nextInQueue.xeno_id),
       images: bird.images
     }
   }).catch(err => console.log(err))  
 };
+
+// add sound to last ten array
+UserSchema.methods.addToLastTen = function(bird, xeno_id) {
+  let nextSound = {
+    common_name : bird.common_name,
+    scientific_name : bird.scientific_name,
+    sounds: [ bird.sounds.find(sound => sound.xeno_id == xeno_id) ],
+    images: bird.images
+  }
+  this.lastTen.push(nextSound);
+  if (this.lastTen.length > 10){
+    this.lastTen.shift();
+  }
+}
 
 // return sound to queue based on seen_count
 UserSchema.methods.returnToQueue = async function (sound) { 

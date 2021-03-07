@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        {{#each birds as |bird|}}
+        <div class="col col-12 col-sm-6 col-md-4 col-lg-3 bird-panel">
+            <div class="name-panel">
+                <h4 class="common-name">{{bird.common_name}}</h4>
+                <h5 class="scientific-name">{{bird.scientific_name}}</h5>
+            </div>
+            
+            {{!-- temp return first image- TODO: build slideshow --}}
+            <div class="image-div">
+                <img class="bird-image img-fluid" 
+                    src="{{bird.images.0.image_url}}" alt="{{bird.common_name}}"
+                    style="object-position: {{bird.images.0.image_css_x}}% {{bird.images.0.image_css_y}}%;">
+                <div class="license-panel">
+                    Image: 
+                    <a href="{{bird.images.0.image_info_url}}" target="_blank" rel="noopener noreferrer">
+                        {{bird.images.0.image_author}}</a> | 
+                    <a href="{{bird.images.0.image_license_url}}" target="_blank" rel="noopener noreferrer">
+                        {{bird.images.0.image_license_code}}
+                    </a>
+                </div>
+            </div>
+
+            {{!-- sounds --}}
+            {{#each bird.sounds as |sound|}}
+                <div class="sound-div">
+                    <h6>{{sound.sound_name}}</h6>
+                    <audio class="audio-player" src="{{sound.sound_url}}" controls controlsList="nodownload" preload="true">
+                        Your browser does not support the <code>audio</code> element.
+                        It can be found at <a href="{{sound.sound_url}}" target="_blank" rel="noopener noreferrer">Xeno</a>.
+                    </audio>
+                    <div class="license-panel">
+                        Audio:
+                        <a href="{{sound.sound_info_url}}" target="_blank" rel="noopener noreferrer">
+                            {{sound.sound_recordist}}</a> | 
+                        <a href="{{sound.sound_license_url}}" target="_blank" rel="noopener noreferrer">
+                            CC {{sound.sound_license_code}}
+                        </a>
+                    </div>
+                </div>
+            {{/each}}
+            </div>
+        {{/each}}
+    </div>
+</div>

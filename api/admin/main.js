@@ -30,7 +30,7 @@ router.get('/admin/add-sounds', function (req, res) {
     res.render('admin/add-sounds', {
         layout: false,
         type: 'sounds',
-        expectedHeadings: 'common_name, sound_info_url, sound_name, difficulty',
+        expectedHeadings: 'common_name, xeno_id, sound_name, difficulty',
         afterCSVLoad: 'enableSaveButton'
     });
 });

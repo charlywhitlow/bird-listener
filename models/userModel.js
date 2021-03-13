@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 const BirdModel = require(__root + '/models/birdModel');
+const shuffleInPlace = require('fisher-yates/inplace');
 
 
 // lists each sound in db: [common_name, xeno_id, difficulty, seenCount]
@@ -63,7 +64,7 @@ UserSchema.methods.getNextSound = async function () {
   let nextInQueue = this.birdQueue.shift();
   nextInQueue.seen_count ++;
   this.returnToQueue(nextInQueue);
-    return await BirdModel.findOne({ common_name: nextInQueue.common_name })
+  return await BirdModel.findOne({ common_name: nextInQueue.common_name })
   .then(bird => {
     this.addToLastTen(bird, nextInQueue.xeno_id);
     this.save();
@@ -117,11 +118,11 @@ function getRandomInt(min, max) { // range inclusive
 }
 
 UserSchema.pre('save', async function (next) {
-  // hash password and create user queue before first save
+  // before first save- hash password and init user birdQueue
   if(this.isNew){
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
-    await this.updateQueue(true);
+    await this.initQueue();
   }
   next();
 });
@@ -133,8 +134,40 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-// init/update user queue from database
-UserSchema.methods.updateQueue = async function (init=false) {
+// init queue from database
+UserSchema.methods.initQueue = async function () {
+  let birds = await BirdModel.find({include:true}, {common_name:true, sounds:true});
+  let pools = {
+    'L1' : [],
+    'L2' : [],
+    'L3' : [],
+    'L4' : []
+  }
+  // build queue objects and split into difficulty pools
+  birds.forEach(bird => {
+    bird.sounds.forEach(sound => {
+      pools['L'+sound.difficulty].push({
+        common_name : bird.common_name,
+        xeno_id : sound.xeno_id,
+        difficulty : sound.difficulty,
+        seenCount : 0
+      });
+    })
+  })
+  // shuffle each pool separately
+  for (const [pool, sounds] of Object.entries(pools)) {
+    shuffleInPlace(sounds);
+  }
+  // add shuffled sounds to user queue in order of difficulty
+  for (const [pool, sounds] of Object.entries(pools)) {
+    sounds.forEach(sound => {
+      this.birdQueue.push(sound);      
+    });
+  }
+}
+
+// update user queue from database
+UserSchema.methods.updateQueue = async function () {
   let birds = await BirdModel.find({include:true}, {common_name:true, sounds:true});
   birds.forEach(bird => {
     bird.sounds.forEach(sound => {
@@ -149,7 +182,7 @@ UserSchema.methods.updateQueue = async function (init=false) {
       }
     })
   })
-  if (!init) this.save();
+  this.save();
 };
 
 // empty user queue

@@ -25,7 +25,11 @@
                 <div id="app-intro">
                     <h3>Add Images</h3>
                 </div>
-                {{> load-csv-form num=1}}
+                <div class="admin-tasks">
+                    {{> load-csv-form num=1}}
+                </div>
+                <button class="btn-lg bg-grey next-button" 
+                onclick="location.href='update-queues'">NEXT: Update User Queues</button>
             </div>
         </main>
         {{> footer }}

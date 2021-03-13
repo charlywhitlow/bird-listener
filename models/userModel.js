@@ -132,6 +132,14 @@ UserSchema.methods.updateQueue = async function (init=false) {
   if (!init) this.save();
 };
 
+// empty user queue
+UserSchema.methods.emptyQueue = async function () {
+  for (let i = this.birdQueue.length-1; i >= 0; --i) {
+    this.birdQueue.splice(i, 1);
+  }
+  this.save();
+};
+
 // create and export user model
 const UserModel = mongoose.model('user', UserSchema);
 module.exports = UserModel;

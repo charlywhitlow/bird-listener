@@ -286,9 +286,16 @@ router.get('/api/admin/empty-db', asyncMiddleware( async (req, res, next) => {
             'error' : err
         });
     });
+    // empty user queues
+    for await (const user of await UserModel.find()) {
+        await user.emptyQueue().catch(err => {
+            console.log(err)
+            dbErrors.push(err.message)
+        })
+    }
     res.status(200).json({ 
         'status' : 'ok',
-        'message' : 'Database cleared'
+        'message' : 'Birds table and user queues emptied'
     });
 }));
 

@@ -265,9 +265,8 @@ router.get('/api/admin/update-user-queues', asyncMiddleware( async (req, res, ne
     });
 }));
 
-// 4. empty birds table and clean indexes
-router.get('/api/admin/empty-db', asyncMiddleware( async (req, res, next) => {
-
+// 4a. empty birds table, empty user queues, and clean indexes
+router.get('/api/admin/empty-birds-table', asyncMiddleware( async (req, res, next) => {
     // empty birds table
     await BirdModel.deleteMany({})
     .catch(function(err){
@@ -286,9 +285,30 @@ router.get('/api/admin/empty-db', asyncMiddleware( async (req, res, next) => {
             'error' : err
         });
     });
+    // empty user queues
+    for await (const user of await UserModel.find()) {
+        await user.emptyQueue().catch(err => {
+            console.log(err)
+            dbErrors.push(err.message)
+        })
+    }
     res.status(200).json({ 
         'status' : 'ok',
-        'message' : 'Database cleared'
+        'message' : 'Birds table and user queues emptied'
+    });
+}));
+
+// 4b. empty user queues
+router.get('/api/admin/empty-queues', asyncMiddleware( async (req, res, next) => {
+    for await (const user of await UserModel.find()) {
+        await user.emptyQueue().catch(err => {
+            console.log(err)
+            dbErrors.push(err.message)
+        })
+    }
+    res.status(200).json({ 
+        'status' : 'ok',
+        'message' : 'User queues emptied'
     });
 }));
 

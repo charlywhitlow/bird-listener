@@ -1,6 +1,16 @@
 <div class="admin-task">
-    <h5>OPTIONAL: Empty Database</h5>
-    <p>This will clear the birds table in the database, USE WITH CAUTION</p>
-    <button onclick="emptyDatabase()">Empty Database</button>
-    <div id="empty-db-feedback" style="border: none;"></div>
+    <h5>Clear Birds Table</h5>
+    <p>This will clear the birds table in the database, and delete all user queues</p>
+    <p>USE WITH CAUTION</p>
+    <button class="bg-grey" onclick="confirmClearBirds()">
+        Clear Birds Table</button>
+    <div id="clear-birds-feedback" style="border: none;"></div>
+</div>
+<div class="admin-task">
+    <h5>Clear User Queues</h5>
+    <p>This will delete all user queues</p>
+    <p>USE WITH CAUTION</p>
+    <button class="bg-grey" onclick="confirmClearQueues()">
+        Clear User Queues</button>
+    <div id="clear-queues-feedback" style="border: none;"></div>
 </div>

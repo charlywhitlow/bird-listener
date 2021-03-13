@@ -16,7 +16,8 @@ function getURL(func, type){
 let feedbackDivs = {
     'uploadCSV' : 'upload-csv-feedback',
     'save' : 'save-feedback',
-    'emptyDB' : 'empty-db-feedback',
+    'clearBirds' : 'clear-birds-feedback',
+    'clearQueues' : 'clear-queues-feedback',
     'checkTable' : 'check-table-feedback',
     'objectFit' : 'object-fit-feedback',
     'userQueues' : 'update-queues-feedback'
@@ -238,15 +239,43 @@ function save(type){
         addFeedback(data, feedbackDiv)
     });
 }
-function emptyDatabase(){
-    fetch('/api/admin/empty-db', {
+function confirmClearBirds(){
+    let del = confirm('This deletes the birds table and user progress. Are you sure you want to continue?')
+    if (del) {
+        clearBirds();
+    };
+}
+function clearBirds(){
+    fetch('/api/admin/empty-birds-table', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
     .then(res => res.json()).then(json => {
-        let feedbackDiv = document.getElementById(feedbackDivs['emptyDB']);
+        let feedbackDiv = document.getElementById(feedbackDivs['clearBirds']);
+        addFeedback(json, feedbackDiv)
+    })
+    .catch(err => {
+        feedbackDiv.innerHTML = 'Problem clearing database';
+        console.log(err);
+    });
+}
+function confirmClearQueues(){
+    let del = confirm('This deletes all user progress. Are you sure you want to continue?')
+    if (del) {
+        clearQueues();
+    };
+}
+function clearQueues(){
+    fetch('/api/admin/empty-queues', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json()).then(json => {
+        let feedbackDiv = document.getElementById(feedbackDivs['clearQueues']);
         addFeedback(json, feedbackDiv)
     })
     .catch(err => {

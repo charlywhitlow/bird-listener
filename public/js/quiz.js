@@ -74,7 +74,7 @@ async function showNextBird(){
     document.getElementById("page").innerHTML = page+1;
     document.getElementById("bird-image").setAttribute('src', ''); // clear previous bird
     // load next bird
-    let nextBird = await getNextBird();
+    let nextBird = await getNextBird(page);
     updateBirdFields(nextBird);
 }
 // returns value of given cookie name if it exists
@@ -95,14 +95,20 @@ function getCookie(cookie_name) {
     return "";
 }
 // get next bird from user queue
-async function getNextBird(){
+async function getNextBird(index=null){
     user = await { username: getCookie('username') };
+    if (index == null){
+        index = parseInt(document.getElementById("page").innerHTML, 10);
+    }
     const response = await fetch('/api/birds/get-next-bird', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify({
+            'username': user.username,
+            'index': index
+        })
     })
     .catch(err => {
         console.log('Request Failed', err);

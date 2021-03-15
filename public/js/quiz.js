@@ -98,7 +98,7 @@ function getCookie(cookie_name) {
 async function getNextBird(index=null){
     user = await { username: getCookie('username') };
     if (index == null){
-        index = parseInt(document.getElementById("page").innerHTML, 10);
+        index = parseInt(document.getElementById("page").innerHTML, 10) -1;
     }
     const response = await fetch('/api/birds/get-next-bird', {
         method: 'POST',

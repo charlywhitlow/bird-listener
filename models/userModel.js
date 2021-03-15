@@ -63,10 +63,15 @@ const UserSchema = new Schema({
 UserSchema.methods.getNextSound = async function (index) {
   // if bird already seen in this quiz push forward to next quiz
   let nextInQueue = await this.birdQueue.shift();
-  let thisQuiz = this.lastTen.slice(10-index, 10).map(function(item) { return item["common_name"]; });
+  let thisQuiz = this.lastTen.slice(10-index, 10).map(function(item){ 
+    return item["common_name"];
+  });
+  let check = 1;
   while (thisQuiz.includes(nextInQueue.common_name)){
-    this.returnToQueue(nextInQueue, 10);
+    let jumpIndex = 10 + (10 * (Math.floor(check/10)));
+    this.returnToQueue(nextInQueue, jumpIndex);
     nextInQueue = await this.birdQueue.shift();
+    check++;
   }
   // return next sound
   nextInQueue.seen_count ++;

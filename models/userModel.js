@@ -63,10 +63,15 @@ const UserSchema = new Schema({
 UserSchema.methods.getNextSound = async function (index) {
   // if bird already seen in this quiz push forward to next quiz
   let nextInQueue = await this.birdQueue.shift();
-  let thisQuiz = this.lastTen.slice(10-index, 10).map(function(item) { return item["common_name"]; });
+  let thisQuiz = this.lastTen.slice(10-index, 10).map(function(item){ 
+    return item["common_name"];
+  });
+  let check = 1;
   while (thisQuiz.includes(nextInQueue.common_name)){
-    this.returnToQueue(nextInQueue, 10);
+    let jumpIndex = 10 + (10 * (Math.floor(check/10)));
+    this.returnToQueue(nextInQueue, jumpIndex);
     nextInQueue = await this.birdQueue.shift();
+    check++;
   }
   // return next sound
   nextInQueue.seen_count ++;
@@ -176,19 +181,37 @@ UserSchema.methods.initQueue = async function () {
 // update user queue from database
 UserSchema.methods.updateQueue = async function () {
   let birds = await BirdModel.find({include:true}, {common_name:true, sounds:true});
+  let pools = {
+    'L1' : [],
+    'L2' : [],
+    'L3' : [],
+    'L4' : []
+  }
+  // build queue objects and split into difficulty pools
   birds.forEach(bird => {
-    bird.sounds.forEach(sound => {
-      let exists = this.birdQueue.find(el => el.xeno_id == sound.xeno_id);
-      if(exists === undefined){
-        this.birdQueue.push({
+    bird.sounds.forEach(sound => { 
+      // check if sound already exists in db before adding
+      let soundExists = this.birdQueue.find(el => el.xeno_id == sound.xeno_id);
+      if(soundExists === undefined){
+        pools['L'+sound.difficulty].push({
           common_name : bird.common_name,
           xeno_id : sound.xeno_id,
           difficulty : sound.difficulty,
           seenCount : 0
-        })
+        });
       }
     })
   })
+  // shuffle each pool separately
+  for (const [pool, sounds] of Object.entries(pools)) {
+    shuffleInPlace(sounds);
+  }
+  // add shuffled sounds to user queue in order of difficulty
+  for (const [pool, sounds] of Object.entries(pools)) {
+    sounds.forEach(sound => {
+      this.birdQueue.push(sound);      
+    });
+  }
   this.save();
 };
 

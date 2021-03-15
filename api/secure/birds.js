@@ -37,9 +37,9 @@ router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
 
 // get next bird from user queue
 router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) => {
-    let username = req.body;
-    let user = await UserModel.findOne(username);
-    let nextSound = await user.getNextSound();
+    let { username, index } = req.body;
+    let user = await UserModel.findOne({'username': username}).catch(err => console.log(err));
+    let nextSound = await user.getNextSound(index);
     res.status(200);
 	res.json({ 
         'status' : 'ok',

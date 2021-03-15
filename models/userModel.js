@@ -60,10 +60,17 @@ const UserSchema = new Schema({
 
 
 // get next bird sound from queue and return to queue
-UserSchema.methods.getNextSound = async function () { 
-  let nextInQueue = this.birdQueue.shift();
+UserSchema.methods.getNextSound = async function (index) {
+  // if bird already seen in this quiz push forward to next quiz
+  let nextInQueue = await this.birdQueue.shift();
+  let thisQuiz = this.lastTen.slice(10-index, 10).map(function(item) { return item["common_name"]; });
+  while (thisQuiz.includes(nextInQueue.common_name)){
+    this.returnToQueue(nextInQueue, 10);
+    nextInQueue = await this.birdQueue.shift();
+  }
+  // return next sound
   nextInQueue.seen_count ++;
-  this.returnToQueue(nextInQueue);
+  this.returnToQueue(nextInQueue, null);
   return await BirdModel.findOne({ common_name: nextInQueue.common_name })
   .then(bird => {
     this.addToLastTen(bird, nextInQueue.xeno_id);
@@ -92,23 +99,23 @@ UserSchema.methods.addToLastTen = function(bird, xeno_id) {
 }
 
 // return sound to queue based on seen_count
-UserSchema.methods.returnToQueue = async function (sound) { 
-  let len = this.birdQueue.length;
-  let index = 0;
-  if (len > 35){
-    if(sound.seen_count <= 2){
-      index = 10 + getRandomInt(1,5);
-    }else if(sound.seen_count <= 5){
-      index = 15 + getRandomInt(1,5);
-    }else if(sound.seen_count <= 8){
-      index = 25 + getRandomInt(1,10);
+UserSchema.methods.returnToQueue = async function (sound, index=null) { 
+  if (index == null){
+    let len = this.birdQueue.length;
+    if (len > 90){
+      if(sound.seen_count <= 2){
+        index = 15 + getRandomInt(1,5); // seen twice or less: repeat in ~1-2 quizzes
+      }else if(sound.seen_count <= 5){
+        index = 50 + getRandomInt(1,5); // seen up to 5 times: repeat in ~5 quizzes
+      }else if(sound.seen_count <= 8){
+        index = 80 + getRandomInt(1,10); // seen up to 8 times: repeat in ~8 quizzes
+      }else{
+        index = len; // seen more than 8 times, push to end of queue
+      }
     }else{
-      index = len;
+      index = len; // if less than 90 sounds in queue, return to end of queue
     }
-  }else{
-    index = len;
   }
-  // return to queue at index
   this.birdQueue.splice(index, 0, sound);
 }
 function getRandomInt(min, max) { // range inclusive

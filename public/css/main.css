@@ -17,7 +17,7 @@ footer{
     padding-top: 20px;
 }
 footer p{
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 /* Login / Sign up form */
@@ -51,6 +51,9 @@ footer p{
 #about h1{
     margin-top: 10px;
     margin-bottom: 15px;
+}
+#about a{
+    text-decoration: none;
 }
 
 /* App intro paragraph */

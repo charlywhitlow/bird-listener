@@ -11,10 +11,15 @@ async function getBirds(include=false){
     birds.forEach(bird => {
         birdsObj.push(bird.toObject());
     });
-
     return birdsObj;
 }
 
+async function getBird(common_name){
+    const bird = await BirdModel.findOne({ common_name: common_name }); 
+    return bird.toObject(); // create new object so hasOwnProperty=true and fields accessible with handlebars
+}
+
 module.exports = {
-    getBirds
+    getBirds,
+    getBird
 }

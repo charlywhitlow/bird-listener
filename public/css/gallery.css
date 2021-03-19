@@ -69,3 +69,6 @@ audio{
     max-width: 300px;
     margin: auto;
 }
+.more-button{
+    font-size: small;
+}

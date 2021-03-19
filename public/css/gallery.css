@@ -59,3 +59,16 @@ audio{
 #filters input, #filters button{
     margin: 0.2em;
 }
+
+/* bird-detail */
+.bird-detail-panel{
+    max-width: 600px;
+    margin: auto;
+}
+.sound-container{
+    max-width: 300px;
+    margin: auto;
+}
+.more-button{
+    font-size: small;
+}

@@ -16,6 +16,13 @@ router.get(['/browse','/browse.html'], asyncMiddleware( async (req, res, next) =
     res.render('browse', {layout: false, birds: json});
 }));
 
+// bird detail pages
+router.get('/bird-detail/:common_name', asyncMiddleware( async (req, res, next) => {
+    let bird = await birds.getBird(req.params.common_name);
+    let referer = req.headers['referer'].split('/');
+    res.render('bird-detail', {layout: false, bird: bird, back: referer[referer.length-1]});
+}));
+
 // quiz
 router.get(['/quiz','/quiz.html'], function (req, res) {
     res.render('quiz', {layout: false});

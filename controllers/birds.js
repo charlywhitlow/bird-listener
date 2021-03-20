@@ -1,7 +1,7 @@
 const BirdModel = require(__root + '/models/birdModel');
 
-async function getBirds(include=false){
-    // return included birds only if set
+async function getBirds(page=1, limit=12, include=true){
+    // return included birds only
     const birds = (include) ? 
         await BirdModel.find({ include: true }).sort({ common_name: 1 }): 
         await BirdModel.find().sort({ common_name: 1 });
@@ -11,7 +11,14 @@ async function getBirds(include=false){
     birds.forEach(bird => {
         birdsObj.push(bird.toObject());
     });
-    return birdsObj;
+
+    // return page of results
+    let start = 0 + (limit * (page-1));
+    let end = limit + (limit * (page-1));
+    return {
+        lastPage: (end > birdsObj.length) ? true : false,
+        birds: birdsObj.slice(start, end)
+    }
 }
 
 async function getBird(common_name){

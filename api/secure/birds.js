@@ -2,6 +2,7 @@ const express = require('express');
 const asyncMiddleware = require(__root + '/middleware/asyncMiddleware');
 const BirdModel = require(__root + '/models/birdModel');
 const UserModel = require(__root + '/models/userModel');
+const birds = require(__root + '/controllers/birds.js');
 const router = express.Router();
 
 
@@ -48,5 +49,29 @@ router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) 
 	});
 }));
 
+// get next page of birds
+router.post('/api/birds/load-more', asyncMiddleware( async (req, res, next) => {
+    let json = await birds.getBirds(req.body.page);
+    let html = [];
+    var count = 0;
+    json.birds.forEach(bird => {
+        res.render(__root + '/views/partials/bird-panel', 
+            {layout: false, bird: bird}, 
+            (err, birdPanel) => {
+                if(err){
+                    return console.error(err);
+                }
+                html.push(birdPanel)
+                count++;
+                if(count === json.birds.length) {
+                    res.json({
+                        'birds' : html,
+                        'lastPage' : json.lastPage
+                    });
+                }
+            }
+        );
+    });
+}));
 
 module.exports = router;

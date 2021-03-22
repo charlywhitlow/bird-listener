@@ -9,18 +9,6 @@ document.addEventListener('play', function(e){
     }
 }, true);
 
-function sortAZ(){
-    let birds = document.getElementsByClassName("bird-panel");
-    for (let i = 0; i < birds.length; i++) {
-        birds[i].style.order = i;
-    }
-}
-function sortZA(){
-    let birds = document.getElementsByClassName("bird-panel");
-    for (let i = 0; i < birds.length; i++) {
-        birds[i].style.order = -i;
-    }
-}
 
 function filterBirds(str){
     // Loop through birds and hide those that don't match the search query

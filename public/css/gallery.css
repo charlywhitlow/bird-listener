@@ -56,8 +56,8 @@ audio{
 #filters{
     padding: 1em;
 }
-#filters input, #filters button{
-    margin: 0.2em;
+#filters input {
+    margin-bottom: 0.4em;
 }
 
 /* bird-detail */

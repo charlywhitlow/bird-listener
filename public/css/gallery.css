@@ -72,3 +72,54 @@ audio{
 .more-button{
     font-size: small;
 }
+
+/* browse autocomplete search bar */
+.birdName { 
+  display: none;
+}
+.autocomplete {
+    position: relative; /*the container must be positioned relative:*/
+    display: inline-block;
+}  
+input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    background-color: #f1f1f1;
+    padding: 5px;
+    border-radius: 2px;
+}
+input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+}
+input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+}
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    color: black;
+    border-bottom: 1px solid #d4d4d4; 
+}
+.autocomplete-items div:hover {
+    background-color: #e9e9e9;
+}
+/* active class- when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: ffffff;
+}

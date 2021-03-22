@@ -23,7 +23,12 @@
             <div id="browse">
                 <h1>Browse the birds</h1>
                 <div id="filters">
-                    {{!-- <input type="text" onkeyup="filterBirds(value)" placeholder="Search by common name.." title="Enter a common name"> --}}
+                    <form autocomplete="off" action="">
+                        <div class="autocomplete" style="max-width:300px;">
+                            <input id="searchInput" type="text" name="searchInput" placeholder="Search by common name">
+                        </div>
+                        <input id="searchButton" type="button" class="submit" value="Search">
+                    </form>
                 </div>
                 {{> bird-gallery }}
                 {{!-- load more button --}}
@@ -38,6 +43,16 @@
                 {{/each}}
             </ol>
             <script>
+                // init autocomplete
+                let birdNamesHTML = document.getElementsByClassName('birdName')
+                let birdNames = [];
+                for (let listItem of birdNamesHTML) {
+                    birdNames.push(listItem.innerHTML)
+                }
+                let input = document.getElementById("searchInput");
+                let submit = document.getElementById("searchButton");
+                initAutocomplete(input, submit, birdNames);
+            </script>
         </main>
         {{> footer }}
     </div>

@@ -26,6 +26,15 @@ async function getBird(common_name){
     return bird.toObject(); // create new object so hasOwnProperty=true and fields accessible with handlebars
 }
 
+async function getMatchingBirds(nameArray){
+    const birds = await BirdModel.find({common_name: {$in: nameArray}});
+    let birdsObj = []; // create new object so hasOwnProperty=true and fields accessible with handlebars
+    birds.forEach(bird => {
+        birdsObj.push(bird.toObject());
+    });
+    return birdsObj;
+}
+
 async function getBirdNames(){
     const birds = await BirdModel.find( {include:true}, {_id:false, common_name:true}).sort({ common_name: 1 });
     return birds.map(item => { return item.common_name });
@@ -34,5 +43,6 @@ async function getBirdNames(){
 module.exports = {
     getBirds,
     getBird,
-    getBirdNames
+    getBirdNames,
+    getMatchingBirds
 }

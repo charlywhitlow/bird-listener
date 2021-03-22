@@ -84,4 +84,29 @@ router.post('/api/birds/load-more', asyncMiddleware( async (req, res, next) => {
     });
 }));
 
+// matching birds html
+router.post('/api/birds/load-matching-birds', asyncMiddleware( async (req, res, next) => {
+    let birdsObj = await birds.getMatchingBirds(req.body);
+    let html = [];
+    var count = 0;
+    birdsObj.forEach(bird => {
+        res.render(__root + '/views/partials/bird-panel', 
+            {layout: false, bird: bird}, 
+            (err, birdPanel) => {
+                if(err){
+                    return console.error(err);
+                }
+                html.push(birdPanel)
+                count++;
+                if(count === birdsObj.length) {
+                    res.json({
+                        'birds' : html
+                    });
+                }
+            }
+        );
+    });
+}));
+
+
 module.exports = router;

@@ -147,11 +147,8 @@ function initAutocomplete(input, submit, searchTerms) {
     });
 
     function searchBirds(str){
-        let matches = getMatches(str)
-        console.log('matches:')
-        console.log(matches)
-
         // loop through birds in dom, hide if not a match
+        let matches = getMatches(str)
         let birds = document.getElementsByClassName('bird-panel');
         for (i = 0; i < birds.length; i++) {
             let index = matches.indexOf(birds[i].id);
@@ -162,12 +159,17 @@ function initAutocomplete(input, submit, searchTerms) {
                 matches.splice(index, 1); // remove from matches array
             }
         }
-
-        // TODO:
-        // for matches not in dom, get bird from db and append
-        console.log('remaining matches:')
-        console.log(matches)
-
+        // for matches not in dom, get bird from db and append to dom
+        fetch('/api/birds/load-matching-birds', {
+            method: "POST",
+            body: JSON.stringify(matches),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        .then(res => res.json())
+        .then(json => {
+            appendBirdsToDom(json.birds)
+        })
+        .catch(err => console.log('Request Failed', err));
     }
 
     function getMatches(str){

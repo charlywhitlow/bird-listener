@@ -11,9 +11,10 @@ router.get(['/menu','/menu.html'], function (req, res) {
 });
 
 // browse
-router.get(['/browse','/browse.html'], asyncMiddleware( async (req, res, next) => {
-	let json = await birds.getBirds(true);
-    res.render('browse', {layout: false, birds: json});
+router.get('/browse', asyncMiddleware( async (req, res, next) => {
+    let birdsObj = await birds.getBirds();
+    let birdNames = await birds.getBirdNames();
+    res.render('browse', {layout: false, birds: birdsObj.birds, birdNames: birdNames});
 }));
 
 // bird detail pages

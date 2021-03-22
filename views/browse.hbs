@@ -23,12 +23,37 @@
             <div id="browse">
                 <h1>Browse the birds</h1>
                 <div id="filters">
-                    <button onclick="sortAZ()">Sort A-Z</button>
-                    <button onclick="sortZA()">Sort Z-A</button>
-                    <input type="text" onkeyup="filterBirds(value)" placeholder="Search by common name.." title="Enter a common name">
+                    <form autocomplete="off" action="">
+                        <div class="autocomplete" style="max-width:300px;">
+                            <input id="searchInput" type="text" name="searchInput" placeholder="Search by common name">
+                        </div>
+                        <input id="searchButton" type="button" class="submit" value="Search">
+                        <input id="resetButton" type="button" class="submit" value="Reset" onclick="location.reload();">
+                    </form>
                 </div>
+                <p id="results" style="display: none;"><span id="numResults">0</span> results</p>
                 {{> bird-gallery }}
+                <input type="hidden" id="page" value="1">
+                <button id="loadMoreButton" onclick="loadMore()">Load more</button>
             </div>
+
+            {{!-- hidden list of all bird common_names in db --}}
+            <ol id="birdNames">
+                {{#each birdNames as |birdName|}}
+                    <li class="birdName">{{birdName}}</li>
+                {{/each}}
+            </ol>
+            <script>
+                // init autocomplete
+                let birdNamesHTML = document.getElementsByClassName('birdName')
+                let birdNames = [];
+                for (let listItem of birdNamesHTML) {
+                    birdNames.push(listItem.innerHTML)
+                }
+                let input = document.getElementById("searchInput");
+                let submit = document.getElementById("searchButton");
+                initAutocomplete(input, submit, birdNames);
+            </script>
         </main>
         {{> footer }}
     </div>

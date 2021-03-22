@@ -147,10 +147,36 @@ function initAutocomplete(input, submit, searchTerms) {
     });
 
     function searchBirds(str){
+        let matches = getMatches(str)
+        console.log('matches:')
+        console.log(matches)
+
+        // loop through birds in dom, hide if not a match
+        let birds = document.getElementsByClassName('bird-panel');
+        for (i = 0; i < birds.length; i++) {
+            let index = matches.indexOf(birds[i].id);
+            if (index == -1){
+                birds[i].style.display="none"; // not a match- hide
+            }else{
+                birds[i].style.display=""; // show in dom
+                matches.splice(index, 1); // remove from matches array
+            }
+        }
 
         // TODO:
-        // filter birds in dom
-        // for matches not in dom- get bird from db and add
+        // for matches not in dom, get bird from db and append
+        console.log('remaining matches:')
+        console.log(matches)
 
+    }
+
+    function getMatches(str){
+        let matches = []
+        for (let i=0; i < searchTerms.length; i++) {
+            if (searchTerms[i].toLowerCase().indexOf(str.toLowerCase()) > -1) {
+                matches.push(searchTerms[i])
+            }
+        }
+        return matches;
     }
 }

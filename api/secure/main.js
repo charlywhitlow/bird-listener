@@ -13,7 +13,8 @@ router.get(['/menu','/menu.html'], function (req, res) {
 // browse
 router.get('/browse', asyncMiddleware( async (req, res, next) => {
     let birdsObj = await birds.getBirds();
-    res.render('browse', {layout: false, birds: birdsObj.birds});
+    let birdNames = await birds.getBirdNames();
+    res.render('browse', {layout: false, birds: birdsObj.birds, birdNames: birdNames});
 }));
 
 // bird detail pages

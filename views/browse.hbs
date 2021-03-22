@@ -32,6 +32,14 @@
                 <input type="hidden" id="page" value="1">
                 <button id="loadMoreButton" onclick="loadMore()">Load more</button>
             </div>
+
+            {{!-- hidden list of all bird common_names in db --}}
+            <ol id="birdNames">
+                {{#each birdNames as |birdName|}}
+                    <li class="birdName">{{birdName}}</li>
+                {{/each}}
+            </ol>
+            <script>
         </main>
         {{> footer }}
     </div>

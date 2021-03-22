@@ -36,6 +36,16 @@ router.post('/api/birds/get', asyncMiddleware( async (req, res, next) => {
 	});
 }));
 
+// get array of all bird common_names
+router.get('/api/birds/get-bird-names', asyncMiddleware( async (req, res, next) => {
+	const birds = await BirdModel.find( {include:true}, {_id:false, common_name:true}).sort({ common_name: 1 });
+    res.status(200);
+	res.json({ 
+        'status' : 'ok',
+        'birds' : birds.map(item => { return item.common_name })
+	});
+}));
+
 // get next bird from user queue
 router.post('/api/birds/get-next-bird', asyncMiddleware( async (req, res, next) => {
     let { username, index } = req.body;

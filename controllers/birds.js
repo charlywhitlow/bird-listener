@@ -26,7 +26,13 @@ async function getBird(common_name){
     return bird.toObject(); // create new object so hasOwnProperty=true and fields accessible with handlebars
 }
 
+async function getBirdNames(){
+    const birds = await BirdModel.find( {include:true}, {_id:false, common_name:true}).sort({ common_name: 1 });
+    return birds.map(item => { return item.common_name });
+}
+
 module.exports = {
     getBirds,
-    getBird
+    getBird,
+    getBirdNames
 }

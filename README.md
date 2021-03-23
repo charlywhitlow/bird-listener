@@ -3,7 +3,22 @@
 
 This web app has been created to enable users to build and practice their knowledge of UK bird songs and calls.
 
-View at: https://bird-listener.herokuapp.com/
+#### See in action at:
+### https://bird-listener.herokuapp.com/
+(nb- hosted with Heroku's free tier in which app is powered off until accessed, so have patience when first loading the website)
+_______________________________________________________________________________
+### Git branch structure / auto-deployments:
+
+* DEV
+    * `dev` branch is default branch
+    * create feature branches from dev
+    * updates to `dev` auto-deploy to test environment:
+        * https://bird-listener-dev.herokuapp.com/
+
+* PROD
+    * `prod` branch is project master (but not default)
+    * updates to `prod` auto-deploy to production:
+        * https://bird-listener.herokuapp.com/
 _______________________________________________________________________________
 ## Install locally
 
@@ -36,7 +51,6 @@ _______________________________________________________________________________
 
 After following these steps you hopefully have a working website containing a sample of birds.
 _______________________________________________________________________________
-
 ### Credits
 
 All recordings are sourced from [Xeno-Canto](https://www.xeno-canto.org/)

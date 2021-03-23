@@ -59,6 +59,9 @@ audio{
 #filters input {
     margin-bottom: 0.4em;
 }
+#results{
+    padding-top: 1em;
+}
 
 /* bird-detail */
 .bird-detail-panel{

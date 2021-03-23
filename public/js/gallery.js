@@ -156,6 +156,8 @@ function initAutocomplete(input, submit, searchTerms) {
         // update num results
         document.getElementById('results').style.display="";
         document.getElementById('numResults').innerHTML = matches.length;
+        document.getElementById('results').scrollIntoView(true);
+        document.getElementById('filters').style.paddingBottom = '0px';
 
         // hide 'load more' button
         document.getElementById('loadMoreButton').style.visibility="hidden";

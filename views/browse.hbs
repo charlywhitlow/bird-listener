@@ -27,8 +27,10 @@
                         <div class="autocomplete" style="max-width:300px;">
                             <input id="searchInput" type="text" name="searchInput" placeholder="Search by common name">
                         </div>
-                        <input id="searchButton" type="button" class="submit" value="Search">
-                        <input id="resetButton" type="button" class="submit" value="Reset" onclick="location.reload();">
+                        <div style="display: inline-block;">
+                            <input id="searchButton" type="button" class="submit" value="Search">
+                            <input id="resetButton" type="button" class="submit" value="Reset" onclick="location.reload();">
+                        </div>
                     </form>
                 </div>
                 <p id="results" style="display: none;"><span id="numResults">0</span> results</p>

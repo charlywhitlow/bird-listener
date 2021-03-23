@@ -6,7 +6,7 @@
     
     {{!-- display first image --}}
     <div class="image-div">
-        <a href="bird-detail/{{bird.common_name}}">
+        <a href="bird-detail/{{bird.common_name}}{{back}}">
             <img class="bird-image img-fluid"
                 src="{{bird.images.0.image_url}}" alt="{{bird.common_name}}"
                 style="object-position: {{bird.images.0.image_css_x}}% {{bird.images.0.image_css_y}}%;">
@@ -38,6 +38,6 @@
         </div>
     </div>
     <div>
-        <button class="btn-sm bg-grey more-button" onclick="location.href='bird-detail/{{bird.common_name}}'">See more</button>
+        <button class="btn-sm bg-grey more-button" onclick="location.href='bird-detail/{{bird.common_name}}{{back}}'">See more</button>
     </div>
 </div> 

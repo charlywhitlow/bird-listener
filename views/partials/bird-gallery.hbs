@@ -1,7 +1,12 @@
 <div class="container">
     <div class="row">
-        {{#each birds as |bird|}}
-            {{> bird-panel bird=bird }}
+        {{#each birds as |bird| }}
+            {{#ifEquals ../back 'browse'}}
+               {{> bird-panel bird=bird}}
+            {{/ifEquals}}
+            {{#ifEquals ../back 'quiz-gallery'}}
+               {{> bird-panel bird=bird back='?back=quiz-gallery'}}
+            {{/ifEquals}}
         {{/each}}
     </div>
 </div>

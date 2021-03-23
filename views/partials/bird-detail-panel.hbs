@@ -6,7 +6,7 @@
     
     {{!-- temp return first image- TODO: build slideshow --}}
     <div class="image-div">
-        <a href="bird-detail?bird={{bird.common_name}}">
+        <a href="{{bird.images.0.image_info_url}}" target="__blank">
             <img class="bird-image img-fluid"
                 src="{{bird.images.0.image_url}}" alt="{{bird.common_name}}"
                 style="object-position: {{bird.images.0.image_css_x}}% {{bird.images.0.image_css_y}}%;">

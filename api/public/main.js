@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 
 
 // status
-router.get('/api/status', (req, res, next) => {
+router.get('/api/status', cors(), (req, res, next) => {
 	res.status(200);
 	res.json({ 
 		'status' : 'ok'

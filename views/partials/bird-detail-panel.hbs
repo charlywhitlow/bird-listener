@@ -22,21 +22,7 @@
     {{!-- sounds --}}
     <div class="sound-container">
         {{#each bird.sounds as |sound|}}
-            <div class="sound-div">
-                <h6>{{sound.sound_name}}</h6>
-                <audio class="audio-player" src="{{sound.sound_url}}" controls controlsList="nodownload" preload="true">
-                    Your browser does not support the <code>audio</code> element.
-                    It can be found at <a href="{{sound.sound_url}}" target="_blank" rel="noopener noreferrer">Xeno</a>.
-                </audio>
-                <div class="license-panel">
-                    Audio:
-                    <a href="{{sound.sound_info_url}}" target="_blank" rel="noopener noreferrer">
-                        {{sound.sound_recordist}}</a> | 
-                    <a href="{{sound.sound_license_url}}" target="_blank" rel="noopener noreferrer">
-                        CC {{sound.sound_license_code}}
-                    </a>
-                </div>
-            </div>
+            {{> audio-player sound=sound}}
         {{/each}}
     </div>
 </div>

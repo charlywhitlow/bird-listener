@@ -22,7 +22,7 @@ audio{
 .audio-panel{
     padding: 0.2em;
     margin: 0;
-    border: 1px solid grey;
+    border: 1px solid rgb(68, 68, 68);
 }
 .audio-panel h6{
     font-size: small;

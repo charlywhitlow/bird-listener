@@ -23,7 +23,7 @@
     <div class="sound-container">
         <h6>Sounds</h6>
         {{#each bird.sounds as |sound|}}
-            {{> audio-player sound=sound}}
+            {{> audio-player sound=sound i=@index last=@last}}
         {{/each}}
     </div>
 </div>

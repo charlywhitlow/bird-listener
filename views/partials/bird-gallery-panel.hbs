@@ -21,13 +21,8 @@
         </div>
     </div>
 
-    {{!-- display first sound --}}
     <div class="sound-div">
-
-        {{#each bird.sounds as |sound|}}
-            {{> audio-player sound=sound}}
-        {{/each}}
-
+        {{> audio-slideshow sounds=bird.sounds num=num}}
     </div>
     <div>
         <button class="btn-sm bg-grey more-button" onclick="location.href='bird-detail/{{bird.common_name}}{{back}}'">See more</button>

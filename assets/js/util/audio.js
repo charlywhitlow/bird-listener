@@ -35,7 +35,8 @@ function togglePlay(button, xenoID){
         }
     }
 }
-function playAudio(audio, button){
+function playAudio(audio, button, resetTime=false){
+    if (resetTime) audio.currentTime = 0;
     audio.play(); // pause icon
     button.innerHTML = `<span style="font-size: 50%; line-height: 30px; padding-left: 2px; padding-bottom: 10px;">&#9611&#9611</span>`;
 }
@@ -51,3 +52,34 @@ function formatTime(seconds) {
     };
     return `${min}:${sec}`; // M:SS
 };
+function right(num, i, last){
+    let slideshow = document.getElementById(`audio-slideshow-${num}`);
+    let target = (last) ? 
+        slideshow.querySelector(`#slide-${0}`) :
+        slideshow.querySelector(`#slide-${i+1}`);
+    let current = slideshow.querySelector(`#slide-${i}`);
+    current.style.display = "none";
+    target.style.display = "";
+    scrollAudio(current, target);
+}
+function left(num, i){
+    let slideshow = document.getElementById(`audio-slideshow-${num}`);
+    let target = (i==0) ? 
+        slideshow.querySelector('.last') :
+        slideshow.querySelector(`#slide-${i-1}`);
+    let current = slideshow.querySelector(`#slide-${i}`);
+    current.style.display = "none";
+    target.style.display = "";
+    scrollAudio(current, target);
+}
+function scrollAudio(current, target){
+    let currentAudio = current.querySelector('.audio-player');
+    // if audio is playing, pause and play target audio
+    if (!currentAudio.paused){
+        let currentButton = current.querySelector('.play-button');
+        let targetAudio = target.querySelector('.audio-player');
+        let targetButton = target.querySelector('.play-button');
+        pauseAudio(currentAudio, currentButton);
+        playAudio(targetAudio, targetButton, true); // reset time to 0
+    }
+}

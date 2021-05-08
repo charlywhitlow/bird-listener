@@ -1,0 +1,10 @@
+{{#ifEquals i 0}}
+<div class="slide-panel {{#ifEquals last true}}last{{/ifEquals}}" id="slide-{{i}}">
+{{/ifEquals}}
+{{#ifNotEquals i 0}}
+<div class="slide-panel {{#ifEquals last true}}last{{/ifEquals}}" id="slide-{{i}}" style="display: none;">
+{{/ifNotEquals}}
+    <button onclick="left({{num}}, {{i}})"><</button>
+    {{> audio-player sound=sound i=@index last=@last}}
+    <button onclick="right({{num}}, {{i}}, {{last}})">></button>
+</div>

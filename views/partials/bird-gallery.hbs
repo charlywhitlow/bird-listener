@@ -2,10 +2,10 @@
     <div class="row">
         {{#each birds as |bird| }}
             {{#ifEquals ../back 'browse'}}
-               {{> bird-gallery-panel bird=bird}}
+               {{> bird-gallery-panel bird=bird num=@index}}
             {{/ifEquals}}
             {{#ifEquals ../back 'quiz-gallery'}}
-               {{> bird-gallery-panel bird=bird back='?back=quiz-gallery'}}
+               {{> bird-gallery-panel bird=bird num=@index back='?back=quiz-gallery'}}
             {{/ifEquals}}
         {{/each}}
     </div>

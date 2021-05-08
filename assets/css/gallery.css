@@ -126,6 +126,7 @@ input[type=submit] {
 }
 .more-button{
     font-size: small;
+    opacity: 0.7;
 }
 
 /* custom audio play/pause button */

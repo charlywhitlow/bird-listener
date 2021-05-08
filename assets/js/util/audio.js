@@ -11,6 +11,11 @@ function updateProgressValue(audio, progressBar, currentTimeDiv) {
     progressBar.value = audio.currentTime;
     currentTimeDiv.innerHTML = formatTime(Math.floor(audio.currentTime));
 };
+function audioEnded(xenoID){
+    let audio = document.getElementById(`audio-${xenoID}`);
+    let button = document.getElementById(`button-${xenoID}`);
+    pauseAudio(audio, button);
+}
 function slideProgressBar(xenoID) {
     let progressBar = document.getElementById(`audio-progress-bar-${xenoID}`);
     let audio = document.getElementById(`audio-${xenoID}`);

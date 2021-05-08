@@ -1,6 +1,7 @@
 <div class="audio-panel">
-    <audio class="audio-player" id="audio-{{sound.xeno_id}}" src="{{sound.sound_url}}" 
-        preload="true" onloadedmetadata="initAudio({{sound.xeno_id}});">
+    <audio class="audio-player" id="audio-{{sound.xeno_id}}" src="{{sound.sound_url}}" preload="true"
+        onloadedmetadata="initAudio({{sound.xeno_id}});"
+        onended="audioEnded({{sound.xeno_id}});">
         Your browser does not support the <code>audio</code> element.
         It can be found at <a href="{{sound.sound_url}}" target="_blank" rel="noopener noreferrer">Xeno</a>.
     </audio>

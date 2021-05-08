@@ -4,7 +4,12 @@
 {{#ifNotEquals i 0}}
 <div class="slide-panel {{#ifEquals last true}}last{{/ifEquals}}" id="slide-{{i}}" style="display: none;">
 {{/ifNotEquals}}
-    <button onclick="left({{num}}, {{i}})"><</button>
     {{> audio-player sound=sound i=@index last=@last}}
-    <button onclick="right({{num}}, {{i}}, {{last}})">></button>
+    <div class="slideshow-button-div">
+        <button class="slideshow-button leftButton" 
+            onclick="left({{num}}, {{i}})">&#9650</button>
+        {{#sum i 1}}{{/sum}} / {{numSounds}}
+        <button class="slideshow-button rightButton" 
+            onclick="right({{num}}, {{i}}, {{last}})">&#9650</button>
+    </div>
 </div>

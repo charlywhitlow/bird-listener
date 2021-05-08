@@ -184,3 +184,31 @@ input[type=submit] {
     padding-right: 10px;
     padding-left: 4px;
 }
+.slideshow-button-div{
+    font-size: small;
+    padding-bottom: 10px;
+    color: #d3d3d3;
+}
+.slideshow-button{
+    background-color: transparent;
+    border: none;
+    color: #d3d3d3;
+    font-style: bold;
+    font-size: large;
+}
+.leftButton{
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.rightButton{
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}

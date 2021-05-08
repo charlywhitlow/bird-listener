@@ -21,8 +21,8 @@
         </div>
     </div>
 
-    <div class="sound-div">
-        {{> audio-slideshow sounds=bird.sounds num=num}}
+    <div class="sound-div" value="{{bird.sounds.length}}">
+        {{> audio-slideshow sounds=bird.sounds num=num numSounds=bird.sounds.length}}
     </div>
     <div>
         <button class="btn-sm bg-grey more-button" onclick="location.href='bird-detail/{{bird.common_name}}{{back}}'">See more</button>

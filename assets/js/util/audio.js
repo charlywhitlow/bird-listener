@@ -36,15 +36,12 @@ function togglePlay(button, xenoID){
     }
 }
 function playAudio(audio, button){
-    audio.play();
-    button.classList.remove("fa-play");
-    button.classList.add("fa-pause");
-
+    audio.play(); // pause icon
+    button.innerHTML = `<span style="font-size: 50%; line-height: 30px; padding-left: 2px; padding-bottom: 10px;">&#9611&#9611</span>`;
 }
 function pauseAudio(audio, button){
-    audio.pause();
-    button.classList.remove("fa-pause");
-    button.classList.add("fa-play");
+    audio.pause(); // play icon
+    button.innerHTML = `<span style="font-size: 120%; line-height: 24px;">&#9658</span>`;
 }
 function formatTime(seconds) {
     let min = Math.floor((seconds / 60));

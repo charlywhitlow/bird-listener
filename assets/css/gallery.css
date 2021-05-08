@@ -130,9 +130,9 @@ input[type=submit] {
 
 /* custom audio play/pause button */
 .play-button{
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
     border: none;
     padding: 0;
     margin: 0;

@@ -1,5 +1,5 @@
 <div class="audio-slideshow" id="audio-slideshow-{{num}}">
     {{#each sounds as |sound|}}
-        {{> audio-slide sound=sound num=../num i=@index last=@last numSounds=../numSounds}}
+        {{> audio-slide sound=sound num=../num i=@index last=@last numSounds=../numSounds quizGallery=../quizGallery}}
     {{/each}}
 </div>

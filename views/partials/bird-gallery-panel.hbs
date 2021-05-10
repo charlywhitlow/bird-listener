@@ -21,23 +21,13 @@
         </div>
     </div>
 
-    {{!-- display first sound --}}
-    <div class="sound-div">
-        <h6>{{bird.sounds.0.sound_name}}</h6>
-        <audio class="audio-player" src="{{bird.sounds.0.sound_url}}" controls controlsList="nodownload" preload="true">
-            Your browser does not support the <code>audio</code> element.
-            It can be found at <a href="{{bird.sounds.0.sound_url}}" target="_blank" rel="noopener noreferrer">Xeno</a>.
-        </audio>
-        <div class="license-panel">
-            Audio:
-            <a href="{{bird.sounds.0.sound_info_url}}" target="_blank" rel="noopener noreferrer">
-                {{bird.sounds.0.sound_recordist}}</a> | 
-            <a href="{{bird.sounds.0.sound_license_url}}" target="_blank" rel="noopener noreferrer">
-                CC {{bird.sounds.0.sound_license_code}}
-            </a>
-        </div>
+    <div class="sound-div" value="{{bird.sounds.length}}">
+        {{> audio-slideshow sounds=bird.sounds num=num numSounds=bird.sounds.length quizGallery=quizGallery}}
     </div>
     <div>
-        <button class="btn-sm bg-grey more-button" onclick="location.href='bird-detail/{{bird.common_name}}{{back}}'">See more</button>
+        <button class="btn-sm bg-grey more-button" 
+        onclick="location.href='bird-detail/{{bird.common_name}}{{back}}'">
+        Bird Profile
+        </button>
     </div>
 </div> 

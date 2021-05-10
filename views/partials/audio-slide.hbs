@@ -1,0 +1,17 @@
+{{#ifEquals i 0}}
+<div class="slide-panel {{#ifEquals last true}}last{{/ifEquals}}" id="slide-{{i}}">
+{{/ifEquals}}
+{{#ifNotEquals i 0}}
+<div class="slide-panel {{#ifEquals last true}}last{{/ifEquals}}" id="slide-{{i}}" style="display: none;">
+{{/ifNotEquals}}
+    {{> audio-player sound=sound i=@index last=@last quizGallery=quizGallery}}
+    {{#ifNotEquals quizGallery true}}
+        <div class="slideshow-button-div">
+            <button class="slideshow-button leftButton" 
+                onclick="left({{num}}, {{i}})">&#9650</button>
+            Sound {{#sum i 1}}{{/sum}} / {{numSounds}}
+            <button class="slideshow-button rightButton" 
+                onclick="right({{num}}, {{i}}, {{last}})">&#9650</button>
+        </div>    
+    {{/ifNotEquals}}
+</div>

@@ -28,7 +28,7 @@ mongoose.connection.on('connected', function () {
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
-app.use(express.static(__dirname + '/public')); // serve static html/css/js in /public dir
+app.use(express.static(__dirname + '/assets')); // serve static html/css/js in /assets dir
 app.use(cookieParser()); // cookies will be included in request object
 app.use(fileUpload({
   limits: { fileSize: 1024 * 1024 }

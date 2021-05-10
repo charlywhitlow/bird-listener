@@ -1,0 +1,42 @@
+<div class="audio-panel">
+    <audio class="audio-player" id="audio-{{sound.xeno_id}}" src="{{sound.sound_url}}" preload="true"
+        onloadedmetadata="initAudio({{sound.xeno_id}});"
+        onended="audioEnded({{sound.xeno_id}});">
+        Your browser does not support the <code>audio</code> element.
+        It can be found at <a href="{{sound.sound_url}}" target="_blank" rel="noopener noreferrer">Xeno</a>.
+    </audio>
+    <div class="row audio-row-1">
+        <div class="col-2 justify-content-center">
+            <button class="play-button" id="button-{{sound.xeno_id}}"
+                onclick="togglePlay(this, {{sound.xeno_id}});">
+                <span style="font-size: 120%; line-height: 24px;">&#9658</span>
+            </button>
+        </div>
+        <div class="col-6 justify-content-center">
+            <input
+                type="range"
+                class="slider"
+                id="audio-progress-bar-{{sound.xeno_id}}"
+                min="0"
+                max=""
+                value="0"
+                onchange="slideProgressBar({{sound.xeno_id}})"/>
+        </div>
+        <div class="col-4 justify-content-right">
+            <span class="timeSpan" id="audio-currentTime-{{sound.xeno_id}}">0:00</span> / 
+            <span class="timeSpan" id="audio-durationTime-{{sound.xeno_id}}">0:00</span>
+        </div>
+    </div>
+    <div class="row audio-row-2">
+        <div class="col-auto flex-shrink-1 flex-grow-1">
+            <h6>{{#ifNotEquals quizGallery true}}{{#sum i 1}}{{/sum}}. {{/ifNotEquals}}{{sound.sound_name}}</h6>
+        </div>
+        <div class="col-auto flex-grow-1 flex-shrink-1 license-panel">
+            <a href="{{sound.sound_info_url}}" target="_blank" rel="noopener noreferrer">
+                {{sound.sound_recordist}}</a> | 
+            <a href="{{sound.sound_license_url}}" target="_blank" rel="noopener noreferrer">
+                CC {{sound.sound_license_code}}
+            </a>
+        </div>
+    </div>
+</div>

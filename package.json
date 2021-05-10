@@ -31,7 +31,7 @@
     "fisher-yates": "^1.0.3",
     "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.2",
+    "mongoose": "^5.12.7",
     "node-html-parser": "^2.1.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

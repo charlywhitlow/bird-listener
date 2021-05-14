@@ -51,6 +51,7 @@ async function revealBird(){
     document.getElementById('image-license-panel').style.visibility = "visible";
     document.getElementById('bird-image').style.display = "";
     document.getElementById('image-placeholder').style.display = "none";
+    document.getElementById('audio-caption').style.visibility = "visible";
     // show 'review' button when on last bird (bird 10)
     let page = parseInt(document.getElementById("page").innerHTML, 10);
     if (page == 10) {
@@ -62,6 +63,7 @@ async function revealBird(){
 };
 async function showNextBird(){
     document.getElementById('audio-player').pause(); // stop audio if playing
+    document.getElementById('audio-caption').style.visibility = "hidden";
     document.getElementById('reveal-button').style.display = "";
     document.getElementById('common-name').style.visibility = "hidden";
     document.getElementById('scientific-name').style.visibility = "hidden";
@@ -124,6 +126,7 @@ function updateBirdFields(nextBird){
     // audio
     let sound = nextBird.sound;
     document.getElementById("audio-player").setAttribute('src', sound.sound_url);
+    document.getElementById('audio-caption').innerHTML = sound.sound_name;
     document.getElementById("sound-recordist").innerHTML = sound.sound_recordist;
     document.getElementById("sound-info-url").href = 'https://www.xeno-canto.org/'+sound.xeno_id;
     document.getElementById("sound-license-code").innerHTML = sound.sound_license_code;

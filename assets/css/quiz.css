@@ -38,7 +38,7 @@ figure {
 
 .licenseInfo, .licenseInfo a {
     color: rgba(255,255,255,.5);
-    font-size: small;
+    font-size: x-small;
     margin-bottom: 20px;
 }
 #audio-player{
@@ -46,4 +46,8 @@ figure {
 }
 #nextButton{
     margin: 20px;
+}
+#audio-caption{
+    font-size: small;
+    color: rgba(255,255,255);
 }

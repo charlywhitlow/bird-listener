@@ -4,7 +4,7 @@ const router = express.Router();
 const userCheck = require(__root + '/util/userCheck');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { TOKEN_SECRET } = require(__root + '/config/config');
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const tokenExpiry = 86400; // 1 day
 
 // signup route

@@ -34,12 +34,13 @@ _______________________________________________________________________________
         * Get connection string from cluster page- 'connect', 'connect your application'
 4. Create `.env` file consisting of the following:
     ```
-    MONGO_CONNECTION_URL=[get connection string from MongoDB]
+    MONGO_PROD_CONNECTION_URL=[get connection string from MongoDB]
+    MONGO_TEST_CONNECTION_URL=[optional- get connection string from MongoDB]
     TOKEN_SECRET=[password for creating tokens, enter a long random string]
     ```
 5. Launch app
-    * `npm run devStart`
-        * recommended: runs with nodemon, restarting server on save
+    * `npm run devStart` / `npm run devStartTestDB`
+        * recommended: runs with nodemon, restarting server on save, using either prod/test db
     * `node app.js`
     * view in browser: http://localhost:8000
 6. Create new user in app using 'sign up'

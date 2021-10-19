@@ -1,6 +1,6 @@
-const { PORT, MONGO_CONNECTION_URL } = require('./config/config');
+require('dotenv').config();
 global.__root = __dirname; // set app root var for easier dir addressing
-
+const PORT = process.env.PORT;
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -14,14 +14,18 @@ require('./auth/auth');
 const { checkAdminUser } = require('./auth/checkAdminUser');
 
 // setup mongo connection
-const uri = MONGO_CONNECTION_URL;
+let testDB = process.argv.length == 3 && process.argv[process.argv.length-1] == "test";
+const uri = testDB ? 
+  process.env.MONGO_TEST_CONNECTION_URL : process.env.MONGO_PROD_CONNECTION_URL;
 mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', (error) => {
   console.log(error);
   process.exit(1);
 });
 mongoose.connection.on('connected', function () {
-  console.log('Connected to mongo');
+  testDB ? 
+    console.log('Connected to mongo (test)') : 
+    console.log('Connected to mongo');
 });
 
 // create instance of an express app

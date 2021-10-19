@@ -1,9 +1,9 @@
-const { TOKEN_SECRET } = require(__root + '/config/config');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const jwtStrategy = require('passport-jwt').Strategy;
 const UserModel = require(__root + '/models/userModel');
 const userCheck = require(__root + '/util/userCheck');
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
  
 // handle signup

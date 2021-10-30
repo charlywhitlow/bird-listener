@@ -3,20 +3,37 @@
         <h4 class="common-name">{{bird.common_name}}</h4>
         <h5 class="scientific-name">{{bird.scientific_name}}</h5>
     </div>
-    
-    {{!-- display first image --}}
+
     <div class="image-div">
-        <a href="bird-detail/{{bird.common_name}}{{back}}">
-            <img class="bird-image img-fluid"
-                src="{{bird.images.0.image_url}}" alt="{{bird.common_name}}"
-                style="object-position: {{bird.images.0.image_css_x}}% {{bird.images.0.image_css_y}}%;">
-        </a>
-        <div class="license-panel">
-            Image: 
-            <a href="{{bird.images.0.image_info_url}}" target="_blank" rel="noopener noreferrer">
-                {{bird.images.0.image_author}}</a> | 
-            <a href="{{bird.images.0.image_license_url}}" target="_blank" rel="noopener noreferrer">
-                {{bird.images.0.image_license_code}}
+        <div id="image-carousel-{{num}}" class="carousel slide gallery-carousel" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner" role="listbox">
+                {{#each bird.images as |image|}}
+                    <div id="carousel-item-{{@index}}" class="carousel-item {{#ifEquals @index 0 }} active {{/ifEquals}}">
+                        <div class="carousel-image-container">
+                            <a href="bird-detail/{{../bird.common_name}}{{../back}}">
+                                <img class="d-block w-100 bird-image"
+                                    src="{{image.image_url}}" alt="{{../bird.common_name}} {{image.image_name}}"
+                                    style="object-position: {{image.image_css_x}}% {{image.image_css_y}}%;">
+                            </a>
+                        </div>
+                        <div class="carousel-caption d-md-block">
+                            <p class="image-description">{{image.image_name}}</p>
+                            <div class="license-panel">
+                                <a href="{{image.image_info_url}}" target="_blank" rel="noopener noreferrer">
+                                    {{image.image_author}}</a> | 
+                                <a href="{{image.image_license_url}}" target="_blank" rel="noopener noreferrer">
+                                    {{image.image_license_code}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            <a class="carousel-control-prev gallery-carousel-control" href="#image-carousel-{{num}}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next gallery-carousel-control" href="#image-carousel-{{num}}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </a>
         </div>
     </div>

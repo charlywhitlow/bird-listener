@@ -6,15 +6,11 @@
     max-width: 100%;
 }
 .carousel{
-    width: 370px;
-    height: 370px;
     max-width: 100%;
     margin: auto;
 }
 .carousel-image-container{
     padding: 0 0 60px 0;
-    width: 360px;
-    height: 360px;
     max-width: 100%;
     position: relative;
     margin: auto;
@@ -26,6 +22,10 @@
     margin: auto;
     border: 6px;
     border-radius: 6px;
+}
+.carousel-image-container, .carousel {
+    height: 360px;
+    width: 360px;
 }
 @media screen and (max-width: 385px) {
     .carousel-image-container, .carousel {
@@ -64,17 +64,53 @@
 }
 .carousel-control-prev, .carousel-control-next{
     position: absolute;
-    height: 50px;
-    width: 50px;
-    bottom: 0;
+    height: 20px;
+    width: 20px;
+    bottom: 10px;
     top: auto;
 }
-/* .carousel-control-next{
-    position: static;
-} */
+.gallery-carousel-control{
+    height: 20px;
+    width: 20px;
+    bottom: 10px;
+    padding: 0;
+}
 .image-div{
     margin-bottom: 2em;
 }
+
+/* adjust carousel image height for gallery view */
+.gallery-carousel, .gallery-carousel .carousel-image-container{
+    height: 300px;
+}
+@media screen and (max-width: 1200px) {
+    .gallery-carousel .carousel-image-container, .gallery-carousel {
+        height: 250px;
+    }
+}
+@media screen and (max-width: 580px) {
+    .gallery-carousel .carousel-image-container, .gallery-carousel {
+        height: 300px;
+        width: 300px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .gallery-carousel .carousel-image-container, .gallery-carousel {
+        height: 275px;
+        width: 275px;
+    }
+}
+@media screen and (max-width: 300px) {
+    .gallery-carousel .carousel-image-container, .gallery-carousel {
+        height: 225px;
+    }
+}
+@media screen and (max-width: 250px) {
+    .gallery-carousel .carousel-image-container, .gallery-carousel {
+        height: 200px;
+    }
+}
+
 
 audio{
     width: 100%;
@@ -91,7 +127,7 @@ audio{
     text-align: left;
 }
 .license-panel, .license-panel a{
-    font-size: x-small;   
+    font-size: xx-small;   
     color:  rgba(255, 255, 255, .4);
 }
 .scientific-name{
